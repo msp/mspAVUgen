@@ -19,12 +19,24 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
+    
+        void audioRequested 	(float * input, int bufferSize, int nChannels); /* output method */
+        void audioReceived 	(float * input, int bufferSize, int nChannels); /* input method */    
 
     float red, green, blue, alpha, width, height;
+    
+    int	initialBufferSize;
+    int	sampleRate;
+    double wave, wave2, sample,outputs[2];
+
+    ofxMaxiMix mix;
+    ofxMaxiOsc mySine;    
     
     ofColor backgroundColor;
     
     std::vector<msp::avUgen*> channels;
+    
+    msp::avUgen * ch1;
+    msp::avUgen * ch2;
 		
 };

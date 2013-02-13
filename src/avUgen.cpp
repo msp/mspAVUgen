@@ -40,11 +40,7 @@ namespace msp {
     void avUgen::draw(){
         ofSetColor(rgbHsb.r, rgbHsb.g, rgbHsb.b, rgbHsb.a);
         ofFill();
-        
-        cout << this << endl;
-        cout << "t: "<< throttle << endl;
-        cout << "s: "<< speed << endl;
-        
+                
         if (throttle == speed) {
             cout << "firing! " << endl;
             ofSetCircleResolution(ofRandom(10));
@@ -80,6 +76,18 @@ namespace msp {
     
     void avUgen::setColor(ofColor _color){
         rgbHsb = _color;
+    }
+    
+    void avUgen::setOscillator(ofxMaxiOsc _osc){
+        osc = _osc;
+    }
+    
+    void avUgen::setFrequency(int _frequency){
+        frequency = _frequency;
+    }
+    
+    double avUgen::getWaveform(){
+        return osc.sinewave((double)rgbHsb.getHue());
     }
 };
 

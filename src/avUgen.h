@@ -10,13 +10,16 @@
 #define mspUgen_avUgen_h
 
 #include "ofMain.h"
+#include "ofxMaxim.h"
 
 namespace msp {
     class avUgen {
         int x, y, radius, speed, throttle;
         ofColor rgbHsb;
+        ofxMaxiOsc osc;
+        int frequency;
     public:
-
+        // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
         
         // Constructor
@@ -28,12 +31,17 @@ namespace msp {
         void draw();
         void update();
         
-        // Accessors
+        // Mutators
         void setX(int _x);
         void setY(int _y);
         void setRadius(int _radius);
         void setSpeed(int _speed);
         void setColor(ofColor _color);
+        void setOscillator(ofxMaxiOsc _osc);
+        void setFrequency(int _frequency);
+        
+        // Accessors
+        double getWaveform();
     };
 }
 
