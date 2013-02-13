@@ -1,0 +1,16 @@
+build/
+obj/
+*.o
+Debug*/
+Release*/
+*.mode*
+*.app/
+*.pyc
+.svn/
+
+#OSX
+.DS_Store
+*.swp
+*~.nib
+# Thumbnails
+._*
