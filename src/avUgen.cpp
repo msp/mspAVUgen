@@ -11,30 +11,75 @@
 namespace msp {
     avUgen::avUgen(){
 
-        radius = 150;
-        rgbHsb.set( ofRandom(255), ofRandom(255), ofRandom(255));
-
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
+        radius = 150;
+        throttle = 0;
+        speed = 0;
+        
+        rgbHsb.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
+        ofSetCircleResolution(100);
+    }
 
+    avUgen::avUgen(int _x, int _y, int _radius, ofColor _color, int _speed){
+        
+        x = _x;
+        y = _y;
+        radius = _radius;
+        rgbHsb = _color;
+        speed = _speed;
+        throttle = 0;
         ofSetCircleResolution(100);
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
-        x += ( _xDestiny - x )*0.1;
-        y += ( _yDestiny - y )*0.1;
+        x += ( _xDestiny - x )*ofRandom(0.1, 1.0);
+        y += ( _yDestiny - y )*ofRandom(0.1, 1.0);
     }
     
     void avUgen::draw(){
-        ofSetColor(rgbHsb);
+        ofSetColor(rgbHsb.r, rgbHsb.g, rgbHsb.b, rgbHsb.a);
         ofFill();
+        
+        cout << this << endl;
+        cout << "t: "<< throttle << endl;
+        cout << "s: "<< speed << endl;
+        
+        if (throttle == speed) {
+            cout << "firing! " << endl;
+            ofSetCircleResolution(ofRandom(10));
+            throttle = 0;
+        } else {
+            throttle++;
+        }
+        
         ofCircle(x, y, radius);
+
     }
     
     void avUgen::update(){
-//        rgbHsb.setHue(ofRandom(255));
-        ofSetCircleResolution(ofRandom(60));
+        rgbHsb.setHue(ofRandom(255));
     }
     
+    void avUgen::setX(int _x) {
+        x = _x;
+    }
+
+    void avUgen::setY(int _y){
+        y = _y;
+    }
+    
+    void avUgen::setRadius(int _radius){
+        radius = _radius;
+    }
+    
+//    TODO higher numbers slow it down. Make this clear.
+    void avUgen::setSpeed(int _speed){
+        speed = _speed;
+    }
+    
+    void avUgen::setColor(ofColor _color){
+        rgbHsb = _color;
+    }
 };
 

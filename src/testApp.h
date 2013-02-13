@@ -21,9 +21,10 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 
-    float red, green, blue, alpha;
+    float red, green, blue, alpha, width, height;
     
     ofColor backgroundColor;
-    msp::avUgen circle;
+    
+    std::vector<msp::avUgen*> channels;
 		
 };
