@@ -15,7 +15,7 @@
 namespace msp {
     class avUgen {
         int x, y, radius, speed, throttle;
-        ofColor rgbHsb;
+        ofColor color;
         ofxMaxiOsc osc;
         int frequency;
     public:
@@ -41,7 +41,7 @@ namespace msp {
         void setFrequency(int _frequency);
         
         // Accessors
-        double getWaveform();
+        double getAudio();
     };
 }
 

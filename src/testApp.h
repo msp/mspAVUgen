@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "avUgen.h"
+#include "ofxUI.h"
 
 class testApp : public ofBaseApp{
 
@@ -9,6 +10,7 @@ class testApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+        void exit();    
 
 		void keyPressed  (int key);
 		void keyReleased(int key);
@@ -21,22 +23,25 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
         void audioRequested 	(float * input, int bufferSize, int nChannels); /* output method */
-        void audioReceived 	(float * input, int bufferSize, int nChannels); /* input method */    
+        void audioReceived 	(float * input, int bufferSize, int nChannels); /* input method */
+    
+        ofxUICanvas *gui;
+        void guiEvent(ofxUIEventArgs &e);
+        bool drawFill;
 
-    float red, green, blue, alpha, width, height;
-    
-    int	initialBufferSize;
-    int	sampleRate;
-    double wave, wave2, sample,outputs[2];
+        float red, green, blue, alpha, width, height;
+        
+        int	initialBufferSize, sampleRate, radius_multiplier;
+        double wave, wave2, sample,outputs[2];
 
-    ofxMaxiMix mix;
-    ofxMaxiOsc mySine;    
+        ofxMaxiMix mix;
+        ofxMaxiOsc mySine;    
+        
+        ofColor backgroundColor;
+        ofColor rgbHsb;
     
-    ofColor backgroundColor;
-    
-    std::vector<msp::avUgen*> channels;
-    
-    msp::avUgen * ch1;
-    msp::avUgen * ch2;
+        std::vector<msp::avUgen*> channels;
+        
+        msp::avUgen *ch1, *ch2, *ch3, *ch4;
 		
 };
