@@ -7,25 +7,37 @@ void testApp::setup(){
     height = ofGetWindowHeight();
     
     // msp::avUgen(s)    
+    
     ch1 = new msp::avUgen();
+
     ch1->setX(width/2);
     ch1->setY(height/2);
     ch1->setRadius(100);
     ch1->setSpeed(10);
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     
+    ch1->setAudioEngine(msp::avUgen::MONO);
     ch1->setFrequency(100);
     channels.push_back(ch1);
         
+    
     ch2 = new msp::avUgen();
+    
     ch2->setX(width/2 - 100);
     ch2->setY(height/2 - 100);
     ch2->setRadius(100);
     ch2->setSpeed(30);
     ch2->setColor(*new ofColor(100, 200, 100, msp::avUgen::LIGHT_ALPHA));
+
     
+    ch2->setAudioEngine(msp::avUgen::SINE);
     ch2->setFrequency(101);
     channels.push_back(ch2);
+    
+    // a/v state
+    ch2->switchOffAudio();
+    ch2->switchOffVisual();
+    
 
     // OF Core
     red = 0;
@@ -92,7 +104,7 @@ void testApp::setup(){
     
 	ofSoundStreamSetup(2,0,this, sampleRate, initialBufferSize, 4);/* Call this last ! */
     ofSoundStreamListDevices();
-    cout << "MSP2";
+    cout << "MSP End OF Setup" << endl;
 }
 
 //--------------------------------------------------------------
@@ -116,13 +128,20 @@ void testApp::draw(){
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
         channels.at(i) -> setColor(rgbHsb);
-        channels.at(i) -> setRadius(radius_multiplier*wave);
+        
+        if (wave > 0) {
+            channels.at(i) -> setRadius(radius_multiplier*wave);
+        } else {
+            channels.at(i) -> setRadius(radius_multiplier);
+        }
+        
         channels.at(i) -> draw();
         
         ofPopStyle();
     }
     
-//    ofCircle(200, 300, wave*150);
+    cout << "MSP wave: " << wave << endl;
+    cout << "MSP wave2: " << wave2 << endl;
     
     ofPopStyle();
     
@@ -132,12 +151,20 @@ void testApp::draw(){
 void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 	
 	for (int i = 0; i < bufferSize; i++){
-		
+        
+        if (ch1->isAudioOn() == true){
+            wave = ch1->getAudio();
+        }
 
-        wave = ch1->getAudio();
-        wave2 = ch2->getAudio();
-
-		mix.stereo(wave + wave2, outputs, 0.5);            
+        if (ch2->isAudioOn()){
+            wave2 = ch2->getAudio();
+        }
+        
+        if (ch1-> isAudioOn() && ch2->isAudioOn()){
+            mix.stereo(wave + wave2, outputs, 0.5);
+        } else {
+            mix.stereo(wave, outputs, 0.5);
+        }        		
 		
 		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
 		output[i*nChannels + 1] = outputs[1];

@@ -14,13 +14,28 @@
 
 namespace msp {
     class avUgen {
+        
+        // visual
+        bool visualOutputSwitch;
         int x, y, radius, speed, throttle;
         ofColor color;
-        ofxMaxiOsc osc;
+
+        // audio
+        bool audioOutputSwitch;
+        int audioEngine;
         int frequency;
+        int currentCount, lastCount;
+        double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
+        
+        ofxMaxiOsc VCO1,VCO2,LFO1,LFO2, osc;
+        ofxMaxiFilter VCF;
+        ofxMaxiEnvelope ADSR;
+        
+        double adsrEnv[8]={1,5,0.5,250,0.125,125,0,500};
     public:
         // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
+        enum { SINE = 999, MONO = 998 };
         
         // Constructor
         avUgen();
@@ -39,9 +54,14 @@ namespace msp {
         void setColor(ofColor _color);
         void setOscillator(ofxMaxiOsc _osc);
         void setFrequency(int _frequency);
+        void setAudioEngine(int _engine);
+        void switchOffAudio();
+        void switchOffVisual();
         
         // Accessors
         double getAudio();
+        bool isAudioOn();
+        bool isVisualOn();
     };
 }
 
