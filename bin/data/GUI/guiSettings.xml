@@ -21,27 +21,27 @@
 <Widget>
     <Kind>4</Kind>
     <Name>GREEN</Name>
-    <Value>70.288459778</Value>
+    <Value>59.663459778</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>BLUE</Name>
-    <Value>206.778839111</Value>
+    <Value>202.692306519</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>ALPHA</Name>
-    <Value>199.423065186</Value>
+    <Value>219.855758667</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>RADIUS</Name>
-    <Value>276.923065186</Value>
+    <Value>263.461547852</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>FRAMERATE</Name>
-    <Value>39.423076630</Value>
+    <Value>36.221157074</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -51,8 +51,8 @@
 <Widget>
     <Kind>11</Kind>
     <Name>POSITION_CH1</Name>
-    <XValue>228.000000000</XValue>
-    <YValue>143.000000000</YValue>
+    <XValue>226.000000000</XValue>
+    <YValue>111.000000000</YValue>
 </Widget>
 <Widget>
     <Kind>11</Kind>

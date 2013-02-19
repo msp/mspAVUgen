@@ -125,9 +125,11 @@ void testApp::draw(){
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
         channels.at(i) -> setColor(rgbHsb);
-        
-        if (wave > 0) {
-            channels.at(i) -> setRadius(radius_multiplier*wave);
+
+        cout << "MSP wave[" << i << "]:" << wave[i] << endl;
+
+        if (wave[i] > 0) {
+            channels.at(i) -> setRadius(radius_multiplier*wave[i]);
         } else {
             channels.at(i) -> setRadius(radius_multiplier);
         }
@@ -136,10 +138,7 @@ void testApp::draw(){
         
         ofPopStyle();
     }
-    
-    cout << "MSP wave: " << wave << endl;
-    cout << "MSP wave2: " << wave2 << endl;
-    
+
     ofPopStyle();
     
 }
@@ -150,17 +149,17 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 	for (int i = 0; i < bufferSize; i++){
         
         if (ch1->isAudioOn() == true){
-            wave = ch1->getAudio();
+            wave[0] = ch1->getAudio();
         }
 
         if (ch2->isAudioOn()){
-            wave2 = ch2->getAudio();
+            wave[1] = ch2->getAudio();
         }
         
         if (ch1-> isAudioOn() && ch2->isAudioOn()){
-            mix.stereo(wave + wave2, outputs, 0.5);
+            mix.stereo(wave[0] + wave[1], outputs, 0.5);
         } else {
-            mix.stereo(wave, outputs, 0.5);
+            mix.stereo(wave[0], outputs, 0.5);
         }        		
 		
 		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
