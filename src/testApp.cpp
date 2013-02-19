@@ -17,7 +17,6 @@ void testApp::setup(){
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     
     ch1->setAudioEngine(msp::avUgen::MONO);
-    ch1->setFrequency(100);
     channels.push_back(ch1);
         
     
@@ -35,8 +34,8 @@ void testApp::setup(){
     channels.push_back(ch2);
     
     // a/v state
-    ch2->switchOffAudio();
-    ch2->switchOffVisual();
+//    ch2->switchOffAudio();
+//    ch2->switchOffVisual();
     
 
     // OF Core
@@ -80,7 +79,7 @@ void testApp::setup(){
     gui->addSpacer(length, 2);
     
     gui->addSpacer(length, 2);
-    gui->addSlider("FRAMERATE", 1, 100, 24, length,dim);
+    gui->addSlider("FRAMERATE", 1, 1000, 24, length,dim);
     gui->addWidgetDown(new ofxUILabelToggle(drawFill, "DRAW FILL", OFX_UI_FONT_MEDIUM));
     
     float padWidth = length;
@@ -118,9 +117,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-//    ofBackgroundGradient(ofColor::gray,ofColor(30,10,30), OF_GRADIENT_CIRCULAR);    
-	
-//	ofBackground(backgroundColor);
+//    ofBackgroundGradient(ofColor::gray,ofColor(30,10,30), OF_GRADIENT_CIRCULAR);
 	ofPushStyle();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     

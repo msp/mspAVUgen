@@ -21,6 +21,9 @@ namespace msp {
         audioEngine = SINE;
         visualOutputSwitch = true;
         audioOutputSwitch = true;
+        targetCount = (int) ofGetFrameRate() * 10;
+
+        logger.open("development.log");
         
         color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
         ofSetCircleResolution(100);
@@ -39,8 +42,14 @@ namespace msp {
         audioEngine = SINE;
         visualOutputSwitch = true;
         audioOutputSwitch = true;
+        targetCount = (int) ofGetFrameRate() * 10;
+        logger.open("development.log");
         
         ofSetCircleResolution(100);
+    }
+    
+    avUgen::~avUgen(){
+        logger.close();
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -53,13 +62,11 @@ namespace msp {
         ofFill();
                 
         if (throttle == speed) {
-            ofSetCircleResolution(ofRandom(10));
+//            ofSetCircleResolution(ofRandom(10));
             throttle = 0;
         } else {
             throttle++;
         }
-        
-        cout << "MSP isVisualOn(): " << isVisualOn() << endl;
         
         if (isVisualOn()){
             ofCircle(x, y, radius);
@@ -123,40 +130,28 @@ namespace msp {
         audio = 1;
         if (isAudioOn()) {
             if (audioEngine == SINE) {
-                //            audio = osc.sinewave((double)color.getHue());
                 audio = osc.sinewave(frequency);
             } else if (audioEngine == MONO) {
                 
+                // Metronome
+                // Phasor can take three arguments; frequency, start value and end
+                currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
+                
+                logger << "currentCount: " << currentCount << endl;
+                
+                audio = osc.sinewave((double)color.getHue());
 
-                //      Monosynth
-                // so this first bit is just a basic metronome so we can hear what we're doing.
+                // env stuff
+                if (currentCount==1){
+                    logger << "######################### fire ########################" << endl;
+                   ADSR.trigger(0, adsrEnv[0]);
+                }
                 
-                // currentCount=(int)timer.phasor(0.5);//this sets up a metronome that ticks every 2 seconds
-                
-                currentCount = ofGetFrameRate();
-                
-                //            if (lastCount != currentCount) {
-                //
-                //                ADSR.trigger(0, adsrEnv[0]);//trigger the envelope from the start
-                //
-                //                cout << "tick\n";//the clock ticks
-                //
-                //                lastCount=0;
-                //            }
-                
-                //            ADSRout=ADSR.line(8,adsrEnv);//our ADSR env has 8 value/time pairs.
-                
-                //            LFO1out=LFO1.sinebuf(0.2);//this lfo is a sinewave at 0.2 hz
-                
-                VCO1out=VCO1.square(frequency);
-                VCO2out=VCO2.sinewave(frequency+LFO1out);//here's VCO2. it's a pulse wave at 110hz with LFO modulation on the frequency, and width of 0.2
-                
-                //now we stick the VCO's into the VCF, using the ADSR as the filter cutoff
-                //            VCFout=VCF.lores((VCO1out+VCO2out)*0.5, 250+(ADSRout*15000), 10);
-                audio = VCO1out; //*ADSRout;//finally we add the ADSR as an amplitude modulator
+                ADSRout=ADSR.line(8,adsrEnv);//our ADSR env has 8 value/time pairs.
+                audio = audio * ADSRout;
+                // end env stuff
             }
         }
-        
         return audio;
     }
 };
