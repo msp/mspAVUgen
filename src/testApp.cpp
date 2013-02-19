@@ -26,24 +26,44 @@ void testApp::setup(){
     ch2->setY(height/2 - 100);
     ch2->setRadius(100);
     ch2->setSpeed(30);
-    ch2->setColor(*new ofColor(100, 200, 100, msp::avUgen::LIGHT_ALPHA));
+    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
-    
-    ch2->setAudioEngine(msp::avUgen::SINE);
+
     ch2->setFrequency(101);
     channels.push_back(ch2);
-    
+
+    ch3 = new msp::avUgen();
+    ch3->setFrequency(102);
+    channels.push_back(ch3);
+
+    ch4 = new msp::avUgen();
+    ch4->setFrequency(103);
+    channels.push_back(ch4);
+
     // a/v state
+//    ch1->switchOffAudio();
+//    ch1->switchOffVisual();
 //    ch2->switchOffAudio();
 //    ch2->switchOffVisual();
-    
+//    ch3->switchOffAudio();
+//    ch3->switchOffVisual();
+    //    ch4->switchOffAudio();
+    //    ch4->switchOffVisual();
+
+
+    solo = 4;
+    solo = solo - 1;
+
 
     // OF Core
     red = 0;
     blue = 0;
     green = 0;
     backgroundColor = ofColor(red, green, blue);
-    rgbHsb = *new ofColor(red, green, blue);
+
+    for (int i=0; i<channels.size(); i++) {
+        rgbHsb.push_back(new ofColor(red, green, blue));
+    }
         
     
     ofSetVerticalSync(true);
@@ -69,10 +89,10 @@ void testApp::setup(){
     gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_DOWN);
     
     gui->addWidgetDown(new ofxUILabel("CIRCLE CONTROL", OFX_UI_FONT_MEDIUM));
-    gui->addSlider("RED", 0.0, 255.0, rgbHsb.r, length,dim);
-	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.g, length,dim);
-    gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.b, length,dim);
-    gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.a, length,dim);
+    gui->addSlider("RED", 0.0, 255.0, rgbHsb.at(0)->r, length,dim);
+	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
+    gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
+    gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
     gui->addSlider("RADIUS", 0.0, 600.0, radius_multiplier, length,dim);
 //	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
     
@@ -124,16 +144,20 @@ void testApp::draw(){
     
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
-        channels.at(i) -> setColor(rgbHsb);
+        if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
 
         cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
         if (wave[i] > 0) {
-            channels.at(i) -> setRadius(radius_multiplier*wave[i]);
+            if (i == 0) {
+                channels.at(i) -> setRadius(radius_multiplier * wave[i]);
+            } else {
+                channels.at(i) -> setRadius(100 * wave[i]);
+            }
         } else {
-            channels.at(i) -> setRadius(radius_multiplier);
+            if (i == 0) channels.at(i) -> setRadius(radius_multiplier);
         }
-        
+
         channels.at(i) -> draw();
         
         ofPopStyle();
@@ -147,7 +171,8 @@ void testApp::draw(){
 void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 	
 	for (int i = 0; i < bufferSize; i++){
-        
+
+//        TODO refactor this mess!
         if (ch1->isAudioOn() == true){
             wave[0] = ch1->getAudio();
         }
@@ -155,11 +180,25 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         if (ch2->isAudioOn()){
             wave[1] = ch2->getAudio();
         }
-        
-        if (ch1-> isAudioOn() && ch2->isAudioOn()){
-            mix.stereo(wave[0] + wave[1], outputs, 0.5);
+
+        if (ch3->isAudioOn()){
+            wave[2] = ch3->getAudio();
+        }
+
+        if (ch4->isAudioOn()){
+            wave[3] = ch4->getAudio();
+        }
+
+        float pan = 0.5;
+
+        if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn() && ch4->isAudioOn()){
+            mix.stereo(wave[0] + wave[1] + wave[2] + wave[3], outputs, pan);
+        } else if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn()){
+            mix.stereo(wave[0] + wave[1] + wave[2], outputs, pan);
+        } else if (ch1-> isAudioOn() && ch2->isAudioOn()){
+            mix.stereo(wave[0] + wave[1], outputs, pan);
         } else {
-            mix.stereo(wave[0], outputs, 0.5);
+            mix.stereo(wave[solo], outputs, pan);
         }        		
 		
 		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
@@ -193,34 +232,34 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		red = slider->getScaledValue();
-        rgbHsb.r = red;
+        rgbHsb.at(0) -> r = red;
 	}
 	else if(name == "GREEN")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		green = slider->getScaledValue();
-        rgbHsb.g = green;
+        rgbHsb.at(0) -> g = green;
 	}
 	else if(name == "BLUE")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		blue = slider->getScaledValue();
-        rgbHsb.b = blue;
+        rgbHsb.at(0) -> b = blue;
 	}
 	else if(name == "HUE")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-        rgbHsb.setHue(slider->getScaledValue());
+        rgbHsb.at(0) -> setHue(slider->getScaledValue());
 	}
 	else if(name == "SATURATION")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-        rgbHsb.setSaturation(slider->getScaledValue());
+        rgbHsb.at(0) -> setSaturation(slider->getScaledValue());
 	}
 	else if(name == "BRIGHTNESS")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-        rgbHsb.setBrightness(slider->getScaledValue());
+        rgbHsb.at(0) -> setBrightness(slider->getScaledValue());
 	}
 	else if(name == "FRAMERATE")
 	{
@@ -246,7 +285,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		alpha = slider->getScaledValue();
-        rgbHsb.a = alpha;
+        rgbHsb.at(0) -> a = alpha;
 	}
 	else if(name == "RADIUS")
 	{

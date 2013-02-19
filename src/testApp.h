@@ -31,15 +31,14 @@ class testApp : public ofBaseApp{
 
         float red, green, blue, alpha, width, height;
         
-        int	initialBufferSize, sampleRate, radius_multiplier;
+        int	initialBufferSize, sampleRate, radius_multiplier, solo;
         double wave[4], sample, outputs[2];
 
         ofxMaxiMix mix;
         ofxMaxiOsc mySine;    
         
         ofColor backgroundColor;
-        ofColor rgbHsb;
-    
+        std::vector<ofColor*> rgbHsb;
         std::vector<msp::avUgen*> channels;
         
         msp::avUgen *ch1, *ch2, *ch3, *ch4;

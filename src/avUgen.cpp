@@ -19,6 +19,7 @@ namespace msp {
         lastCount = currentCount = 0;
         
         audioEngine = SINE;
+        frequency = 300;
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         targetCount = (int) ofGetFrameRate() * 10;
@@ -40,6 +41,7 @@ namespace msp {
         lastCount = currentCount = 0;
         
         audioEngine = SINE;
+        frequency = 300;
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         targetCount = (int) ofGetFrameRate() * 10;
