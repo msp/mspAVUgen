@@ -16,7 +16,7 @@ namespace msp {
     class avUgen {
         
         // visual
-        bool visualOutputSwitch;
+        bool visualOutputSwitch, randomResolutionSwitch;
         int x, y, radius, speed, throttle;
         ofColor color;
 
@@ -62,6 +62,7 @@ namespace msp {
         void setAudioEngine(int _engine);
         void switchOffAudio();
         void switchOffVisual();
+        void setRandomResolution();
         
         // Accessors
         double getAudio();

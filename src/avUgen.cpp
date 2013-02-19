@@ -17,6 +17,7 @@ namespace msp {
         throttle = 0;
         speed = 0;
         lastCount = currentCount = 0;
+        randomResolutionSwitch = false;
         
         audioEngine = SINE;
         frequency = 300;
@@ -39,6 +40,7 @@ namespace msp {
         speed = _speed;
         throttle = 0;
         lastCount = currentCount = 0;
+        randomResolutionSwitch = false;
         
         audioEngine = SINE;
         frequency = 300;
@@ -64,7 +66,7 @@ namespace msp {
         ofFill();
                 
         if (throttle == speed) {
-//            ofSetCircleResolution(ofRandom(10));
+            if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
             throttle = 0;
         } else {
             throttle++;
@@ -118,6 +120,10 @@ namespace msp {
 
     void avUgen::switchOffVisual(){
         visualOutputSwitch = false;
+    }
+
+    void avUgen::setRandomResolution(){
+        randomResolutionSwitch = true;
     }
     
     bool avUgen::isAudioOn(){

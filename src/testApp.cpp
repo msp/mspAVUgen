@@ -14,6 +14,7 @@ void testApp::setup(){
     ch1->setY(height/2);
     ch1->setRadius(100);
     ch1->setSpeed(10);
+    ch1->setRandomResolution();
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     
     ch1->setAudioEngine(msp::avUgen::MONO);
@@ -39,6 +40,7 @@ void testApp::setup(){
 
     ch4 = new msp::avUgen();
     ch4->setFrequency(103);
+    ch4->setRandomResolution();
     channels.push_back(ch4);
 
     // a/v state
