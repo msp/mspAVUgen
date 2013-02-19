@@ -33,6 +33,7 @@ void testApp::setup(){
     channels.push_back(ch2);
 
     ch3 = new msp::avUgen();
+    ch3->setAudioEngine(msp::avUgen::MONO);
     ch3->setFrequency(102);
     channels.push_back(ch3);
 
@@ -49,8 +50,6 @@ void testApp::setup(){
 //    ch3->switchOffVisual();
     //    ch4->switchOffAudio();
     //    ch4->switchOffVisual();
-
-
     solo = 4;
     solo = solo - 1;
 
@@ -192,7 +191,7 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         float pan = 0.5;
 
         if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn() && ch4->isAudioOn()){
-            mix.stereo(wave[0] + wave[1] + wave[2] + wave[3], outputs, pan);
+            mix.stereo((wave[0] + wave[1] + wave[2] + wave[3]) / 2, outputs, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn()){
             mix.stereo(wave[0] + wave[1] + wave[2], outputs, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn()){
@@ -200,7 +199,7 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         } else {
             mix.stereo(wave[solo], outputs, pan);
         }        		
-		
+
 		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
 		output[i*nChannels + 1] = outputs[1];
 	}
