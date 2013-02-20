@@ -121,10 +121,12 @@ void testApp::setup(){
     // Maximillian
 	sampleRate 			= 44100;
 	initialBufferSize	= 512;
-    
-	ofSoundStreamSetup(2,0,this, sampleRate, initialBufferSize, 4);/* Call this last ! */
-    ofSoundStreamListDevices();
-    cout << "MSP End OF Setup" << endl;
+
+    soundStream.listDevices();
+    // soundStream.setDeviceID(5);
+    soundStream.setup(this, NUM_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
+
+    if (debug) cout << "MSP End OF Setup" << endl;
 }
 
 //--------------------------------------------------------------
@@ -147,7 +149,7 @@ void testApp::draw(){
         ofPushStyle();
         if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
 
-        cout << "MSP wave[" << i << "]:" << wave[i] << endl;
+        if (debug) cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
         if (wave[i] > 0) {
             if (i == 0) {
@@ -193,7 +195,7 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         float pan = 0.5;
 
         if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn() && ch4->isAudioOn()){
-            mix.stereo((wave[0] + wave[1] + wave[2] + wave[3]) / 2, outputs, pan);
+            mix.quad((wave[0] + wave[1] + wave[2] + wave[3]) / 2, outputs, pan, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn()){
             mix.stereo(wave[0] + wave[1] + wave[2], outputs, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn()){
@@ -204,6 +206,11 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 
 		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
 		output[i*nChannels + 1] = outputs[1];
+
+        if (NUM_CHANNELS == 4) {
+            output[i*nChannels + 2] = outputs[2];
+            output[i*nChannels + 3] = outputs[3];
+        }
 	}
 	
 }

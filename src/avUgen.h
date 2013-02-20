@@ -14,7 +14,9 @@
 
 namespace msp {
     class avUgen {
-        
+
+        bool debug = false;
+
         // visual
         bool visualOutputSwitch, randomResolutionSwitch;
         int x, y, radius, speed, throttle;

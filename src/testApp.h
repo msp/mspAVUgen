@@ -7,6 +7,11 @@
 class testApp : public ofBaseApp{
 
 	public:
+
+        static const int NUM_CHANNELS = 4;
+
+        bool debug = false;
+
 		void setup();
 		void update();
 		void draw();
@@ -21,7 +26,8 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
+
+        ofSoundStream soundStream;
         void audioRequested 	(float * input, int bufferSize, int nChannels); /* output method */
         void audioReceived 	(float * input, int bufferSize, int nChannels); /* input method */
     
@@ -30,9 +36,9 @@ class testApp : public ofBaseApp{
         bool drawFill;
 
         float red, green, blue, alpha, width, height;
-        
+
         int	initialBufferSize, sampleRate, radius_multiplier, solo;
-        double wave[4], sample, outputs[2];
+        double wave[4], sample, outputs[NUM_CHANNELS];
 
         ofxMaxiMix mix;
         ofxMaxiOsc mySine;    

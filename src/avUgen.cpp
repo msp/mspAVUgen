@@ -25,7 +25,7 @@ namespace msp {
         audioOutputSwitch = true;
         targetCount = (int) ofGetFrameRate() * 10;
 
-        logger.open("development.log");
+        if (debug) logger.open("development.log");
         
         color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
         ofSetCircleResolution(100);
@@ -47,13 +47,13 @@ namespace msp {
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         targetCount = (int) ofGetFrameRate() * 10;
-        logger.open("development.log");
+        if (debug) logger.open("development.log");
         
         ofSetCircleResolution(100);
     }
     
     avUgen::~avUgen(){
-        logger.close();
+        if (debug) logger.close();
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -145,13 +145,13 @@ namespace msp {
                 // Phasor can take three arguments; frequency, start value and end
                 currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
                 
-                logger << "currentCount: " << currentCount << endl;
+                if (debug) logger << "currentCount: " << currentCount << endl;
                 
                 audio = osc.sinewave((double)color.getHue());
 
                 // env stuff
                 if (currentCount==1){
-                    logger << "######################### fire ########################" << endl;
+                    if (debug) logger << "######################### fire ########################" << endl;
                    ADSR.trigger(0, adsrEnv[0]);
                 }
                 
