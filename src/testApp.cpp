@@ -2,7 +2,9 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-    
+
+    ofSetLogLevel(OF_LOG_VERBOSE);
+
     width = ofGetWindowWidth();
     height = ofGetWindowHeight();
     
@@ -45,13 +47,13 @@ void testApp::setup(){
 
     // a/v state
 //    ch1->switchOffAudio();
-//    ch1->switchOffVisual();
+    ch1->switchOffVisual();
 //    ch2->switchOffAudio();
-//    ch2->switchOffVisual();
+    ch2->switchOffVisual();
 //    ch3->switchOffAudio();
-//    ch3->switchOffVisual();
+    ch3->switchOffVisual();
     //    ch4->switchOffAudio();
-    //    ch4->switchOffVisual();
+    ch4->switchOffVisual();
     solo = 4;
     solo = solo - 1;
 
@@ -117,6 +119,26 @@ void testApp::setup(){
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
     
     gui->loadSettings("GUI/guiSettings.xml");
+
+    // ofxMidi
+	// print input ports to console
+	midiIn.listPorts(); // via instance
+	//ofxMidiIn::listPorts(); // via static as well
+
+	// open port by number (you may need to change this)
+	midiIn.openPort(0);
+	//midiIn.openPort("IAC Pure Data In");	// by name
+	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
+
+	// don't ignore sysex, timing, & active sense messages,
+	// these are ignored by default
+	midiIn.ignoreTypes(false, false, false);
+
+	// add testApp as a listener
+	midiIn.addListener(this);
+
+	// print received messages to the console
+	midiIn.setVerbose(true);
     
     // Maximillian
 	sampleRate 			= 44100;
@@ -167,6 +189,44 @@ void testApp::draw(){
     }
 
     ofPopStyle();
+
+	// draw the last recieved message contents to the screen
+	text << "Received: " << ofxMidiMessage::getStatusString(midiMessage.status);
+	ofDrawBitmapString(text.str(), 20, 20);
+	text.str(""); // clear
+
+	text << "channel: " << midiMessage.channel;
+	ofDrawBitmapString(text.str(), 20, 34);
+	text.str(""); // clear
+
+	text << "pitch: " << midiMessage.pitch;
+	ofDrawBitmapString(text.str(), 20, 48);
+	text.str(""); // clear
+	ofRect(20, 58, ofMap(midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "velocity: " << midiMessage.velocity;
+	ofDrawBitmapString(text.str(), 20, 96);
+	text.str(""); // clear
+	ofRect(20, 105, ofMap(midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "control: " << midiMessage.control;
+	ofDrawBitmapString(text.str(), 20, 144);
+	text.str(""); // clear
+	ofRect(20, 154, ofMap(midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "value: " << midiMessage.value;
+	ofDrawBitmapString(text.str(), 20, 192);
+	text.str(""); // clear
+	if(midiMessage.status == MIDI_PITCH_BEND) {
+		ofRect(20, 202, ofMap(midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
+	}
+	else {
+		ofRect(20, 202, ofMap(midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
+	}
+
+	text << "delta: " << midiMessage.deltatime;
+	ofDrawBitmapString(text.str(), 20, 240);
+	text.str(""); // clear
     
 }
 
@@ -331,6 +391,16 @@ void testApp::exit()
 {
     gui->saveSettings("GUI/guiSettings.xml");
     delete gui;
+
+	midiIn.closePort();
+	midiIn.removeListener(this);
+}
+
+//--------------------------------------------------------------
+void testApp::newMidiMessage(ofxMidiMessage& msg) {
+
+	// make a copy of the latest message
+	midiMessage = msg;
 }
 
 //--------------------------------------------------------------
@@ -342,8 +412,12 @@ void testApp::keyPressed(int key){
             gui->toggleVisible();
         }
             break;
+		case 'l':
+			midiIn.listPorts();
+			break;
         default:
             break;
+
     }
 }
 

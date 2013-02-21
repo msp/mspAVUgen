@@ -7,3 +7,9 @@ OF_PATH = ../../..
 
 OTHER_LDFLAGS = $(OF_CORE_LIBS) 
 HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
+
+// path to the addons dir
+ADDONS_PATH = $(OF_PATH)/addons
+
+// ofxMidi
+OFX_MIDI_HEADERS = $(ADDONS_PATH)/ofxMidi/src $(ADDONS_PATH)/ofxMidi/src/desktop/rtmidi

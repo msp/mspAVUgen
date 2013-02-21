@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ofMain.h"
 #include "avUgen.h"
+#include "ofMain.h"
+#include "ofxMidi.h"
 #include "ofxUI.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public ofxMidiListener{
 
 	public:
 
@@ -48,5 +49,14 @@ class testApp : public ofBaseApp{
         std::vector<msp::avUgen*> channels;
         
         msp::avUgen *ch1, *ch2, *ch3, *ch4;
+
+        // ofxmidi
+        void newMidiMessage(ofxMidiMessage& eventArgs);
+
+        stringstream text;
+
+        ofxMidiIn midiIn;
+        ofxMidiMessage midiMessage;
+
 		
 };
