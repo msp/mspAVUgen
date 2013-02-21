@@ -7,9 +7,15 @@
 
 class testApp : public ofBaseApp, public ofxMidiListener{
 
+    void setupUI();
+    void setupMIDI();
+    void setupAVUgens();
+    void setupSound();
+    void drawMIDI();
+    
 	public:
 
-        static const int NUM_CHANNELS = 4;
+        static const int NUM_CHANNELS = 2;
 
         bool debug = false;
 

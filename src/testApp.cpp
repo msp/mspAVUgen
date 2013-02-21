@@ -5,148 +5,28 @@ void testApp::setup(){
 
     ofSetLogLevel(OF_LOG_VERBOSE);
 
-    width = ofGetWindowWidth();
-    height = ofGetWindowHeight();
-    
-    // msp::avUgen(s)    
-    
-    ch1 = new msp::avUgen();
-
-    ch1->setX(width/2);
-    ch1->setY(height/2);
-    ch1->setRadius(100);
-    ch1->setSpeed(10);
-    ch1->setRandomResolution();
-    ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
-    
-    ch1->setAudioEngine(msp::avUgen::MONO);
-    channels.push_back(ch1);
-        
-    
-    ch2 = new msp::avUgen();
-    
-    ch2->setX(width/2 - 100);
-    ch2->setY(height/2 - 100);
-    ch2->setRadius(100);
-    ch2->setSpeed(30);
-    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
-
-
-    ch2->setFrequency(101);
-    channels.push_back(ch2);
-
-    ch3 = new msp::avUgen();
-    ch3->setAudioEngine(msp::avUgen::MONO);
-    ch3->setFrequency(102);
-    channels.push_back(ch3);
-
-    ch4 = new msp::avUgen();
-    ch4->setFrequency(103);
-    ch4->setRandomResolution();
-    channels.push_back(ch4);
-
-    // a/v state
-//    ch1->switchOffAudio();
-    ch1->switchOffVisual();
-//    ch2->switchOffAudio();
-    ch2->switchOffVisual();
-//    ch3->switchOffAudio();
-    ch3->switchOffVisual();
-    //    ch4->switchOffAudio();
-    ch4->switchOffVisual();
-    solo = 4;
-    solo = solo - 1;
-
-
-    // OF Core
     red = 0;
     blue = 0;
     green = 0;
+    width = ofGetWindowWidth();
+    height = ofGetWindowHeight();
     backgroundColor = ofColor(red, green, blue);
 
-    for (int i=0; i<channels.size(); i++) {
-        rgbHsb.push_back(new ofColor(red, green, blue));
-    }
-        
-    
     ofSetVerticalSync(true);
     ofEnableSmoothing();
     ofSetFrameRate(30);
     ofBackground(backgroundColor);
-    
-    // OF UI
-    float dim = 16;
-	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 320-xInit;
-    radius_multiplier = 50;
-	
-    gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight());
-	gui->addWidgetDown(new ofxUILabel("SPATIAL - AVUGEN", OFX_UI_FONT_LARGE));
-    
-    gui->addSpacer(length, 2);
-    gui->addWidgetDown(new ofxUILabel("BACKGROUND CONTROL", OFX_UI_FONT_MEDIUM));
-    gui->addSlider("BGR", 0, 255, backgroundColor.r, 95, dim);
-    gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_RIGHT);
-    gui->addSlider("BGG", 0, 255, backgroundColor.g, 95, dim);
-    gui->addSlider("BGB", 0, 255, backgroundColor.b, 95, dim);
-    gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_DOWN);
-    
-    gui->addWidgetDown(new ofxUILabel("CIRCLE CONTROL", OFX_UI_FONT_MEDIUM));
-    gui->addSlider("RED", 0.0, 255.0, rgbHsb.at(0)->r, length,dim);
-	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
-    gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
-    gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
-    gui->addSlider("RADIUS", 0.0, 600.0, radius_multiplier, length,dim);
-//	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
-    
-    gui->addSpacer(length, 2);
-    
-    gui->addSpacer(length, 2);
-    gui->addSlider("FRAMERATE", 1, 1000, 24, length,dim);
-    gui->addWidgetDown(new ofxUILabelToggle(drawFill, "DRAW FILL", OFX_UI_FONT_MEDIUM));
-    
-    float padWidth = length;
-    float padHeight = length*((float)ofGetHeight()/(float)ofGetWidth());
-    
-    gui->addWidgetDown(new ofxUI2DPad(padWidth, padHeight, ofPoint(padWidth*.5, padHeight*.5), "POSITION_CH1"));
-    gui->addWidgetDown(new ofxUI2DPad(padWidth, padHeight, ofPoint(padWidth*.5, padHeight*.5), "POSITION_CH2"));
-    
-    gui->addSpacer(length, 2);
-    gui->addWidgetDown(new ofxUILabel("HIDE & SHOW GUI BY PRESSING 'g'", OFX_UI_FONT_MEDIUM));
-    gui->addWidgetDown(new ofxUILabel("MOUSE OVER A SLIDER AND", OFX_UI_FONT_MEDIUM));
-    gui->addWidgetDown(new ofxUILabel("PRESS UP, DOWN, LEFT, RIGHT", OFX_UI_FONT_MEDIUM));
-    
-    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
-    
-    gui->loadSettings("GUI/guiSettings.xml");
 
-    // ofxMidi
-	// print input ports to console
-	midiIn.listPorts(); // via instance
-	//ofxMidiIn::listPorts(); // via static as well
+    setupAVUgens();
 
-	// open port by number (you may need to change this)
-	midiIn.openPort(0);
-	//midiIn.openPort("IAC Pure Data In");	// by name
-	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
+    // The UI components use this vector of colours
+    for (int i=0; i<channels.size(); i++) {
+        rgbHsb.push_back(new ofColor(red, green, blue));
+    }
 
-	// don't ignore sysex, timing, & active sense messages,
-	// these are ignored by default
-	midiIn.ignoreTypes(false, false, false);
-
-	// add testApp as a listener
-	midiIn.addListener(this);
-
-	// print received messages to the console
-	midiIn.setVerbose(true);
-    
-    // Maximillian
-	sampleRate 			= 44100;
-	initialBufferSize	= 512;
-
-    soundStream.listDevices();
-    // soundStream.setDeviceID(5);
-    soundStream.setup(this, NUM_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
+    setupUI();
+    setupMIDI();
+    setupSound(); /* Call this last ! */
 
     if (debug) cout << "MSP End OF Setup" << endl;
 }
@@ -162,11 +42,10 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-//    ofBackgroundGradient(ofColor::gray,ofColor(30,10,30), OF_GRADIENT_CIRCULAR);
+
 	ofPushStyle();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-    
-    
+
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
         if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
@@ -190,44 +69,7 @@ void testApp::draw(){
 
     ofPopStyle();
 
-	// draw the last recieved message contents to the screen
-	text << "Received: " << ofxMidiMessage::getStatusString(midiMessage.status);
-	ofDrawBitmapString(text.str(), 20, 20);
-	text.str(""); // clear
-
-	text << "channel: " << midiMessage.channel;
-	ofDrawBitmapString(text.str(), 20, 34);
-	text.str(""); // clear
-
-	text << "pitch: " << midiMessage.pitch;
-	ofDrawBitmapString(text.str(), 20, 48);
-	text.str(""); // clear
-	ofRect(20, 58, ofMap(midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
-
-	text << "velocity: " << midiMessage.velocity;
-	ofDrawBitmapString(text.str(), 20, 96);
-	text.str(""); // clear
-	ofRect(20, 105, ofMap(midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
-
-	text << "control: " << midiMessage.control;
-	ofDrawBitmapString(text.str(), 20, 144);
-	text.str(""); // clear
-	ofRect(20, 154, ofMap(midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
-
-	text << "value: " << midiMessage.value;
-	ofDrawBitmapString(text.str(), 20, 192);
-	text.str(""); // clear
-	if(midiMessage.status == MIDI_PITCH_BEND) {
-		ofRect(20, 202, ofMap(midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
-	}
-	else {
-		ofRect(20, 202, ofMap(midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
-	}
-
-	text << "delta: " << midiMessage.deltatime;
-	ofDrawBitmapString(text.str(), 20, 240);
-	text.str(""); // clear
-    
+    drawMIDI();    
 }
 
 //--------------------------------------------------------------
@@ -394,6 +236,185 @@ void testApp::exit()
 
 	midiIn.closePort();
 	midiIn.removeListener(this);
+}
+
+//--------------------------------------------------------------
+void testApp::setupAVUgens(){
+    ch1 = new msp::avUgen();
+
+    ch1->setX(width/2);
+    ch1->setY(height/2);
+    ch1->setRadius(100);
+    ch1->setSpeed(10);
+    ch1->setRandomResolution();
+    ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
+
+    ch1->setAudioEngine(msp::avUgen::MONO);
+    channels.push_back(ch1);
+
+
+    ch2 = new msp::avUgen();
+
+    ch2->setX(width/2 - 100);
+    ch2->setY(height/2 - 100);
+    ch2->setRadius(100);
+    ch2->setSpeed(30);
+    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
+
+
+    ch2->setFrequency(101);
+    channels.push_back(ch2);
+
+    ch3 = new msp::avUgen();
+    ch3->setAudioEngine(msp::avUgen::MONO);
+    ch3->setFrequency(102);
+    channels.push_back(ch3);
+
+    ch4 = new msp::avUgen();
+    ch4->setFrequency(103);
+    ch4->setRandomResolution();
+    channels.push_back(ch4);
+
+    // a/v state
+//    ch1->switchOffAudio();
+//    ch1->switchOffVisual();
+//    ch2->switchOffAudio();
+//    ch2->switchOffVisual();
+//    ch3->switchOffAudio();
+//    ch3->switchOffVisual();
+//    ch4->switchOffAudio();
+//    ch4->switchOffVisual();
+    solo = 4;
+    solo = solo - 1;
+
+    
+}
+
+//--------------------------------------------------------------
+void testApp::setupMIDI(){
+    // ofxMidi
+	// print input ports to console
+	midiIn.listPorts(); // via instance
+	//ofxMidiIn::listPorts(); // via static as well
+
+	// open port by number (you may need to change this)
+	// midiIn.openPort(0);
+	midiIn.openPort("USB Uno MIDI Interface");	// by name
+	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
+
+	// don't ignore sysex, timing, & active sense messages,
+	// these are ignored by default
+	midiIn.ignoreTypes(false, false, false);
+
+	// add testApp as a listener
+	midiIn.addListener(this);
+
+	// print received messages to the console
+	midiIn.setVerbose(true);
+}
+
+//--------------------------------------------------------------
+void testApp::setupUI(){
+    // OF UI
+    float dim = 16;
+	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
+    float length = 320-xInit;
+    radius_multiplier = 50;
+
+    gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight());
+	gui->addWidgetDown(new ofxUILabel("SPATIAL - AVUGEN", OFX_UI_FONT_LARGE));
+
+    gui->addSpacer(length, 2);
+    gui->addWidgetDown(new ofxUILabel("BACKGROUND CONTROL", OFX_UI_FONT_MEDIUM));
+    gui->addSlider("BGR", 0, 255, backgroundColor.r, 95, dim);
+    gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_RIGHT);
+    gui->addSlider("BGG", 0, 255, backgroundColor.g, 95, dim);
+    gui->addSlider("BGB", 0, 255, backgroundColor.b, 95, dim);
+    gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_DOWN);
+
+    gui->addWidgetDown(new ofxUILabel("CIRCLE CONTROL", OFX_UI_FONT_MEDIUM));
+    gui->addSlider("RED", 0.0, 255.0, rgbHsb.at(0)->r, length,dim);
+	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
+    gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
+    gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
+    gui->addSlider("RADIUS", 0.0, 600.0, radius_multiplier, length,dim);
+    //	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
+
+    gui->addSpacer(length, 2);
+
+    gui->addSpacer(length, 2);
+    gui->addSlider("FRAMERATE", 1, 1000, 24, length,dim);
+    gui->addWidgetDown(new ofxUILabelToggle(drawFill, "DRAW FILL", OFX_UI_FONT_MEDIUM));
+
+    float padWidth = length;
+    float padHeight = length*((float)ofGetHeight()/(float)ofGetWidth());
+
+    gui->addWidgetDown(new ofxUI2DPad(padWidth, padHeight, ofPoint(padWidth*.5, padHeight*.5), "POSITION_CH1"));
+    gui->addWidgetDown(new ofxUI2DPad(padWidth, padHeight, ofPoint(padWidth*.5, padHeight*.5), "POSITION_CH2"));
+
+    gui->addSpacer(length, 2);
+    gui->addWidgetDown(new ofxUILabel("HIDE & SHOW GUI BY PRESSING 'g'", OFX_UI_FONT_MEDIUM));
+    gui->addWidgetDown(new ofxUILabel("MOUSE OVER A SLIDER AND", OFX_UI_FONT_MEDIUM));
+    gui->addWidgetDown(new ofxUILabel("PRESS UP, DOWN, LEFT, RIGHT", OFX_UI_FONT_MEDIUM));
+
+    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
+
+    gui->loadSettings("GUI/guiSettings.xml");
+
+
+}
+
+//--------------------------------------------------------------
+void testApp::setupSound() {
+    // Maximillian
+    sampleRate 			= 44100;
+    initialBufferSize	= 512;
+
+    soundStream.listDevices();
+    // soundStream.setDeviceID(5);
+    soundStream.setup(this, NUM_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
+}
+
+void testApp::drawMIDI() {
+
+	// draw the last recieved message contents to the screen
+	text << "Received: " << ofxMidiMessage::getStatusString(midiMessage.status);
+	ofDrawBitmapString(text.str(), 20, 20);
+	text.str(""); // clear
+
+	text << "channel: " << midiMessage.channel;
+	ofDrawBitmapString(text.str(), 20, 34);
+	text.str(""); // clear
+
+	text << "pitch: " << midiMessage.pitch;
+	ofDrawBitmapString(text.str(), 20, 48);
+	text.str(""); // clear
+	ofRect(20, 58, ofMap(midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "velocity: " << midiMessage.velocity;
+	ofDrawBitmapString(text.str(), 20, 96);
+	text.str(""); // clear
+	ofRect(20, 105, ofMap(midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "control: " << midiMessage.control;
+	ofDrawBitmapString(text.str(), 20, 144);
+	text.str(""); // clear
+	ofRect(20, 154, ofMap(midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
+
+	text << "value: " << midiMessage.value;
+	ofDrawBitmapString(text.str(), 20, 192);
+	text.str(""); // clear
+	if(midiMessage.status == MIDI_PITCH_BEND) {
+		ofRect(20, 202, ofMap(midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
+	}
+	else {
+		ofRect(20, 202, ofMap(midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
+	}
+
+	text << "delta: " << midiMessage.deltatime;
+	ofDrawBitmapString(text.str(), 20, 240);
+	text.str(""); // clear
+
 }
 
 //--------------------------------------------------------------
