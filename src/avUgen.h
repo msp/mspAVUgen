@@ -11,9 +11,10 @@
 
 #include "ofMain.h"
 #include "ofxMaxim.h"
+#include "ofxMidi.h"
 
 namespace msp {
-    class avUgen {
+    class avUgen : public ofxMidiListener{
 
         bool debug = false;
 
@@ -47,6 +48,8 @@ namespace msp {
         // Constructor
         avUgen();
         avUgen(int _x, int _y, int _radius, ofColor _color, int _speed);
+
+        void initialize();
         
         // Methods
         void moveTo(int _xDestiny, int _yDestiny);
@@ -68,8 +71,17 @@ namespace msp {
         
         // Accessors
         double getAudio();
+        int getRadius();
         bool isAudioOn();
         bool isVisualOn();
+        bool isFireMIDI(ofxMidiMessage& msg);
+
+        // ofxmidi
+        void newMidiMessage(ofxMidiMessage& eventArgs);
+        ofxMidiMessage midiMessage;
+        int midiChannel, midiControlNumber;
+        float midiValue;
+
     };
 }
 

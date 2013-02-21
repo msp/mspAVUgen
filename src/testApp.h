@@ -2,10 +2,9 @@
 
 #include "avUgen.h"
 #include "ofMain.h"
-#include "ofxMidi.h"
 #include "ofxUI.h"
 
-class testApp : public ofBaseApp, public ofxMidiListener{
+class testApp : public ofBaseApp{
 
     void setupUI();
     void setupMIDI();
@@ -56,13 +55,7 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         
         msp::avUgen *ch1, *ch2, *ch3, *ch4;
 
-        // ofxmidi
-        void newMidiMessage(ofxMidiMessage& eventArgs);
-
+        ofxMidiIn midiIn;
         stringstream text;
 
-        ofxMidiIn midiIn;
-        ofxMidiMessage midiMessage;
-
-		
 };

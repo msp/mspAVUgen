@@ -54,12 +54,12 @@ void testApp::draw(){
 
         if (wave[i] > 0) {
             if (i == 0) {
-                channels.at(i) -> setRadius(radius_multiplier * wave[i]);
+//                channels.at(i) -> setRadius(channels.at(i)->getRadius() + radius_multiplier * wave[i]);
             } else {
-                channels.at(i) -> setRadius(100 * wave[i]);
+                channels.at(i) -> setRadius(channels.at(i)->getRadius() * wave[i]);
             }
         } else {
-            if (i == 0) channels.at(i) -> setRadius(radius_multiplier);
+//            if (i == 0) channels.at(i) -> setRadius(radius_multiplier);
         }
 
         channels.at(i) -> draw();
@@ -69,7 +69,7 @@ void testApp::draw(){
 
     ofPopStyle();
 
-    drawMIDI();    
+//    drawMIDI();    
 }
 
 //--------------------------------------------------------------
@@ -233,9 +233,12 @@ void testApp::exit()
 {
     gui->saveSettings("GUI/guiSettings.xml");
     delete gui;
-
+    
 	midiIn.closePort();
-	midiIn.removeListener(this);
+
+    for(int i=0; i<channels.size(); i++){
+        midiIn.removeListener(channels.at(i));
+    }
 }
 
 //--------------------------------------------------------------
@@ -250,6 +253,10 @@ void testApp::setupAVUgens(){
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
 
     ch1->setAudioEngine(msp::avUgen::MONO);
+
+    ch1->midiChannel = 14;
+    ch1->midiControlNumber = 100;
+
     channels.push_back(ch1);
 
 
@@ -259,10 +266,14 @@ void testApp::setupAVUgens(){
     ch2->setY(height/2 - 100);
     ch2->setRadius(100);
     ch2->setSpeed(30);
-    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
+//    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
 
     ch2->setFrequency(101);
+
+    ch2->midiChannel = 14;
+    ch2->midiControlNumber = 101;
+
     channels.push_back(ch2);
 
     ch3 = new msp::avUgen();
@@ -280,10 +291,10 @@ void testApp::setupAVUgens(){
 //    ch1->switchOffVisual();
 //    ch2->switchOffAudio();
 //    ch2->switchOffVisual();
-//    ch3->switchOffAudio();
-//    ch3->switchOffVisual();
-//    ch4->switchOffAudio();
-//    ch4->switchOffVisual();
+    ch3->switchOffAudio();
+    ch3->switchOffVisual();
+    ch4->switchOffAudio();
+    ch4->switchOffVisual();
     solo = 4;
     solo = solo - 1;
 
@@ -306,8 +317,12 @@ void testApp::setupMIDI(){
 	// these are ignored by default
 	midiIn.ignoreTypes(false, false, false);
 
-	// add testApp as a listener
-	midiIn.addListener(this);
+    // add testApp as a listener
+    //	midiIn.addListener(this);
+    // add each avUgen as a midi listener
+    for(int i=0; i < channels.size(); i++){
+        midiIn.addListener(channels.at(i));
+    }
 
 	// print received messages to the console
 	midiIn.setVerbose(true);
@@ -360,7 +375,7 @@ void testApp::setupUI(){
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
     gui->loadSettings("GUI/guiSettings.xml");
-
+    gui->toggleVisible();
 
 }
 
@@ -377,51 +392,45 @@ void testApp::setupSound() {
 
 void testApp::drawMIDI() {
 
-	// draw the last recieved message contents to the screen
-	text << "Received: " << ofxMidiMessage::getStatusString(midiMessage.status);
-	ofDrawBitmapString(text.str(), 20, 20);
-	text.str(""); // clear
+    for(int i=0; i<channels.size(); i++){
+        // draw the last recieved message contents to the screen
+        text << "Received: " << ofxMidiMessage::getStatusString(channels.at(i) -> midiMessage.status);
+        ofDrawBitmapString(text.str(), 20, 20);
+        text.str(""); // clear
 
-	text << "channel: " << midiMessage.channel;
-	ofDrawBitmapString(text.str(), 20, 34);
-	text.str(""); // clear
+        text << "channel: " << channels.at(i) -> midiMessage.channel;
+        ofDrawBitmapString(text.str(), 20, 34);
+        text.str(""); // clear
 
-	text << "pitch: " << midiMessage.pitch;
-	ofDrawBitmapString(text.str(), 20, 48);
-	text.str(""); // clear
-	ofRect(20, 58, ofMap(midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
+        text << "pitch: " << channels.at(i) -> midiMessage.pitch;
+        ofDrawBitmapString(text.str(), 20, 48);
+        text.str(""); // clear
+        ofRect(20, 58, ofMap(channels.at(i) -> midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
 
-	text << "velocity: " << midiMessage.velocity;
-	ofDrawBitmapString(text.str(), 20, 96);
-	text.str(""); // clear
-	ofRect(20, 105, ofMap(midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
+        text << "velocity: " << channels.at(i) -> midiMessage.velocity;
+        ofDrawBitmapString(text.str(), 20, 96);
+        text.str(""); // clear
+        ofRect(20, 105, ofMap(channels.at(i) -> midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
 
-	text << "control: " << midiMessage.control;
-	ofDrawBitmapString(text.str(), 20, 144);
-	text.str(""); // clear
-	ofRect(20, 154, ofMap(midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
+        text << "control: " << channels.at(i) -> midiMessage.control;
+        ofDrawBitmapString(text.str(), 20, 144);
+        text.str(""); // clear
+        ofRect(20, 154, ofMap(channels.at(i) -> midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
 
-	text << "value: " << midiMessage.value;
-	ofDrawBitmapString(text.str(), 20, 192);
-	text.str(""); // clear
-	if(midiMessage.status == MIDI_PITCH_BEND) {
-		ofRect(20, 202, ofMap(midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
-	}
-	else {
-		ofRect(20, 202, ofMap(midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
-	}
-
-	text << "delta: " << midiMessage.deltatime;
-	ofDrawBitmapString(text.str(), 20, 240);
-	text.str(""); // clear
-
-}
-
-//--------------------------------------------------------------
-void testApp::newMidiMessage(ofxMidiMessage& msg) {
-
-	// make a copy of the latest message
-	midiMessage = msg;
+        text << "value: " << channels.at(i) -> midiMessage.value;
+        ofDrawBitmapString(text.str(), 20, 192);
+        text.str(""); // clear
+        if(channels.at(i) -> midiMessage.status == MIDI_PITCH_BEND) {
+            ofRect(20, 202, ofMap(channels.at(i) -> midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
+        }
+        else {
+            ofRect(20, 202, ofMap(channels.at(i) -> midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
+        }
+        
+        text << "delta: " << channels.at(i) -> midiMessage.deltatime;
+        ofDrawBitmapString(text.str(), 20, 240);
+        text.str(""); // clear
+    }
 }
 
 //--------------------------------------------------------------

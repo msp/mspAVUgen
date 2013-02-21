@@ -18,17 +18,9 @@ namespace msp {
         speed = 0;
         lastCount = currentCount = 0;
         randomResolutionSwitch = false;
-        
-        audioEngine = SINE;
-        frequency = 300;
-        visualOutputSwitch = true;
-        audioOutputSwitch = true;
-        targetCount = (int) ofGetFrameRate() * 10;
-
-        if (debug) logger.open("development.log");
-        
         color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
-        ofSetCircleResolution(100);
+
+        initialize();
     }
 
     avUgen::avUgen(int _x, int _y, int _radius, ofColor _color, int _speed){
@@ -42,18 +34,27 @@ namespace msp {
         lastCount = currentCount = 0;
         randomResolutionSwitch = false;
         
+        initialize();
+    }
+    
+    avUgen::~avUgen(){
+        if (debug) logger.close();
+    }
+
+    void avUgen::initialize(){
         audioEngine = SINE;
         frequency = 300;
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         targetCount = (int) ofGetFrameRate() * 10;
+
         if (debug) logger.open("development.log");
-        
+
         ofSetCircleResolution(100);
-    }
-    
-    avUgen::~avUgen(){
-        if (debug) logger.close();
+
+        midiChannel = 1;
+        midiValue = 1;
+        midiControlNumber = 1;
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -73,6 +74,9 @@ namespace msp {
         }
         
         if (isVisualOn()){
+            if (isFireMIDI(midiMessage)) {
+                ofLogVerbose() << "drawing radius: " << radius << endl;
+            }
             ofCircle(x, y, radius);
         }
     }
@@ -92,7 +96,11 @@ namespace msp {
     void avUgen::setRadius(int _radius){
         radius = _radius;
     }
-    
+
+    int avUgen::getRadius(){
+        return radius;
+    }
+
 //    TODO higher numbers slow it down. Make this clear.
     void avUgen::setSpeed(int _speed){
         speed = _speed;
@@ -162,5 +170,21 @@ namespace msp {
         }
         return audio;
     }
+
+    void avUgen::newMidiMessage(ofxMidiMessage& msg) {
+        // make a copy of the latest message
+        if (isFireMIDI(msg)) {
+            midiMessage = msg;
+            ofLogVerbose() << "midi ch" << msg.channel << " for avUgen: " << this << endl;
+
+            radius = msg.value;
+            ofLogVerbose() << "radius:  " << radius;
+        }
+    }
+
+    bool avUgen::isFireMIDI(ofxMidiMessage& msg){
+        return (midiChannel == msg.channel && midiControlNumber == msg.control);
+    }
+
 };
 
