@@ -43,7 +43,7 @@ class testApp : public ofBaseApp{
 
         float red, green, blue, alpha, width, height;
 
-        int	initialBufferSize, sampleRate, radius_multiplier, solo;
+        int	initialBufferSize, sampleRate, solo;
         double wave[4], sample, outputs[NUM_CHANNELS];
 
         ofxMaxiMix mix;

@@ -13,7 +13,7 @@ namespace msp {
 
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
-        radius = 150;
+        radius = DEFAULT_RADIUS;
         throttle = 0;
         speed = 0;
         lastCount = currentCount = 0;
@@ -42,11 +42,11 @@ namespace msp {
     }
 
     void avUgen::initialize(){
-        audioEngine = SINE;
-        frequency = 300;
+        setAudioEngine(SINE);
+        setVolume(DEFAULT_VOLUME);
+        setFrequency(300);
         visualOutputSwitch = true;
         audioOutputSwitch = true;
-        targetCount = (int) ofGetFrameRate() * 10;
 
         if (debug) logger.open("development.log");
 
@@ -63,6 +63,10 @@ namespace msp {
     }
     
     void avUgen::draw(){
+
+        double radius_wave_mulitplier = isAudioOn() ? getAudio() : 1;
+        double radius_base = radius * DEFAULT_RADIUS_MULTPLIER;
+
         ofSetColor(color.r, color.g, color.b, color.a);
         ofFill();
                 
@@ -74,10 +78,7 @@ namespace msp {
         }
         
         if (isVisualOn()){
-            if (isFireMIDI(midiMessage)) {
-                ofLogVerbose() << "drawing radius: " << radius << endl;
-            }
-            ofCircle(x, y, radius);
+            ofCircle(x, y, radius_base * radius_wave_mulitplier);
         }
     }
     
@@ -140,7 +141,21 @@ namespace msp {
 
     bool avUgen::isVisualOn(){
         return visualOutputSwitch;
-    }    
+    }
+
+    double avUgen::getVolume(){
+        return volume;
+    }
+
+    void avUgen::setVolume(double _volume){
+        if (_volume == 0) _volume = 1;
+        cout << "_volume: " << _volume << endl;
+
+        double offset = _volume >= 1  ? 100.0 : 1.0;
+
+        volume = _volume / offset;
+        cout << "volume: " << volume << endl;
+    }
     
     double avUgen::getAudio(){
         audio = 1;
@@ -171,6 +186,10 @@ namespace msp {
         return audio;
     }
 
+    double avUgen::getAudioOutput(){
+        return getAudio() * getVolume();
+    }
+
     void avUgen::newMidiMessage(ofxMidiMessage& msg) {
         // make a copy of the latest message
         if (isFireMIDI(msg)) {
@@ -178,6 +197,7 @@ namespace msp {
             ofLogVerbose() << "midi ch" << msg.channel << " for avUgen: " << this << endl;
 
             radius = msg.value;
+            setVolume(radius);
             ofLogVerbose() << "radius:  " << radius;
         }
     }

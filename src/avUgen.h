@@ -27,7 +27,8 @@ namespace msp {
         bool audioOutputSwitch;
         int audioEngine;
         int frequency;
-        int currentCount, lastCount, targetCount;
+        double volume;
+        int currentCount, lastCount;
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};
 
@@ -44,6 +45,11 @@ namespace msp {
         // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
         enum { SINE = 999, MONO = 998 };
+
+        static const int DEFAULT_RADIUS = 300;
+        static const int DEFAULT_RADIUS_MULTPLIER = 10;
+        static const int DEFAULT_VOLUME = 3;
+
         
         // Constructor
         avUgen();
@@ -65,12 +71,15 @@ namespace msp {
         void setOscillator(ofxMaxiOsc _osc);
         void setFrequency(int _frequency);
         void setAudioEngine(int _engine);
+        void setVolume(double _volume);
         void switchOffAudio();
         void switchOffVisual();
         void setRandomResolution();
         
         // Accessors
         double getAudio();
+        double getAudioOutput();
+        double getVolume();
         int getRadius();
         bool isAudioOn();
         bool isVisualOn();

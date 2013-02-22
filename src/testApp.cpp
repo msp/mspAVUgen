@@ -52,24 +52,13 @@ void testApp::draw(){
 
         if (debug) cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
-        if (wave[i] > 0) {
-            if (i == 0) {
-//                channels.at(i) -> setRadius(channels.at(i)->getRadius() + radius_multiplier * wave[i]);
-            } else {
-                channels.at(i) -> setRadius(channels.at(i)->getRadius() * wave[i]);
-            }
-        } else {
-//            if (i == 0) channels.at(i) -> setRadius(radius_multiplier);
-        }
-
         channels.at(i) -> draw();
         
         ofPopStyle();
     }
 
     ofPopStyle();
-
-//    drawMIDI();    
+    if (debug) drawMIDI();
 }
 
 //--------------------------------------------------------------
@@ -79,19 +68,19 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 
 //        TODO refactor this mess!
         if (ch1->isAudioOn() == true){
-            wave[0] = ch1->getAudio();
+            wave[0] = ch1->getAudioOutput();
         }
 
         if (ch2->isAudioOn()){
-            wave[1] = ch2->getAudio();
+            wave[1] = ch2->getAudioOutput();
         }
 
         if (ch3->isAudioOn()){
-            wave[2] = ch3->getAudio();
+            wave[2] = ch3->getAudioOutput();
         }
 
         if (ch4->isAudioOn()){
-            wave[3] = ch4->getAudio();
+            wave[3] = ch4->getAudioOutput();
         }
 
         float pan = 0.5;
@@ -200,7 +189,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	else if(name == "RADIUS")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		radius_multiplier = slider->getScaledValue();
+		channels.at(0)->setRadius(slider->getScaledValue());
 	}
 //	else if(name == "RESOLUTION")
 //	{
@@ -247,12 +236,12 @@ void testApp::setupAVUgens(){
 
     ch1->setX(width/2);
     ch1->setY(height/2);
-    ch1->setRadius(100);
     ch1->setSpeed(10);
     ch1->setRandomResolution();
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
+    ch1->setFrequency(80);
 
-    ch1->setAudioEngine(msp::avUgen::MONO);
+//    ch1->setAudioEngine(msp::avUgen::MONO);
 
     ch1->midiChannel = 14;
     ch1->midiControlNumber = 100;
@@ -289,13 +278,13 @@ void testApp::setupAVUgens(){
     // a/v state
 //    ch1->switchOffAudio();
 //    ch1->switchOffVisual();
-//    ch2->switchOffAudio();
-//    ch2->switchOffVisual();
+    ch2->switchOffAudio();
+    ch2->switchOffVisual();
     ch3->switchOffAudio();
     ch3->switchOffVisual();
     ch4->switchOffAudio();
     ch4->switchOffVisual();
-    solo = 4;
+    solo = 1;
     solo = solo - 1;
 
     
@@ -334,7 +323,6 @@ void testApp::setupUI(){
     float dim = 16;
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
     float length = 320-xInit;
-    radius_multiplier = 50;
 
     gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight());
 	gui->addWidgetDown(new ofxUILabel("SPATIAL - AVUGEN", OFX_UI_FONT_LARGE));
@@ -352,7 +340,7 @@ void testApp::setupUI(){
 	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
     gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
     gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
-    gui->addSlider("RADIUS", 0.0, 600.0, radius_multiplier, length,dim);
+    gui->addSlider("RADIUS", 0.0, 600.0, channels.at(0)->getRadius(), length,dim);
     //	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
 
     gui->addSpacer(length, 2);
