@@ -10,6 +10,7 @@
 #define mspUgen_avUgen_h
 
 #include "ofMain.h"
+#include "math.h"
 #include "ofxMaxim.h"
 #include "ofxMidi.h"
 
@@ -27,7 +28,7 @@ namespace msp {
         bool audioOutputSwitch;
         int audioEngine;
         int frequency;
-        double volume;
+        double volume, lastMIDIVolume;
         int currentCount, lastCount;
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};

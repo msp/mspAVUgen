@@ -86,11 +86,11 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         float pan = 0.5;
 
         if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn() && ch4->isAudioOn()){
-            mix.quad((wave[0] + wave[1] + wave[2] + wave[3]) / 2, outputs, pan, pan);
+            mix.quad((wave[0] + wave[1] + wave[2] + wave[3]) / 4, outputs, pan, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn()){
-            mix.stereo(wave[0] + wave[1] + wave[2], outputs, pan);
+            mix.stereo((wave[0] + wave[1] + wave[2]) / 3, outputs, pan);
         } else if (ch1-> isAudioOn() && ch2->isAudioOn()){
-            mix.stereo(wave[0] + wave[1], outputs, pan);
+            mix.stereo((wave[0] + wave[1]) / 2, outputs, pan);
         } else {
             mix.stereo(wave[solo], outputs, pan);
         }        		
@@ -241,7 +241,7 @@ void testApp::setupAVUgens(){
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     ch1->setFrequency(80);
 
-//    ch1->setAudioEngine(msp::avUgen::MONO);
+    ch1->setAudioEngine(msp::avUgen::MONO);
 
     ch1->midiChannel = 14;
     ch1->midiControlNumber = 100;
@@ -255,10 +255,9 @@ void testApp::setupAVUgens(){
     ch2->setY(height/2 - 100);
     ch2->setRadius(100);
     ch2->setSpeed(30);
-//    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
+    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
-
-    ch2->setFrequency(101);
+    ch2->setFrequency(202);
 
     ch2->midiChannel = 14;
     ch2->midiControlNumber = 101;
@@ -266,24 +265,34 @@ void testApp::setupAVUgens(){
     channels.push_back(ch2);
 
     ch3 = new msp::avUgen();
+
     ch3->setAudioEngine(msp::avUgen::MONO);
-    ch3->setFrequency(102);
+
+    ch3->midiChannel = 14;
+    ch3->midiControlNumber = 102;
+
     channels.push_back(ch3);
 
     ch4 = new msp::avUgen();
-    ch4->setFrequency(103);
+
     ch4->setRandomResolution();
+
+    ch4->setFrequency(303);
+
+    ch4->midiChannel = 14;
+    ch4->midiControlNumber = 103;
+
     channels.push_back(ch4);
 
     // a/v state
 //    ch1->switchOffAudio();
 //    ch1->switchOffVisual();
-    ch2->switchOffAudio();
-    ch2->switchOffVisual();
-    ch3->switchOffAudio();
-    ch3->switchOffVisual();
-    ch4->switchOffAudio();
-    ch4->switchOffVisual();
+//    ch2->switchOffAudio();
+//    ch2->switchOffVisual();
+//    ch3->switchOffAudio();
+//    ch3->switchOffVisual();
+//    ch4->switchOffAudio();
+//    ch4->switchOffVisual();
     solo = 1;
     solo = solo - 1;
 

@@ -14,7 +14,7 @@ class testApp : public ofBaseApp{
     
 	public:
 
-        static const int NUM_CHANNELS = 2;
+        static const int NUM_CHANNELS = 4;
 
         bool debug = false;
 

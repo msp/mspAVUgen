@@ -151,9 +151,12 @@ namespace msp {
         if (_volume == 0) _volume = 1;
         cout << "_volume: " << _volume << endl;
 
-        double offset = _volume >= 1  ? 100.0 : 1.0;
+        lastMIDIVolume = _volume;
 
-        volume = _volume / offset;
+        double offset = _volume >= 1  ? 10.0 : 1.0;
+
+        // get a non linear curve
+        volume = sqrt(_volume);
         cout << "volume: " << volume << endl;
     }
     
@@ -194,10 +197,17 @@ namespace msp {
         // make a copy of the latest message
         if (isFireMIDI(msg)) {
             midiMessage = msg;
-            ofLogVerbose() << "midi ch" << msg.channel << " for avUgen: " << this << endl;
+            ofLogVerbose() << "midi ch: " << msg.channel << " for avUgen: " << this << endl;
+            ofLogVerbose() << "status: " << msg.status << " for avUgen: " << this << endl;
+            ofLogVerbose() << "channel: " << msg.channel << " for avUgen: " << this << endl;
+            ofLogVerbose() << "pitch: " << msg.pitch << " for avUgen: " << this << endl;
+            ofLogVerbose() << "velocity: " << msg.velocity << " for avUgen: " << this << endl;
+            ofLogVerbose() << "value: " << msg.value << " for avUgen: " << this << endl;
 
-            radius = msg.value;
-            setVolume(radius);
+            ofLogVerbose() << "lastMIDIVolume:  " << lastMIDIVolume;
+            double thisVolume = lastMIDIVolume == 63 ? 0.0 : msg.value;
+            radius = thisVolume;
+            setVolume(thisVolume);
             ofLogVerbose() << "radius:  " << radius;
         }
     }
