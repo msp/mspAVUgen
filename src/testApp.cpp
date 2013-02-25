@@ -63,10 +63,12 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
-	
+
+    float panLeft = 0.0;
+    float panRight = 1.0;
+
 	for (int i = 0; i < bufferSize; i++){
 
-//        TODO refactor this mess!
         if (ch1->isAudioOn() == true){
             wave[0] = ch1->getAudioOutput();
         }
@@ -83,24 +85,26 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
             wave[3] = ch4->getAudioOutput();
         }
 
-        float pan = 0.5;
+        if (ch1-> isAudioOn()) {
+            mix.stereo(wave[0] / NUM_CHANNELS, outputs, panLeft);
+            output[i*nChannels    ] = outputs[0];
+        }
 
-        if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn() && ch4->isAudioOn()){
-            mix.quad((wave[0] + wave[1] + wave[2] + wave[3]) / 4, outputs, pan, pan);
-        } else if (ch1-> isAudioOn() && ch2->isAudioOn() && ch3->isAudioOn()){
-            mix.stereo((wave[0] + wave[1] + wave[2]) / 3, outputs, pan);
-        } else if (ch1-> isAudioOn() && ch2->isAudioOn()){
-            mix.stereo((wave[0] + wave[1]) / 2, outputs, pan);
-        } else {
-            mix.stereo(wave[solo], outputs, pan);
-        }        		
-
-		output[i*nChannels    ] = outputs[0]; /* You may end up with lots of outputs. add them here */
-		output[i*nChannels + 1] = outputs[1];
+        if (ch2-> isAudioOn()) {
+            mix.stereo(wave[1] / NUM_CHANNELS, outputs, panRight);
+            output[i*nChannels + 1] = outputs[1];
+        }
 
         if (NUM_CHANNELS == 4) {
-            output[i*nChannels + 2] = outputs[2];
-            output[i*nChannels + 3] = outputs[3];
+            if (ch3-> isAudioOn()) {
+                mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
+                output[i*nChannels + 2] = outputs[0];
+            }
+            if (ch4-> isAudioOn()) {
+                mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
+                output[i*nChannels + 3] = outputs[1];
+
+            }
         }
 	}
 	
