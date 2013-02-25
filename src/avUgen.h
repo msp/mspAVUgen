@@ -76,6 +76,8 @@ namespace msp {
         void switchOffAudio();
         void switchOffVisual();
         void setRandomResolution();
+
+        void setMIDIMapping(int _channel, int _control);
         
         // Accessors
         double getAudio();
@@ -89,8 +91,9 @@ namespace msp {
         // ofxmidi
         void newMidiMessage(ofxMidiMessage& eventArgs);
         ofxMidiMessage midiMessage;
-        int midiChannel, midiControlNumber;
-        float midiValue;
+        std::vector<int> midiChannel;
+        std::vector<int> midiControlNumber;
+        std::vector<int> midiValue;
 
     };
 }

@@ -52,9 +52,9 @@ namespace msp {
 
         ofSetCircleResolution(100);
 
-        midiChannel = 1;
-        midiValue = 1;
-        midiControlNumber = 1;
+//        midiChannel = 1;
+//        midiValue = 1;
+//        midiControlNumber = 1;
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -159,6 +159,11 @@ namespace msp {
         volume = sqrt(_volume);
         cout << "volume: " << volume << endl;
     }
+
+    void avUgen::setMIDIMapping(int _channel, int _control){
+        midiChannel.push_back(_channel);
+        midiControlNumber.push_back(_control);
+    }
     
     double avUgen::getAudio(){
         audio = 1;
@@ -194,26 +199,38 @@ namespace msp {
     }
 
     void avUgen::newMidiMessage(ofxMidiMessage& msg) {
-        // make a copy of the latest message
+
+
         if (isFireMIDI(msg)) {
             midiMessage = msg;
-            ofLogVerbose() << "midi ch: " << msg.channel << " for avUgen: " << this << endl;
-            ofLogVerbose() << "status: " << msg.status << " for avUgen: " << this << endl;
-            ofLogVerbose() << "channel: " << msg.channel << " for avUgen: " << this << endl;
-            ofLogVerbose() << "pitch: " << msg.pitch << " for avUgen: " << this << endl;
-            ofLogVerbose() << "velocity: " << msg.velocity << " for avUgen: " << this << endl;
-            ofLogVerbose() << "value: " << msg.value << " for avUgen: " << this << endl;
+            ofLogVerbose() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << this << endl;
+            ofLogVerbose() << "value: " << msg.value << endl;
 
-            ofLogVerbose() << "lastMIDIVolume:  " << lastMIDIVolume;
-            double thisVolume = lastMIDIVolume == 63 ? 0.0 : msg.value;
-            radius = thisVolume;
-            setVolume(thisVolume);
-            ofLogVerbose() << "radius:  " << radius;
+            if (msg.control == midiControlNumber.at(0)){
+                ofLogVerbose() << "setting radius/volume" << endl;
+                double thisVolume = lastMIDIVolume == 63.0 ? 0 : msg.value;
+                radius = thisVolume;
+                setVolume(thisVolume);
+            } else if (msg.control == midiControlNumber.at(1)){
+                ofLogVerbose() << "setting hue/pitch" << endl;
+                color.setHue(msg.value);
+                frequency = msg.value;
+            }
         }
     }
 
     bool avUgen::isFireMIDI(ofxMidiMessage& msg){
-        return (midiChannel == msg.channel && midiControlNumber == msg.control);
+        bool ret = false;
+
+        for(int i=0; i<midiChannel.size(); i++){
+            if (midiChannel.at(i) == msg.channel){
+                for(int j=0; j<midiControlNumber.size(); j++){
+                    if (midiControlNumber.at(j) == msg.control) ret = true;
+                }
+            }
+        }
+
+        return ret;
     }
 
 };

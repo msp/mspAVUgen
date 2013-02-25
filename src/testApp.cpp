@@ -247,8 +247,10 @@ void testApp::setupAVUgens(){
 
     ch1->setAudioEngine(msp::avUgen::MONO);
 
-    ch1->midiChannel = 14;
-    ch1->midiControlNumber = 100;
+    ch1->setMIDIMapping(14,100);
+    ch1->setMIDIMapping(14,80);
+    ch1->setMIDIMapping(14,60);
+    ch1->setMIDIMapping(14,40);
 
     channels.push_back(ch1);
 
@@ -263,8 +265,10 @@ void testApp::setupAVUgens(){
 
     ch2->setFrequency(202);
 
-    ch2->midiChannel = 14;
-    ch2->midiControlNumber = 101;
+    ch2->setMIDIMapping(14,101);
+    ch2->setMIDIMapping(14,81);
+    ch2->setMIDIMapping(14,61);
+    ch2->setMIDIMapping(14,41);
 
     channels.push_back(ch2);
 
@@ -272,8 +276,10 @@ void testApp::setupAVUgens(){
 
     ch3->setAudioEngine(msp::avUgen::MONO);
 
-    ch3->midiChannel = 14;
-    ch3->midiControlNumber = 102;
+    ch3->setMIDIMapping(14,102);
+    ch3->setMIDIMapping(14,82);
+    ch3->setMIDIMapping(14,62);
+    ch3->setMIDIMapping(14,42);
 
     channels.push_back(ch3);
 
@@ -283,8 +289,10 @@ void testApp::setupAVUgens(){
 
     ch4->setFrequency(303);
 
-    ch4->midiChannel = 14;
-    ch4->midiControlNumber = 103;
+    ch4->setMIDIMapping(14,103);
+    ch4->setMIDIMapping(14,83);
+    ch4->setMIDIMapping(14,63);
+    ch4->setMIDIMapping(14,43);
 
     channels.push_back(ch4);
 
@@ -349,6 +357,7 @@ void testApp::setupUI(){
     gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_DOWN);
 
     gui->addWidgetDown(new ofxUILabel("CIRCLE CONTROL", OFX_UI_FONT_MEDIUM));
+    gui->addSlider("HUE", 0.0, 255.0, rgbHsb.at(0)->getHue(), length,dim);
     gui->addSlider("RED", 0.0, 255.0, rgbHsb.at(0)->r, length,dim);
 	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
     gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
