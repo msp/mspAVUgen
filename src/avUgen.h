@@ -18,10 +18,11 @@ namespace msp {
     class avUgen : public ofxMidiListener{
 
         bool debug = false;
+        string name;
 
         // visual
         bool visualOutputSwitch, randomResolutionSwitch;
-        int x, y, radius, speed, throttle;
+        int x, y, radius, throttle, frame;
         ofColor color;
 
         // audio
@@ -50,11 +51,11 @@ namespace msp {
         static const int DEFAULT_RADIUS = 300;
         static const int DEFAULT_RADIUS_MULTPLIER = 10;
         static const int DEFAULT_VOLUME = 3;
-
         
         // Constructor
         avUgen();
-        avUgen(int _x, int _y, int _radius, ofColor _color, int _speed);
+        avUgen(string _name);
+        avUgen(int _x, int _y, int _radius, ofColor _color);
 
         void initialize();
         
@@ -67,7 +68,7 @@ namespace msp {
         void setX(int _x);
         void setY(int _y);
         void setRadius(int _radius);
-        void setSpeed(int _speed);
+        void setThrottle(int _throttle);
         void setColor(ofColor _color);
         void setOscillator(ofxMaxiOsc _osc);
         void setFrequency(int _frequency);
@@ -80,6 +81,7 @@ namespace msp {
         void setMIDIMapping(int _channel, int _control);
         
         // Accessors
+        string getName();
         double getAudio();
         double getAudioOutput();
         double getVolume();

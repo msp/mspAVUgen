@@ -48,7 +48,7 @@ void testApp::draw(){
 
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
-        if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
+//        if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
 
         if (debug) cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
@@ -236,11 +236,11 @@ void testApp::exit()
 
 //--------------------------------------------------------------
 void testApp::setupAVUgens(){
-    ch1 = new msp::avUgen();
+    ch1 = new msp::avUgen("msp1");
 
     ch1->setX(width/2);
     ch1->setY(height/2);
-    ch1->setSpeed(10);
+    ch1->setThrottle(10);
     ch1->setRandomResolution();
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     ch1->setFrequency(80);
@@ -260,7 +260,7 @@ void testApp::setupAVUgens(){
     ch2->setX(width/2 - 100);
     ch2->setY(height/2 - 100);
     ch2->setRadius(100);
-    ch2->setSpeed(30);
+    ch2->setThrottle(30);
     ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
     ch2->setFrequency(202);
@@ -285,6 +285,7 @@ void testApp::setupAVUgens(){
 
     ch4 = new msp::avUgen();
 
+    ch4->setAudioEngine(msp::avUgen::MONO);
     ch4->setRandomResolution();
 
     ch4->setFrequency(303);

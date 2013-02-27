@@ -14,8 +14,6 @@ namespace msp {
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
         radius = DEFAULT_RADIUS;
-        throttle = 0;
-        speed = 0;
         lastCount = currentCount = 0;
         randomResolutionSwitch = false;
         color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
@@ -23,14 +21,17 @@ namespace msp {
         initialize();
     }
 
-    avUgen::avUgen(int _x, int _y, int _radius, ofColor _color, int _speed){
+    avUgen::avUgen(string _name){
+        name = _name;
+        initialize();
+    }
+
+    avUgen::avUgen(int _x, int _y, int _radius, ofColor _color){
         
         x = _x;
         y = _y;
         radius = _radius;
         color = _color;
-        speed = _speed;
-        throttle = 0;
         lastCount = currentCount = 0;
         randomResolutionSwitch = false;
         
@@ -47,14 +48,13 @@ namespace msp {
         setFrequency(300);
         visualOutputSwitch = true;
         audioOutputSwitch = true;
+        throttle = 10;
+        frame = 0;
 
         if (debug) logger.open("development.log");
 
         ofSetCircleResolution(100);
 
-//        midiChannel = 1;
-//        midiValue = 1;
-//        midiControlNumber = 1;
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -70,22 +70,29 @@ namespace msp {
         ofSetColor(color.r, color.g, color.b, color.a);
         ofFill();
                 
-        if (throttle == speed) {
+        if (frame == throttle) {
+            if (name == "msp1") ofLogVerbose() << "DRAW frame: "<< frame << " throttle: "<< throttle << endl;
             if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
-            throttle = 0;
+            if (isVisualOn()) ofCircle(x, y, radius_base * radius_wave_mulitplier);
+            frame = 0;
         } else {
-            throttle++;
-        }
-        
-        if (isVisualOn()){
-            ofCircle(x, y, radius_base * radius_wave_mulitplier);
-        }
+            if (frame < throttle) {
+                frame++;
+            } else {
+                frame = 0;
+            }
+
+        }        
     }
     
     void avUgen::update(){
 //        color.setHue(ofRandom(255));
     }
-    
+
+    string avUgen::getName(){
+        return name;
+    }
+
     void avUgen::setX(int _x) {
         x = _x;
     }
@@ -102,9 +109,8 @@ namespace msp {
         return radius;
     }
 
-//    TODO higher numbers slow it down. Make this clear.
-    void avUgen::setSpeed(int _speed){
-        speed = _speed;
+    void avUgen::setThrottle(int _throttle){
+        throttle = _throttle;
     }
     
     void avUgen::setColor(ofColor _color){
@@ -175,17 +181,21 @@ namespace msp {
                 // Metronome
                 // Phasor can take three arguments; frequency, start value and end
                 currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
-                
-                if (debug) logger << "currentCount: " << currentCount << endl;
-                
+
                 audio = osc.sinewave((double)color.getHue());
 
                 // env stuff
-                if (currentCount==1){
-                    if (debug) logger << "######################### fire ########################" << endl;
-                   ADSR.trigger(0, adsrEnv[0]);
+                if (frame == throttle) {
+//                    if (currentCount==1){
+//                      if (name == "msp1"){
+//                        ofLogVerbose() << "AUDIO frame: " << frame << " currentCount: " << currentCount << endl;
+//                        ADSR.trigger(0, adsrEnv[0]);
+//                      }
+//                    }
+
+                    ADSR.trigger(0, adsrEnv[0]);
                 }
-                
+
                 ADSRout=ADSR.line(8,adsrEnv);//our ADSR env has 8 value/time pairs.
                 audio = audio * ADSRout;
                 // end env stuff
@@ -214,8 +224,12 @@ namespace msp {
             } else if (msg.control == midiControlNumber.at(1)){
                 ofLogVerbose() << "setting hue/pitch" << endl;
                 color.setHue(msg.value);
-                frequency = msg.value;
+                frequency = msg.value * 100;
+            } else if (msg.control == midiControlNumber.at(2)){
+                ofLogVerbose() << "setting throttle" << endl;
+                throttle = msg.value;
             }
+
         }
     }
 
