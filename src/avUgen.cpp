@@ -14,8 +14,6 @@ namespace msp {
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
         radius = DEFAULT_RADIUS;
-        lastCount = currentCount = 0;
-        randomResolutionSwitch = false;
         color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
 
         initialize();
@@ -32,8 +30,6 @@ namespace msp {
         y = _y;
         radius = _radius;
         color = _color;
-        lastCount = currentCount = 0;
-        randomResolutionSwitch = false;
         
         initialize();
     }
@@ -48,8 +44,11 @@ namespace msp {
         setFrequency(300);
         visualOutputSwitch = true;
         audioOutputSwitch = true;
+        randomResolutionSwitch = false;
+        animateRadiusSwitch = false;
         throttle = 10;
         frame = 0;
+        lastCount = currentCount = 0;
 
         if (debug) logger.open("development.log");
 
@@ -66,6 +65,7 @@ namespace msp {
 
         double radius_wave_mulitplier = isAudioOn() ? getAudio() : 1;
         double radius_base = radius * DEFAULT_RADIUS_MULTPLIER;
+        double circle_radius = animateRadiusSwitch ? radius_base * radius_wave_mulitplier : radius_base;
 
         ofSetColor(color.r, color.g, color.b, color.a);
         ofFill();
@@ -73,7 +73,7 @@ namespace msp {
         if (frame == throttle) {
             if (name == "msp1") ofLogVerbose() << "DRAW frame: "<< frame << " throttle: "<< throttle << endl;
             if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
-            if (isVisualOn()) ofCircle(x, y, radius_base * radius_wave_mulitplier);
+            if (isVisualOn()) ofCircle(x, y, circle_radius);
             frame = 0;
         } else {
             if (frame < throttle) {
@@ -137,8 +137,12 @@ namespace msp {
         visualOutputSwitch = false;
     }
 
-    void avUgen::setRandomResolution(){
-        randomResolutionSwitch = true;
+    void avUgen::setRandomResolution(bool _randomResolutionSwitch){
+        randomResolutionSwitch = _randomResolutionSwitch;
+    }
+
+    void avUgen::setAnimateRadius(bool _animateRadiusSwitch){
+        animateRadiusSwitch = _animateRadiusSwitch;
     }
     
     bool avUgen::isAudioOn(){

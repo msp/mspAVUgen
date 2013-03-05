@@ -21,7 +21,7 @@ namespace msp {
         string name;
 
         // visual
-        bool visualOutputSwitch, randomResolutionSwitch;
+        bool visualOutputSwitch, randomResolutionSwitch, animateRadiusSwitch;
         int x, y, radius, throttle, frame;
         ofColor color;
 
@@ -76,7 +76,8 @@ namespace msp {
         void setVolume(double _volume);
         void switchOffAudio();
         void switchOffVisual();
-        void setRandomResolution();
+        void setRandomResolution(bool _randomResolutionSwitch);
+        void setAnimateRadius(bool _animateRadiusSwitch);
 
         void setMIDIMapping(int _channel, int _control);
         

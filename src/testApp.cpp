@@ -241,7 +241,8 @@ void testApp::setupAVUgens(){
     ch1->setX(width/2);
     ch1->setY(height/2);
     ch1->setThrottle(10);
-    ch1->setRandomResolution();
+    ch1->setRandomResolution(true);
+    ch1->setAnimateRadius(true);
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     ch1->setFrequency(80);
 
@@ -286,7 +287,7 @@ void testApp::setupAVUgens(){
     ch4 = new msp::avUgen();
 
     ch4->setAudioEngine(msp::avUgen::MONO);
-    ch4->setRandomResolution();
+    ch4->setRandomResolution(true);
 
     ch4->setFrequency(303);
 
@@ -300,12 +301,12 @@ void testApp::setupAVUgens(){
     // a/v state
 //    ch1->switchOffAudio();
 //    ch1->switchOffVisual();
-//    ch2->switchOffAudio();
-//    ch2->switchOffVisual();
-//    ch3->switchOffAudio();
-//    ch3->switchOffVisual();
-//    ch4->switchOffAudio();
-//    ch4->switchOffVisual();
+    ch2->switchOffAudio();
+    ch2->switchOffVisual();
+    ch3->switchOffAudio();
+    ch3->switchOffVisual();
+    ch4->switchOffAudio();
+    ch4->switchOffVisual();
     solo = 1;
     solo = solo - 1;
 
