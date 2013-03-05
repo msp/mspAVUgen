@@ -11,6 +11,7 @@
 namespace msp {
     avUgen::avUgen(){
 
+        name = "foo";
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
         radius = DEFAULT_RADIUS;
@@ -21,11 +22,17 @@ namespace msp {
 
     avUgen::avUgen(string _name){
         name = _name;
+        x = ofRandom(ofGetWindowWidth());
+        y = ofRandom(ofGetWindowHeight());
+        radius = DEFAULT_RADIUS;
+        color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
+
         initialize();
     }
 
     avUgen::avUgen(int _x, int _y, int _radius, ofColor _color){
-        
+
+        name = "foo";
         x = _x;
         y = _y;
         radius = _radius;
@@ -54,7 +61,6 @@ namespace msp {
         if (debug) logger.open("development.log");
 
         ofSetCircleResolution(100);
-
     }
     
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
@@ -64,6 +70,7 @@ namespace msp {
     
     void avUgen::draw(){
 
+        // TODO this isn't quite right. Not convinced correct values are computed. Test if exact values restored from settings.
         double radius_wave_mulitplier = isAudioOn() ? getAudio() : 1;
         double radius_base = radius * DEFAULT_RADIUS_MULTPLIER;
         double circle_radius = animateRadiusSwitch ? radius_base * radius_wave_mulitplier : radius_base;
@@ -206,7 +213,7 @@ namespace msp {
                 // Phasor can take three arguments; frequency, start value and end
                 currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
 
-                audio = osc.sinewave((double)color.getHue());
+                audio = osc.sinewave(frequency);
 
                 // env stuff
                 if (frame == throttle) {
@@ -236,7 +243,7 @@ namespace msp {
 
         if (isFireMIDI(msg)) {
             midiMessage = msg;
-            ofLogVerbose() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << this << endl;
+            ofLogVerbose() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << name << endl;
             ofLogVerbose() << "value: " << msg.value << endl;
 
             if (msg.control == midiControlNumber.at(0)){
@@ -272,6 +279,47 @@ namespace msp {
         }
 
         return ret;
+    }
+
+    void avUgen::saveXMLSettings(){
+
+        ofxXmlSettings settings;
+        settings.setValue("avUgen:name", name);
+        settings.setValue("avUgen:x", x);
+        settings.setValue("avUgen:y", y);
+        settings.setValue("avUgen:radius", radius);
+        settings.setValue("avUgen:audioEngine", audioEngine);
+        settings.setValue("avUgen:volume", volume);
+        settings.setValue("avUgen:pan", pan);
+        settings.setValue("avUgen:frequency", frequency);
+        settings.setValue("avUgen:visualOutputSwitch", visualOutputSwitch);
+        settings.setValue("avUgen:audioOutputSwitch", audioOutputSwitch);
+        settings.setValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
+        settings.setValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
+        settings.setValue("avUgen:throttle", throttle);
+
+        settings.saveFile("avUgen/" + name + ".xml");
+    }
+
+    void avUgen::loadXMLSettings(){
+
+        ofLogVerbose() << "loading XML settings for "<< name  << endl;
+
+        ofxXmlSettings settings;
+        settings.loadFile("avUgen/" + name + ".xml");
+
+        x = settings.getValue("avUgen:x", x);
+        y = settings.getValue("avUgen:y", y);
+        audioEngine = settings.getValue("avUgen:audioEngine", audioEngine);
+        radius = settings.getValue("avUgen:radius", radius);
+        volume = settings.getValue("avUgen:volume", volume);
+        pan = settings.getValue("avUgen:pan", pan);
+        frequency =  settings.getValue("avUgen:frequency", frequency);
+        visualOutputSwitch = settings.getValue("avUgen:visualOutputSwitch", visualOutputSwitch);
+        audioOutputSwitch = settings.getValue("avUgen:audioOutputSwitch", audioOutputSwitch);
+        randomResolutionSwitch = settings.getValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
+        animateRadiusSwitch = settings.getValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
+        throttle =  settings.getValue("avUgen:throttle", throttle);
     }
 
 };

@@ -13,6 +13,7 @@
 #include "math.h"
 #include "ofxMaxim.h"
 #include "ofxMidi.h"
+#include "ofxXmlSettings.h"
 
 namespace msp {
     class avUgen : public ofxMidiListener{
@@ -101,6 +102,10 @@ namespace msp {
         std::vector<int> midiChannel;
         std::vector<int> midiControlNumber;
         std::vector<int> midiValue;
+
+        // serialisation
+        void loadXMLSettings();
+        void saveXMLSettings();
 
     };
 }

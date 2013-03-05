@@ -1,0 +1,15 @@
+<avUgen>
+    <name>msp3</name>
+    <x>472</x>
+    <y>602</y>
+    <radius>0</radius>
+    <audioEngine>998</audioEngine>
+    <volume>0.000000000</volume>
+    <pan>0.589999974</pan>
+    <frequency>200</frequency>
+    <visualOutputSwitch>1</visualOutputSwitch>
+    <audioOutputSwitch>1</audioOutputSwitch>
+    <randomResolutionSwitch>1</randomResolutionSwitch>
+    <animateRadiusSwitch>0</animateRadiusSwitch>
+    <throttle>0</throttle>
+</avUgen>

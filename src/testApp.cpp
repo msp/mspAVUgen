@@ -218,13 +218,14 @@ void testApp::exit()
 
     for(int i=0; i<channels.size(); i++){
         midiIn.removeListener(channels.at(i));
+        channels.at(i)->saveXMLSettings();
     }
 }
 
 //--------------------------------------------------------------
 void testApp::setupAVUgens(){
     /*************************************/
-    channels.push_back(new msp::avUgen());
+    channels.push_back(new msp::avUgen("msp0"));
 
     channels.at(0)->setX(width/2);
     channels.at(0)->setY(height/2);
@@ -244,7 +245,7 @@ void testApp::setupAVUgens(){
     channels.at(0)->setMIDIMapping(14,40);
 
     /*************************************/
-    channels.push_back(new msp::avUgen());
+    channels.push_back(new msp::avUgen("msp1"));
 
     channels.at(1)->setX(width/2 - 100);
     channels.at(1)->setY(height/2 - 100);
@@ -261,7 +262,7 @@ void testApp::setupAVUgens(){
     channels.at(1)->setMIDIMapping(14,41);
 
     /*************************************/
-    channels.push_back(new msp::avUgen());
+    channels.push_back(new msp::avUgen("msp2"));
 
     channels.at(2)->setRadius(0);
 
@@ -274,7 +275,7 @@ void testApp::setupAVUgens(){
     channels.at(2)->setMIDIMapping(14,42);
 
     /*************************************/
-    channels.push_back(new msp::avUgen());
+    channels.push_back(new msp::avUgen("msp3"));
 
     channels.at(3)->setRadius(0);
 
@@ -292,7 +293,7 @@ void testApp::setupAVUgens(){
     /*************************************/
 
     if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen());
+        channels.push_back(new msp::avUgen("msp4"));
 
         channels.at(4)->setRadius(0);
 
@@ -309,7 +310,7 @@ void testApp::setupAVUgens(){
     }
     /*************************************/
     if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen());
+        channels.push_back(new msp::avUgen("msp5"));
 
         channels.at(5)->setRadius(0);
 
@@ -326,7 +327,7 @@ void testApp::setupAVUgens(){
     }
     /*************************************/
     if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen());
+        channels.push_back(new msp::avUgen("msp6"));
 
         channels.at(6)->setRadius(0);
 
@@ -343,7 +344,7 @@ void testApp::setupAVUgens(){
     }
     /*************************************/
     if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen());
+        channels.push_back(new msp::avUgen("msp7"));
 
         channels.at(7)->setRadius(0);
 
@@ -372,6 +373,9 @@ void testApp::setupAVUgens(){
     solo = 1;
     solo = solo - 1;
 
+    for(int i=0; i<channels.size(); i++){
+        channels.at(i)->loadXMLSettings();
+    }
     
 }
 
