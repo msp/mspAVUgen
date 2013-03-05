@@ -68,42 +68,30 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 
 	for (int i = 0; i < bufferSize; i++){
 
-        if (ch1->isAudioOn() == true){
-            wave[0] = ch1->getAudioOutput();
+        for (int j = 0; j < NUM_CHANNELS; j++){
+            if (channels.at(j)->isAudioOn() == true){
+                wave[j] = channels.at(j)->getAudioOutput();
+            }
         }
 
-        if (ch2->isAudioOn()){
-            wave[1] = ch2->getAudioOutput();
-        }
-
-        if (ch3->isAudioOn()){
-            wave[2] = ch3->getAudioOutput();
-        }
-
-        if (ch4->isAudioOn()){
-            wave[3] = ch4->getAudioOutput();
-        }
-
-        if (ch1-> isAudioOn()) {
+        if (channels.at(0)-> isAudioOn()) {
             mix.stereo(wave[0] / NUM_CHANNELS, outputs, panLeft);
             output[i*nChannels    ] = outputs[0];
         }
 
-        if (ch2-> isAudioOn()) {
+        if (channels.at(1)-> isAudioOn()) {
             mix.stereo(wave[1] / NUM_CHANNELS, outputs, panRight);
             output[i*nChannels + 1] = outputs[1];
         }
 
-        if (NUM_CHANNELS == 4) {
-            if (ch3-> isAudioOn()) {
-                mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
-                output[i*nChannels + 2] = outputs[0];
-            }
-            if (ch4-> isAudioOn()) {
-                mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
-                output[i*nChannels + 3] = outputs[1];
+        if (channels.at(2)-> isAudioOn()) {
+            mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
+            output[i*nChannels + 2] = outputs[0];
+        }
+        if (channels.at(3)-> isAudioOn()) {
+            mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
+            output[i*nChannels + 3] = outputs[1];
 
-            }
         }
 	}
 	
@@ -204,14 +192,14 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     else if(name == "POSITION_CH1")
 	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-		ch1 -> setX(pad->getPercentValue().x*ofGetWidth());
-		ch1 -> setY(pad->getPercentValue().y*ofGetHeight());
+		channels.at(0) -> setX(pad->getPercentValue().x*ofGetWidth());
+		channels.at(0) -> setY(pad->getPercentValue().y*ofGetHeight());
 	}
     else if(name == "POSITION_CH2")
 	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-		ch2 -> setX(pad->getPercentValue().x*ofGetWidth());
-		ch2 -> setY(pad->getPercentValue().y*ofGetHeight());
+		channels.at(1) -> setX(pad->getPercentValue().x*ofGetWidth());
+		channels.at(1) -> setY(pad->getPercentValue().y*ofGetHeight());
 	}    
     else if(name == "DRAW FILL")
     {
@@ -235,86 +223,152 @@ void testApp::exit()
 
 //--------------------------------------------------------------
 void testApp::setupAVUgens(){
-    ch1 = new msp::avUgen();
+    /*************************************/
+    channels.push_back(new msp::avUgen());
 
-    ch1->setX(width/2);
-    ch1->setY(height/2);
-    ch1->setRadius(0);
-    ch1->setThrottle(0);
-//    ch1->setRandomResolution(true);
-//    ch1->setAnimateRadius(true);
-//    ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
+    channels.at(0)->setX(width/2);
+    channels.at(0)->setY(height/2);
+    channels.at(0)->setRadius(0);
+    channels.at(0)->setThrottle(0);
+//    channels.at(0)->setRandomResolution(true);
+//    channels.at(0)->setAnimateRadius(true);
+//    channels.at(0)->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
 
-    ch1->setAudioEngine(msp::avUgen::MONO);
-    ch1->setVolume(0.0);
-    ch1->setFrequency(80);
+    channels.at(0)->setAudioEngine(msp::avUgen::MONO);
+    channels.at(0)->setVolume(0.0);
+    channels.at(0)->setFrequency(80);
 
-    ch1->setMIDIMapping(14,100);
-    ch1->setMIDIMapping(14,80);
-    ch1->setMIDIMapping(14,60);
-    ch1->setMIDIMapping(14,40);
+    channels.at(0)->setMIDIMapping(14,100);
+    channels.at(0)->setMIDIMapping(14,80);
+    channels.at(0)->setMIDIMapping(14,60);
+    channels.at(0)->setMIDIMapping(14,40);
 
-    channels.push_back(ch1);
+    /*************************************/
+    channels.push_back(new msp::avUgen());
 
+    channels.at(1)->setX(width/2 - 100);
+    channels.at(1)->setY(height/2 - 100);
+    channels.at(1)->setRadius(0);
+    channels.at(1)->setThrottle(0);
+//    channels.at(1)->setColor(*new ofColor(100, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
-    ch2 = new msp::avUgen();
+    channels.at(1)->setVolume(0.0);
+    channels.at(1)->setFrequency(202);
 
-    ch2->setX(width/2 - 100);
-    ch2->setY(height/2 - 100);
-    ch2->setRadius(0);
-    ch2->setThrottle(0);
-//    ch2->setColor(*new ofColor(100, 0, 0, msp::avUgen::HEAVY_ALPHA));
+    channels.at(1)->setMIDIMapping(14,101);
+    channels.at(1)->setMIDIMapping(14,81);
+    channels.at(1)->setMIDIMapping(14,61);
+    channels.at(1)->setMIDIMapping(14,41);
 
-    ch2->setVolume(0.0);
-    ch2->setFrequency(202);
+    /*************************************/
+    channels.push_back(new msp::avUgen());
 
-    ch2->setMIDIMapping(14,101);
-    ch2->setMIDIMapping(14,81);
-    ch2->setMIDIMapping(14,61);
-    ch2->setMIDIMapping(14,41);
+    channels.at(2)->setRadius(0);
 
-    channels.push_back(ch2);
+    channels.at(2)->setAudioEngine(msp::avUgen::MONO);
+    channels.at(2)->setVolume(0.0);
 
-    ch3 = new msp::avUgen();
+    channels.at(2)->setMIDIMapping(14,102);
+    channels.at(2)->setMIDIMapping(14,82);
+    channels.at(2)->setMIDIMapping(14,62);
+    channels.at(2)->setMIDIMapping(14,42);
 
-    ch3->setRadius(0);
+    /*************************************/
+    channels.push_back(new msp::avUgen());
 
-    ch3->setAudioEngine(msp::avUgen::MONO);
-    ch3->setVolume(0.0);
+    channels.at(3)->setRadius(0);
 
-    ch3->setMIDIMapping(14,102);
-    ch3->setMIDIMapping(14,82);
-    ch3->setMIDIMapping(14,62);
-    ch3->setMIDIMapping(14,42);
+    channels.at(3)->setAudioEngine(msp::avUgen::MONO);
+    channels.at(3)->setVolume(0.0);
+    channels.at(3)->setRandomResolution(true);
 
-    channels.push_back(ch3);
+    channels.at(3)->setFrequency(303);
 
-    ch4 = new msp::avUgen();
+    channels.at(3)->setMIDIMapping(14,103);
+    channels.at(3)->setMIDIMapping(14,83);
+    channels.at(3)->setMIDIMapping(14,63);
+    channels.at(3)->setMIDIMapping(14,43);
 
-    ch4->setRadius(0);
+    /*************************************/
 
-    ch4->setAudioEngine(msp::avUgen::MONO);
-    ch4->setVolume(0.0);
-    ch4->setRandomResolution(true);
+    if (NUM_CHANNELS > 4){
+        channels.push_back(new msp::avUgen());
 
-    ch4->setFrequency(303);
+        channels.at(4)->setRadius(0);
 
-    ch4->setMIDIMapping(14,103);
-    ch4->setMIDIMapping(14,83);
-    ch4->setMIDIMapping(14,63);
-    ch4->setMIDIMapping(14,43);
+        channels.at(4)->setAudioEngine(msp::avUgen::MONO);
+        channels.at(4)->setVolume(0.0);
+        channels.at(4)->setRandomResolution(true);
 
-    channels.push_back(ch4);
+        channels.at(4)->setFrequency(803);
+
+        channels.at(4)->setMIDIMapping(14,104);
+        channels.at(4)->setMIDIMapping(14,84);
+        channels.at(4)->setMIDIMapping(14,64);
+        channels.at(4)->setMIDIMapping(14,44);
+    }
+    /*************************************/
+    if (NUM_CHANNELS > 4){
+        channels.push_back(new msp::avUgen());
+
+        channels.at(5)->setRadius(0);
+
+        channels.at(5)->setAudioEngine(msp::avUgen::MONO);
+        channels.at(5)->setVolume(0.0);
+        channels.at(5)->setRandomResolution(true);
+
+        channels.at(5)->setFrequency(803);
+
+        channels.at(5)->setMIDIMapping(14,105);
+        channels.at(5)->setMIDIMapping(14,85);
+        channels.at(5)->setMIDIMapping(14,65);
+        channels.at(5)->setMIDIMapping(14,45);
+    }
+    /*************************************/
+    if (NUM_CHANNELS > 4){
+        channels.push_back(new msp::avUgen());
+
+        channels.at(6)->setRadius(0);
+
+        channels.at(6)->setAudioEngine(msp::avUgen::MONO);
+        channels.at(6)->setVolume(0.0);
+        channels.at(6)->setRandomResolution(true);
+
+        channels.at(6)->setFrequency(803);
+
+        channels.at(6)->setMIDIMapping(14,106);
+        channels.at(6)->setMIDIMapping(14,86);
+        channels.at(6)->setMIDIMapping(14,66);
+        channels.at(6)->setMIDIMapping(14,46);
+    }
+    /*************************************/
+    if (NUM_CHANNELS > 4){
+        channels.push_back(new msp::avUgen());
+
+        channels.at(7)->setRadius(0);
+
+        channels.at(7)->setAudioEngine(msp::avUgen::MONO);
+        channels.at(7)->setVolume(0.0);
+        channels.at(7)->setRandomResolution(true);
+
+        channels.at(7)->setFrequency(803);
+
+        channels.at(7)->setMIDIMapping(14,107);
+        channels.at(7)->setMIDIMapping(14,87);
+        channels.at(7)->setMIDIMapping(14,67);
+        channels.at(7)->setMIDIMapping(14,47);
+    }
+
 
     // a/v state
-//    ch1->switchOffAudio();
-//    ch1->switchOffVisual();
-//    ch2->switchOffAudio();
-//    ch2->switchOffVisual();
-//    ch3->switchOffAudio();
-//    ch3->switchOffVisual();
-//    ch4->switchOffAudio();
-//    ch4->switchOffVisual();
+//    channels.at(0)->switchOffAudio();
+//    channels.at(0)->switchOffVisual();
+//    channels.at(1)->switchOffAudio();
+//    channels.at(1)->switchOffVisual();
+//    channels.at(2)->switchOffAudio();
+//    channels.at(2)->switchOffVisual();
+//    channels.at(3)->switchOffAudio();
+//    channels.at(3)->switchOffVisual();
     solo = 1;
     solo = solo - 1;
 
