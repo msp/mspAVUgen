@@ -321,7 +321,9 @@ void testApp::setupMIDI(){
 
 	// open port by number (you may need to change this)
 	// midiIn.openPort(0);
-	midiIn.openPort("USB Uno MIDI Interface");	// by name
+	midiIn.openPort("Audio 8 DJ MIDI input port 0");
+	//midiIn.openPort("USB Uno MIDI Interface");
+
 	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
 
 	// don't ignore sysex, timing, & active sense messages,
