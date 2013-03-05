@@ -48,7 +48,6 @@ void testApp::draw(){
 
     for (int i=0; i<channels.size(); i++) {
         ofPushStyle();
-//        if (i == 0) channels.at(i) -> setColor(*rgbHsb.at(i));
 
         if (debug) cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
@@ -241,8 +240,8 @@ void testApp::setupAVUgens(){
     ch1->setX(width/2);
     ch1->setY(height/2);
     ch1->setThrottle(10);
-    ch1->setRandomResolution(true);
-    ch1->setAnimateRadius(true);
+//    ch1->setRandomResolution(true);
+//    ch1->setAnimateRadius(true);
     ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
     ch1->setFrequency(80);
 
@@ -301,12 +300,12 @@ void testApp::setupAVUgens(){
     // a/v state
 //    ch1->switchOffAudio();
 //    ch1->switchOffVisual();
-    ch2->switchOffAudio();
-    ch2->switchOffVisual();
-    ch3->switchOffAudio();
-    ch3->switchOffVisual();
-    ch4->switchOffAudio();
-    ch4->switchOffVisual();
+//    ch2->switchOffAudio();
+//    ch2->switchOffVisual();
+//    ch3->switchOffAudio();
+//    ch3->switchOffVisual();
+//    ch4->switchOffAudio();
+//    ch4->switchOffVisual();
     solo = 1;
     solo = solo - 1;
 
@@ -316,12 +315,10 @@ void testApp::setupAVUgens(){
 //--------------------------------------------------------------
 void testApp::setupMIDI(){
     // ofxMidi
-	// print input ports to console
+
 	midiIn.listPorts(); // via instance
 	//ofxMidiIn::listPorts(); // via static as well
 
-	// open port by number (you may need to change this)
-	// midiIn.openPort(0);
 	midiIn.openPort("Audio 8 DJ MIDI input port 0");
 	//midiIn.openPort("USB Uno MIDI Interface");
 

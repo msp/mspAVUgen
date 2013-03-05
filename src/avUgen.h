@@ -29,7 +29,7 @@ namespace msp {
         bool audioOutputSwitch;
         int audioEngine;
         int frequency;
-        double volume, lastMIDIVolume;
+        double volume, lastMIDIVolume, pan;
         int currentCount, lastCount;
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};
@@ -52,7 +52,7 @@ namespace msp {
         static const int DEFAULT_RADIUS_MULTPLIER = 10;
         static const int DEFAULT_VOLUME = 3;
         
-        // Constructor
+        // Constructors
         avUgen();
         avUgen(string _name);
         avUgen(int _x, int _y, int _radius, ofColor _color);
@@ -67,6 +67,7 @@ namespace msp {
         // Mutators
         void setX(int _x);
         void setY(int _y);
+        void setPan(double _pan);
         void setRadius(int _radius);
         void setThrottle(int _throttle);
         void setColor(ofColor _color);
@@ -82,10 +83,13 @@ namespace msp {
         void setMIDIMapping(int _channel, int _control);
         
         // Accessors
+        int getX();
+        int getY();
         string getName();
         double getAudio();
         double getAudioOutput();
         double getVolume();
+        double getPan();
         int getRadius();
         bool isAudioOn();
         bool isVisualOn();

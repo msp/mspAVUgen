@@ -71,7 +71,7 @@ namespace msp {
         ofFill();
                 
         if (frame == throttle) {
-            if (name == "msp1") ofLogVerbose() << "DRAW frame: "<< frame << " throttle: "<< throttle << endl;
+//            if (name == "msp1") ofLogVerbose() << "DRAW frame: "<< frame << " throttle: "<< throttle << endl;
             if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
             if (isVisualOn()) ofCircle(x, y, circle_radius);
             frame = 0;
@@ -93,8 +93,32 @@ namespace msp {
         return name;
     }
 
+    // return absolute x pos on screen
+    int avUgen::getX(){
+        return x;
+    }
+
+    // expect a midi value 1 - 127
     void avUgen::setX(int _x) {
-        x = _x;
+        _x = _x > 127 ? 127 : _x;
+        _x = _x < 1 ? 1 : _x;
+        x = (ofGetWindowWidth() / 127) * _x;
+    }
+
+    // return a pan between 0 & 1
+    double avUgen::getPan(){
+//        ofLogVerbose() << "x: " << x << endl;
+//        ofLogVerbose() << "pan: " << pan << endl;
+        return pan;
+    }
+
+    // expect a midi value 1 - 127
+    void avUgen::setPan(double _pan) {
+        pan = _pan / 100;
+    }
+
+    int avUgen::getY(){
+        return y;
     }
 
     void avUgen::setY(int _y){
@@ -232,6 +256,10 @@ namespace msp {
             } else if (msg.control == midiControlNumber.at(2)){
                 ofLogVerbose() << "setting throttle" << endl;
                 throttle = msg.value;
+            } else if (msg.control == midiControlNumber.at(3)){
+                ofLogVerbose() << "setting pan" << endl;
+                setPan(msg.value);
+                setX(msg.value);
             }
 
         }
