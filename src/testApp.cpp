@@ -235,17 +235,19 @@ void testApp::exit()
 
 //--------------------------------------------------------------
 void testApp::setupAVUgens(){
-    ch1 = new msp::avUgen("msp1");
+    ch1 = new msp::avUgen();
 
     ch1->setX(width/2);
     ch1->setY(height/2);
-    ch1->setThrottle(10);
+    ch1->setRadius(0);
+    ch1->setThrottle(0);
 //    ch1->setRandomResolution(true);
 //    ch1->setAnimateRadius(true);
-    ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
-    ch1->setFrequency(80);
+//    ch1->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
 
     ch1->setAudioEngine(msp::avUgen::MONO);
+    ch1->setVolume(0.0);
+    ch1->setFrequency(80);
 
     ch1->setMIDIMapping(14,100);
     ch1->setMIDIMapping(14,80);
@@ -259,10 +261,11 @@ void testApp::setupAVUgens(){
 
     ch2->setX(width/2 - 100);
     ch2->setY(height/2 - 100);
-    ch2->setRadius(100);
-    ch2->setThrottle(30);
-    ch2->setColor(*new ofColor(0, 0, 0, msp::avUgen::HEAVY_ALPHA));
+    ch2->setRadius(0);
+    ch2->setThrottle(0);
+//    ch2->setColor(*new ofColor(100, 0, 0, msp::avUgen::HEAVY_ALPHA));
 
+    ch2->setVolume(0.0);
     ch2->setFrequency(202);
 
     ch2->setMIDIMapping(14,101);
@@ -274,7 +277,10 @@ void testApp::setupAVUgens(){
 
     ch3 = new msp::avUgen();
 
+    ch3->setRadius(0);
+
     ch3->setAudioEngine(msp::avUgen::MONO);
+    ch3->setVolume(0.0);
 
     ch3->setMIDIMapping(14,102);
     ch3->setMIDIMapping(14,82);
@@ -285,7 +291,10 @@ void testApp::setupAVUgens(){
 
     ch4 = new msp::avUgen();
 
+    ch4->setRadius(0);
+
     ch4->setAudioEngine(msp::avUgen::MONO);
+    ch4->setVolume(0.0);
     ch4->setRandomResolution(true);
 
     ch4->setFrequency(303);

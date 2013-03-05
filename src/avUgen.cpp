@@ -41,6 +41,7 @@ namespace msp {
     void avUgen::initialize(){
         setAudioEngine(SINE);
         setVolume(DEFAULT_VOLUME);
+        setPan(0.5);
         setFrequency(300);
         visualOutputSwitch = true;
         audioOutputSwitch = true;
@@ -182,16 +183,11 @@ namespace msp {
     }
 
     void avUgen::setVolume(double _volume){
-        if (_volume == 0) _volume = 1;
-        cout << "_volume: " << _volume << endl;
-
         lastMIDIVolume = _volume;
-
-        double offset = _volume >= 1  ? 10.0 : 1.0;
 
         // get a non linear curve
         volume = sqrt(_volume);
-        cout << "volume: " << volume << endl;
+        ofLogVerbose() << "volume: " << volume << endl;
     }
 
     void avUgen::setMIDIMapping(int _channel, int _control){
@@ -233,11 +229,10 @@ namespace msp {
     }
 
     double avUgen::getAudioOutput(){
-        return getAudio() * getVolume();
+        return getVolume() == 0 ? 0.0 : getAudio() * getVolume();
     }
 
     void avUgen::newMidiMessage(ofxMidiMessage& msg) {
-
 
         if (isFireMIDI(msg)) {
             midiMessage = msg;
