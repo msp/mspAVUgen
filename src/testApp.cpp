@@ -386,8 +386,8 @@ void testApp::setupMIDI(){
 	midiIn.listPorts(); // via instance
 	//ofxMidiIn::listPorts(); // via static as well
 
-	midiIn.openPort("Audio 8 DJ MIDI input port 0");
-	//midiIn.openPort("USB Uno MIDI Interface");
+//	midiIn.openPort("Audio 8 DJ MIDI input port 0");
+	midiIn.openPort("USB Uno MIDI Interface");
 
 	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
 

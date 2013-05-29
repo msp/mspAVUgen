@@ -247,19 +247,19 @@ namespace msp {
             ofLogVerbose() << "value: " << msg.value << endl;
 
             if (msg.control == midiControlNumber.at(0)){
-                ofLogVerbose() << "setting radius/volume" << endl;
                 double thisVolume = lastMIDIVolume == 63.0 ? 0 : msg.value;
+                ofLogVerbose() << "setting radius/volume: " << thisVolume  << endl;
                 radius = thisVolume;
                 setVolume(thisVolume);
             } else if (msg.control == midiControlNumber.at(1)){
-                ofLogVerbose() << "setting hue/pitch" << endl;
                 color.setHue(msg.value);
-                frequency = msg.value * 100;
+                frequency = sqrt(msg.value) * (sqrt(msg.value) * 12);
+                ofLogVerbose() << "setting hue/pitch: " << frequency << endl;
             } else if (msg.control == midiControlNumber.at(2)){
-                ofLogVerbose() << "setting throttle" << endl;
+                ofLogVerbose() << "setting throttle: " << msg.value << endl;
                 throttle = msg.value;
             } else if (msg.control == midiControlNumber.at(3)){
-                ofLogVerbose() << "setting pan" << endl;
+                ofLogVerbose() << "setting pan: " << msg.value << endl;
                 setPan(msg.value);
                 setX(msg.value);
             }
