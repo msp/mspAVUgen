@@ -75,24 +75,24 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
         }
 
         if (channels.at(0)-> isAudioOn()) {
-            mix.stereo(wave[0] / NUM_CHANNELS, outputs, panLeft);
+            mix.stereo(wave[0] + wave[2] / NUM_CHANNELS, outputs, panLeft);
             output[i*nChannels    ] = outputs[0];
         }
 
         if (channels.at(1)-> isAudioOn()) {
-            mix.stereo(wave[1] / NUM_CHANNELS, outputs, panRight);
+            mix.stereo(wave[1] + wave[3] / NUM_CHANNELS, outputs, panRight);
             output[i*nChannels + 1] = outputs[1];
         }
 
-        if (channels.at(2)-> isAudioOn()) {
-            mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
-            output[i*nChannels + 2] = outputs[0];
-        }
-        if (channels.at(3)-> isAudioOn()) {
-            mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
-            output[i*nChannels + 3] = outputs[1];
-
-        }
+//        if (channels.at(2)-> isAudioOn()) {
+//            mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
+//            output[i*nChannels + 2] = outputs[0];
+//        }
+//        if (channels.at(3)-> isAudioOn()) {
+//            mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
+//            output[i*nChannels + 3] = outputs[1];
+//
+//        }
 	}
 	
 }
@@ -227,18 +227,6 @@ void testApp::setupAVUgens(){
     /*************************************/
     channels.push_back(new msp::avUgen("msp0"));
 
-    channels.at(0)->setX(width/2);
-    channels.at(0)->setY(height/2);
-    channels.at(0)->setRadius(0);
-    channels.at(0)->setThrottle(0);
-//    channels.at(0)->setRandomResolution(true);
-//    channels.at(0)->setAnimateRadius(true);
-//    channels.at(0)->setColor(*new ofColor(233, 52, 70, msp::avUgen::LIGHT_ALPHA));
-
-    channels.at(0)->setAudioEngine(msp::avUgen::MONO);
-    channels.at(0)->setVolume(0.0);
-    channels.at(0)->setFrequency(80);
-
     channels.at(0)->setMIDIMapping(14,100);
     channels.at(0)->setMIDIMapping(14,80);
     channels.at(0)->setMIDIMapping(14,60);
@@ -246,15 +234,6 @@ void testApp::setupAVUgens(){
 
     /*************************************/
     channels.push_back(new msp::avUgen("msp1"));
-
-    channels.at(1)->setX(width/2 - 100);
-    channels.at(1)->setY(height/2 - 100);
-    channels.at(1)->setRadius(0);
-    channels.at(1)->setThrottle(0);
-//    channels.at(1)->setColor(*new ofColor(100, 0, 0, msp::avUgen::HEAVY_ALPHA));
-
-    channels.at(1)->setVolume(0.0);
-    channels.at(1)->setFrequency(202);
 
     channels.at(1)->setMIDIMapping(14,101);
     channels.at(1)->setMIDIMapping(14,81);
@@ -264,11 +243,6 @@ void testApp::setupAVUgens(){
     /*************************************/
     channels.push_back(new msp::avUgen("msp2"));
 
-    channels.at(2)->setRadius(0);
-
-    channels.at(2)->setAudioEngine(msp::avUgen::MONO);
-    channels.at(2)->setVolume(0.0);
-
     channels.at(2)->setMIDIMapping(14,102);
     channels.at(2)->setMIDIMapping(14,82);
     channels.at(2)->setMIDIMapping(14,62);
@@ -276,14 +250,6 @@ void testApp::setupAVUgens(){
 
     /*************************************/
     channels.push_back(new msp::avUgen("msp3"));
-
-    channels.at(3)->setRadius(0);
-
-    channels.at(3)->setAudioEngine(msp::avUgen::MONO);
-    channels.at(3)->setVolume(0.0);
-    channels.at(3)->setRandomResolution(true);
-
-    channels.at(3)->setFrequency(303);
 
     channels.at(3)->setMIDIMapping(14,103);
     channels.at(3)->setMIDIMapping(14,83);
@@ -370,13 +336,7 @@ void testApp::setupAVUgens(){
 //    channels.at(2)->switchOffVisual();
 //    channels.at(3)->switchOffAudio();
 //    channels.at(3)->switchOffVisual();
-    solo = 1;
-    solo = solo - 1;
 
-    for(int i=0; i<channels.size(); i++){
-        channels.at(i)->loadXMLSettings();
-    }
-    
 }
 
 //--------------------------------------------------------------
@@ -430,7 +390,7 @@ void testApp::setupUI(){
 	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
     gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
     gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
-    gui->addSlider("RADIUS", 0.0, 600.0, channels.at(0)->getRadius(), length,dim);
+//    gui->addSlider("RADIUS", 0.0, 600.0, channels.at(0)->getRadius(), length,dim);
     //	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
 
     gui->addSpacer(length, 2);
@@ -450,7 +410,8 @@ void testApp::setupUI(){
     gui->addWidgetDown(new ofxUILabel("MOUSE OVER A SLIDER AND", OFX_UI_FONT_MEDIUM));
     gui->addWidgetDown(new ofxUILabel("PRESS UP, DOWN, LEFT, RIGHT", OFX_UI_FONT_MEDIUM));
 
-    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
+//    switch off until we need the UI, it interferes with our serialized state
+//    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
     gui->loadSettings("GUI/guiSettings.xml");
     gui->toggleVisible();

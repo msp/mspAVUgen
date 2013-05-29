@@ -10,42 +10,26 @@
 
 namespace msp {
     avUgen::avUgen(){
-
-        name = "foo";
+        name = pseudoRandomName();
         x = ofRandom(ofGetWindowWidth());
         y = ofRandom(ofGetWindowHeight());
         radius = DEFAULT_RADIUS;
-        color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
+        color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
 
         initialize();
     }
 
     avUgen::avUgen(string _name){
         name = _name;
-        x = ofRandom(ofGetWindowWidth());
-        y = ofRandom(ofGetWindowHeight());
-        radius = DEFAULT_RADIUS;
-        color.set( ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
-
         initialize();
     }
 
-    avUgen::avUgen(int _x, int _y, int _radius, ofColor _color){
-
-        name = "foo";
-        x = _x;
-        y = _y;
-        radius = _radius;
-        color = _color;
-        
-        initialize();
-    }
-    
     avUgen::~avUgen(){
         if (debug) logger.close();
     }
 
     void avUgen::initialize(){
+
         setAudioEngine(SINE);
         setVolume(DEFAULT_VOLUME);
         setPan(0.5);
@@ -56,13 +40,20 @@ namespace msp {
         animateRadiusSwitch = false;
         throttle = 10;
         frame = 0;
-        lastCount = currentCount = 0;
+        lastCount = 0;
+        currentCount = 0;
 
         if (debug) logger.open("development.log");
-
         ofSetCircleResolution(100);
+        loadXMLSettings();
     }
-    
+
+    string avUgen::pseudoRandomName() {
+        ostringstream buffer;
+        buffer << "mspUgen_" << ofRandom(10000);
+        return buffer.str();
+    }
+
     void avUgen::moveTo(int _xDestiny, int _yDestiny){
         x += ( _xDestiny - x )*ofRandom(0.1, 1.0);
         y += ( _yDestiny - y )*ofRandom(0.1, 1.0);
@@ -283,43 +274,77 @@ namespace msp {
 
     void avUgen::saveXMLSettings(){
 
-        ofxXmlSettings settings;
-        settings.setValue("avUgen:name", name);
-        settings.setValue("avUgen:x", x);
-        settings.setValue("avUgen:y", y);
-        settings.setValue("avUgen:radius", radius);
-        settings.setValue("avUgen:audioEngine", audioEngine);
-        settings.setValue("avUgen:volume", volume);
-        settings.setValue("avUgen:pan", pan);
-        settings.setValue("avUgen:frequency", frequency);
-        settings.setValue("avUgen:visualOutputSwitch", visualOutputSwitch);
-        settings.setValue("avUgen:audioOutputSwitch", audioOutputSwitch);
-        settings.setValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
-        settings.setValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
-        settings.setValue("avUgen:throttle", throttle);
+        if (saveToXML) {
 
-        settings.saveFile("avUgen/" + name + ".xml");
+            ofLogVerbose() << "saving XML settings:" << endl;
+            inspect();
+            
+            ofxXmlSettings settings;
+            settings.setValue("avUgen:name", name);
+            settings.setValue("avUgen:x", x);
+            settings.setValue("avUgen:y", y);
+            settings.setValue("avUgen:radius", radius);
+            settings.setValue("avUgen:audioEngine", audioEngine);
+            settings.setValue("avUgen:volume", volume);
+            settings.setValue("avUgen:pan", pan);
+            settings.setValue("avUgen:frequency", frequency);
+            settings.setValue("avUgen:visualOutputSwitch", visualOutputSwitch);
+            settings.setValue("avUgen:audioOutputSwitch", audioOutputSwitch);
+            settings.setValue("avUgen:audioEngine", audioEngine);
+            settings.setValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
+            settings.setValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
+            settings.setValue("avUgen:throttle", throttle);
+
+            settings.setValue("avUgen:hue", color.getHue());
+            settings.setValue("avUgen:saturation", color.getSaturation());
+            settings.setValue("avUgen:brightness", color.getBrightness());
+
+            settings.saveFile("avUgen/" + name + ".xml");
+        }
     }
 
     void avUgen::loadXMLSettings(){
 
-        ofLogVerbose() << "loading XML settings for "<< name  << endl;
+        if (loadFromXML) {
+            ofLogVerbose() << "loading XML settings:" << endl;
 
-        ofxXmlSettings settings;
-        settings.loadFile("avUgen/" + name + ".xml");
+            ofxXmlSettings settings;
+            settings.loadFile("avUgen/" + name + ".xml");
 
-        x = settings.getValue("avUgen:x", x);
-        y = settings.getValue("avUgen:y", y);
-        audioEngine = settings.getValue("avUgen:audioEngine", audioEngine);
-        radius = settings.getValue("avUgen:radius", radius);
-        volume = settings.getValue("avUgen:volume", volume);
-        pan = settings.getValue("avUgen:pan", pan);
-        frequency =  settings.getValue("avUgen:frequency", frequency);
-        visualOutputSwitch = settings.getValue("avUgen:visualOutputSwitch", visualOutputSwitch);
-        audioOutputSwitch = settings.getValue("avUgen:audioOutputSwitch", audioOutputSwitch);
-        randomResolutionSwitch = settings.getValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
-        animateRadiusSwitch = settings.getValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
-        throttle =  settings.getValue("avUgen:throttle", throttle);
+            x = settings.getValue("avUgen:x", x);
+            y = settings.getValue("avUgen:y", y);
+            audioEngine = settings.getValue("avUgen:audioEngine", audioEngine);
+            radius = settings.getValue("avUgen:radius", radius);
+            volume = settings.getValue("avUgen:volume", volume);
+            pan = settings.getValue("avUgen:pan", pan);
+            frequency =  settings.getValue("avUgen:frequency", frequency);
+            visualOutputSwitch = settings.getValue("avUgen:visualOutputSwitch", visualOutputSwitch);
+            audioOutputSwitch = settings.getValue("avUgen:audioOutputSwitch", audioOutputSwitch);
+            audioEngine = settings.getValue("avUgen::audioEngine", msp::avUgen::MONO);
+            randomResolutionSwitch = settings.getValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
+            animateRadiusSwitch = settings.getValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
+            throttle =  settings.getValue("avUgen:throttle", throttle);
+
+            color.setHue(settings.getValue("avUgen:hue", ofRandom(255)));
+            color.setSaturation(settings.getValue("avUgen:saturation", ofRandom(255)));
+            color.setBrightness(settings.getValue("avUgen:brightness", ofRandom(255)));
+
+            inspect();
+        }
+    }
+
+    void avUgen::inspect() {
+        ofLogVerbose() << "avUgen: "<< name
+        << ", x: " << x
+        << ", y: " << y
+        << ", pan: " << pan
+        << ", frequency: " << frequency
+        << ", volume: " << volume
+        << ", radius: " << radius
+        << ", hue: " << color.getHue()
+        << ", saturation: " << color.getSaturation()
+        << ", brightness: " << color.getBrightness()
+        << endl;
     }
 
 };

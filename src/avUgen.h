@@ -19,6 +19,9 @@ namespace msp {
     class avUgen : public ofxMidiListener{
 
         bool debug = false;
+        bool loadFromXML = true;
+        bool saveToXML = true;
+
         string name;
 
         // visual
@@ -41,6 +44,8 @@ namespace msp {
         ofxMaxiOsc timer;
 
         ofstream logger;
+
+        string pseudoRandomName();
     public:
         
         ~avUgen();
@@ -106,6 +111,7 @@ namespace msp {
         // serialisation
         void loadXMLSettings();
         void saveXMLSettings();
+        void inspect();
 
     };
 }

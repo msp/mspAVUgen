@@ -16,3 +16,4 @@ Release*/
 ._*
 
 bin/development.log
+.idea
