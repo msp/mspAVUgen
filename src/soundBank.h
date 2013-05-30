@@ -14,10 +14,11 @@
 
 namespace msp {
     class soundBank{
-        int preset = 0;
+        int currentPreset = 0;
         std::vector<string> avUgenNames;
 
     public:
+        bool audioReady = true;
         ~soundBank();
 
         // Constants
@@ -28,8 +29,10 @@ namespace msp {
         soundBank(std::vector<string> _avUgenNames);
 
         // Collections
-//        std::vector<msp::avUgen*> presetSlots[TOTAL_SLOTS];
+        std::vector<std::vector <msp::avUgen*> > presetSlots;
         std::vector<msp::avUgen*> activeSlots;
+
+        void cyclePreset();
     };
 }
 

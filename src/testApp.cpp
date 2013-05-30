@@ -68,31 +68,35 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 
 	for (int i = 0; i < bufferSize; i++){
 
-        for (int j = 0; j < NUM_SOUNDCARD_CHANNELS; j++){
-            if (soundBank.activeSlots.at(j)->isAudioOn() == true){
-                wave[j] = soundBank.activeSlots.at(j)->getAudioOutput();
+        if (soundBank.audioReady){
+
+            for (int j = 0; j < NUM_SOUNDCARD_CHANNELS; j++){
+                if (soundBank.audioReady && soundBank.activeSlots.at(j)->isAudioOn() == true){
+                    wave[j] = soundBank.activeSlots.at(j)->getAudioOutput();
+                }
             }
-        }
 
-        if (soundBank.activeSlots.at(0)-> isAudioOn()) {
-            mix.stereo(wave[0] + wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
-            output[i*nChannels    ] = outputs[0];
-        }
+            if (soundBank.audioReady && soundBank.activeSlots.at(0)-> isAudioOn()) {
+                mix.stereo(wave[0] + wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
+                output[i*nChannels    ] = outputs[0];
+            }
 
-        if (soundBank.activeSlots.at(1)-> isAudioOn()) {
-            mix.stereo(wave[1] + wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
-            output[i*nChannels + 1] = outputs[1];
-        }
+            if (soundBank.audioReady && soundBank.activeSlots.at(1)-> isAudioOn()) {
+                mix.stereo(wave[1] + wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
+                output[i*nChannels + 1] = outputs[1];
+            }
 
-        //        if (soundBank.activeSlots.at(2)-> isAudioOn()) {
-        //            mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
-        //            output[i*nChannels + 2] = outputs[0];
-        //        }
-        //        if (soundBank.activeSlots.at(3)-> isAudioOn()) {
-        //            mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
-        //            output[i*nChannels + 3] = outputs[1];
-        //
-        //        }
+            //        if (soundBank.audioReady && soundBank.activeSlots.at(2)-> isAudioOn()) {
+            //            mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
+            //            output[i*nChannels + 2] = outputs[0];
+            //        }
+            //        if (soundBank.audioReady && soundBank.activeSlots.at(3)-> isAudioOn()) {
+            //            mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
+            //            output[i*nChannels + 3] = outputs[1];
+            //
+            //        }
+
+        }
 	}
 
 }
@@ -414,13 +418,57 @@ void testApp::keyPressed(int key){
     switch (key)
     {
         case 'g':
-        {
             gui->toggleVisible();
-        }
             break;
 		case 'l':
 			midiIn.listPorts();
 			break;
+		case 'p':
+
+            for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+                midiIn.removeListener(soundBank.activeSlots.at(i));
+            }
+
+			soundBank.cyclePreset();
+
+            /*************************************/
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,60);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,40);
+
+            /*************************************/
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,101);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,81);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,61);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,41);
+
+            /*************************************/
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,102);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,82);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,62);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,42);
+
+            /*************************************/
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,103);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,83);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,63);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,43);
+
+            /*************************************/
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,104);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,84);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,64);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,44);
+            
+            /*************************************/
+
+            for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+                midiIn.addListener(soundBank.activeSlots.at(i));
+            }
+
+			break;
+
         default:
             break;
 
