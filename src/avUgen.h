@@ -19,7 +19,7 @@ namespace msp {
     class avUgen : public ofxMidiListener{
 
         bool debug = false;
-        bool loadFromXML = true;
+        bool loadFromXML = false;
         bool saveToXML = false;
 
         string name;
@@ -83,20 +83,31 @@ namespace msp {
         void setVolume(double _volume);
         void switchOffAudio();
         void switchOffVisual();
-        void setRandomResolution(bool _randomResolutionSwitch);
-        void setAnimateRadius(bool _animateRadiusSwitch);
+        void setRandomResolutionSwitch(bool _randomResolutionSwitch);
+        void setAnimateRadiusSwitch(bool _animateRadiusSwitch);
+        void setVisualOutputSwitch(bool _visualOutputSwitch);
+        void setAudioOutputSwitch(bool _audioOutputSwitch);
 
         void setMIDIMapping(int _channel, int _control);
         
         // Accessors
+        string getName();
         int getX();
         int getY();
-        string getName();
-        double getAudio();
-        double getAudioOutput();
-        double getVolume();
         double getPan();
         int getRadius();
+        int getThrottle();
+        int getFrequency();
+        int getAudioEngine();
+        double getVolume();
+        bool getRandomResolutionSwitch();
+        bool getAnimateRadiusSwitch();
+        bool getVisualOutputSwitch();
+        bool getAudioOutputSwitch();
+
+        double getAudio();
+        double getAudioOutput();
+        
         bool isAudioOn();
         bool isVisualOn();
         bool isFireMIDI(ofxMidiMessage& msg);

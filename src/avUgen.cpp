@@ -106,8 +106,6 @@ namespace msp {
 
     // return a pan between 0 & 1
     double avUgen::getPan(){
-//        ofLogVerbose() << "x: " << x << endl;
-//        ofLogVerbose() << "pan: " << pan << endl;
         return pan;
     }
 
@@ -123,19 +121,23 @@ namespace msp {
     void avUgen::setY(int _y){
         y = _y;
     }
-    
-    void avUgen::setRadius(int _radius){
-        radius = _radius;
-    }
 
     int avUgen::getRadius(){
         return radius;
     }
 
+    void avUgen::setRadius(int _radius){
+        radius = _radius;
+    }
+
+    int avUgen::getThrottle(){
+        return throttle;
+    }
+
     void avUgen::setThrottle(int _throttle){
         throttle = _throttle;
     }
-    
+
     void avUgen::setColor(ofColor _color){
         color = _color;
     }
@@ -143,15 +145,23 @@ namespace msp {
     void avUgen::setOscillator(ofxMaxiOsc _osc){
         osc = _osc;
     }
-    
+
+    int avUgen::getFrequency(){
+        return frequency;
+    }
+
     void avUgen::setFrequency(int _frequency){
         frequency = _frequency;
     }
     
+    int avUgen::getAudioEngine() {
+        return audioEngine;
+    }
+
     void avUgen::setAudioEngine(int _audioEngine) {
         audioEngine = _audioEngine;
     }
-    
+
     void avUgen::switchOffAudio(){
         audioOutputSwitch = false;
     }
@@ -160,14 +170,38 @@ namespace msp {
         visualOutputSwitch = false;
     }
 
-    void avUgen::setRandomResolution(bool _randomResolutionSwitch){
+    bool avUgen::getRandomResolutionSwitch(){
+        return randomResolutionSwitch;
+    }
+
+    void avUgen::setRandomResolutionSwitch(bool _randomResolutionSwitch){
         randomResolutionSwitch = _randomResolutionSwitch;
     }
 
-    void avUgen::setAnimateRadius(bool _animateRadiusSwitch){
-        animateRadiusSwitch = _animateRadiusSwitch;
+    bool avUgen::getAnimateRadiusSwitch(){
+        return animateRadiusSwitch;
     }
     
+    void avUgen::setAnimateRadiusSwitch(bool _animateRadiusSwitch){
+        animateRadiusSwitch = _animateRadiusSwitch;
+    }
+
+    bool avUgen::getVisualOutputSwitch() {
+        return visualOutputSwitch;
+    }
+
+    void avUgen::setVisualOutputSwitch(bool _visualOutputSwitch){
+        visualOutputSwitch = _visualOutputSwitch;
+    }
+
+    bool avUgen::getAudioOutputSwitch() {
+        return audioOutputSwitch;
+    }
+
+    void avUgen::setAudioOutputSwitch(bool _audioOutputSwitch){
+        audioOutputSwitch = _audioOutputSwitch;
+    }
+
     bool avUgen::isAudioOn(){
         return audioOutputSwitch;
     }
