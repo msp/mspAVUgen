@@ -20,7 +20,7 @@ namespace msp {
 
         bool debug = false;
         bool loadFromXML = true;
-        bool saveToXML = true;
+        bool saveToXML = false;
 
         string name;
 

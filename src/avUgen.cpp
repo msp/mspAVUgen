@@ -185,7 +185,6 @@ namespace msp {
 
         // get a non linear curve
         volume = sqrt(_volume);
-        ofLogVerbose() << "volume: " << volume << endl;
     }
 
     void avUgen::setMIDIMapping(int _channel, int _control){

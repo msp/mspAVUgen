@@ -20,6 +20,7 @@
 		63b57ac5bf4ef088491e0317dbb2ecaa /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50df87d612c5aae17aafa6c02c6bc570 /* ofxXmlSettings.cpp */; };
 		640279ee111671bd026cb0137d5b121e /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c2fac65c491d4231379f3298ec59c6e9 /* ofxOscReceiver.cpp */; };
 		67fe4c7b15c2f0478c8126c28fa6aad0 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3b361208cd4107e479f04e7bce6d93aa /* NetworkingUtils.cpp */; };
+		728AE74B17578EC400F5F41C /* soundBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 728AE74A17578EC400F5F41C /* soundBank.cpp */; };
 		729B84E016C3124E0043E414 /* avUgen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 729B84DF16C3124E0043E414 /* avUgen.cpp */; };
 		72B0780116D648C000A62F65 /* ofxRtMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B077D716D648C000A62F65 /* ofxRtMidiIn.cpp */; };
 		72B0780216D648C000A62F65 /* ofxRtMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B077D916D648C000A62F65 /* ofxRtMidiOut.cpp */; };
@@ -136,6 +137,8 @@
 		6a4ee0e35ed739a31cd0153efbb29a9c /* maxiFFT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = maxiFFT.cpp; path = ../../../addons/ofxMaxim/libs/maxiFFT.cpp; sourceTree = SOURCE_ROOT; };
 		6b65e6930994cc4b2d2b8b33b10f6e99 /* OscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscPacketListener.h; sourceTree = SOURCE_ROOT; };
 		72787FFE16C3102E00B6EFC5 /* avUgen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = avUgen.h; sourceTree = "<group>"; };
+		728AE74917578E3500F5F41C /* soundBank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = soundBank.h; sourceTree = "<group>"; };
+		728AE74A17578EC400F5F41C /* soundBank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundBank.cpp; sourceTree = "<group>"; };
 		729B84DF16C3124E0043E414 /* avUgen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = avUgen.cpp; sourceTree = "<group>"; };
 		72B077D716D648C000A62F65 /* ofxRtMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRtMidiIn.cpp; sourceTree = "<group>"; };
 		72B077D816D648C000A62F65 /* ofxRtMidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRtMidiIn.h; sourceTree = "<group>"; };
@@ -512,6 +515,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				72787FFE16C3102E00B6EFC5 /* avUgen.h */,
 				729B84DF16C3124E0043E414 /* avUgen.cpp */,
+				728AE74917578E3500F5F41C /* soundBank.h */,
+				728AE74A17578EC400F5F41C /* soundBank.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -759,6 +764,7 @@
 				72B0780E16D648C000A62F65 /* ofxMidiIn.cpp in Sources */,
 				72B0780F16D648C000A62F65 /* ofxMidiMessage.cpp in Sources */,
 				72B0781016D648C000A62F65 /* ofxMidiOut.cpp in Sources */,
+				728AE74B17578EC400F5F41C /* soundBank.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

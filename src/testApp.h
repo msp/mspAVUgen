@@ -1,5 +1,6 @@
 #pragma once
 
+#include "soundBank.h"
 #include "avUgen.h"
 #include "ofMain.h"
 #include "ofxUI.h"
@@ -14,7 +15,7 @@ class testApp : public ofBaseApp{
     
 	public:
 
-        static const int NUM_CHANNELS = 4;
+        static const int NUM_SOUNDCARD_CHANNELS = 4;
 
         bool debug = false;
 
@@ -44,7 +45,7 @@ class testApp : public ofBaseApp{
         float red, green, blue, alpha, width, height;
 
         int	initialBufferSize, sampleRate, solo;
-        double wave[NUM_CHANNELS], sample, outputs[NUM_CHANNELS];
+        double wave[NUM_SOUNDCARD_CHANNELS], sample, outputs[NUM_SOUNDCARD_CHANNELS];
 
         ofxMaxiMix mix;
         ofxMaxiOsc mySine;    
@@ -52,7 +53,8 @@ class testApp : public ofBaseApp{
         ofColor backgroundColor;
         std::vector<ofColor*> rgbHsb;
         std::vector<msp::avUgen*> channels;
-        
+
+        msp::soundBank soundBank;
         msp::avUgen *ch1, *ch2, *ch3, *ch4;
 
         ofxMidiIn midiIn;

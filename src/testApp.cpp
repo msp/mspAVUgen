@@ -20,7 +20,7 @@ void testApp::setup(){
     setupAVUgens();
 
     // The UI components use this vector of colours
-    for (int i=0; i<channels.size(); i++) {
+    for (int i=0; i<soundBank.activeSlots.size(); i++) {
         rgbHsb.push_back(new ofColor(red, green, blue));
     }
 
@@ -33,10 +33,10 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-    for (int i=0; i<channels.size(); i++) {
-        channels.at(i) -> update();
-//        channels.at(i) -> moveTo(mouseX,mouseY);
-        
+    for (int i=0; i<soundBank.activeSlots.size(); i++) {
+        soundBank.activeSlots.at(i) -> update();
+        //        soundBank.activeSlots.at(i) -> moveTo(mouseX,mouseY);
+
     }
 }
 
@@ -46,13 +46,13 @@ void testApp::draw(){
 	ofPushStyle();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 
-    for (int i=0; i<channels.size(); i++) {
+    for (int i=0; i<soundBank.activeSlots.size(); i++) {
         ofPushStyle();
 
         if (debug) cout << "MSP wave[" << i << "]:" << wave[i] << endl;
 
-        channels.at(i) -> draw();
-        
+        soundBank.activeSlots.at(i) -> draw();
+
         ofPopStyle();
     }
 
@@ -68,48 +68,48 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
 
 	for (int i = 0; i < bufferSize; i++){
 
-        for (int j = 0; j < NUM_CHANNELS; j++){
-            if (channels.at(j)->isAudioOn() == true){
-                wave[j] = channels.at(j)->getAudioOutput();
+        for (int j = 0; j < NUM_SOUNDCARD_CHANNELS; j++){
+            if (soundBank.activeSlots.at(j)->isAudioOn() == true){
+                wave[j] = soundBank.activeSlots.at(j)->getAudioOutput();
             }
         }
 
-        if (channels.at(0)-> isAudioOn()) {
-            mix.stereo(wave[0] + wave[2] / NUM_CHANNELS, outputs, panLeft);
+        if (soundBank.activeSlots.at(0)-> isAudioOn()) {
+            mix.stereo(wave[0] + wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
             output[i*nChannels    ] = outputs[0];
         }
 
-        if (channels.at(1)-> isAudioOn()) {
-            mix.stereo(wave[1] + wave[3] / NUM_CHANNELS, outputs, panRight);
+        if (soundBank.activeSlots.at(1)-> isAudioOn()) {
+            mix.stereo(wave[1] + wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
             output[i*nChannels + 1] = outputs[1];
         }
 
-//        if (channels.at(2)-> isAudioOn()) {
-//            mix.stereo(wave[2] / NUM_CHANNELS, outputs, panLeft);
-//            output[i*nChannels + 2] = outputs[0];
-//        }
-//        if (channels.at(3)-> isAudioOn()) {
-//            mix.stereo(wave[3] / NUM_CHANNELS, outputs, panRight);
-//            output[i*nChannels + 3] = outputs[1];
-//
-//        }
+        //        if (soundBank.activeSlots.at(2)-> isAudioOn()) {
+        //            mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
+        //            output[i*nChannels + 2] = outputs[0];
+        //        }
+        //        if (soundBank.activeSlots.at(3)-> isAudioOn()) {
+        //            mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
+        //            output[i*nChannels + 3] = outputs[1];
+        //
+        //        }
 	}
-	
+
 }
 
 //--------------------------------------------------------------
-void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){	
-	
-	
+void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){
+
+
 	/* You can just grab this input and stick it in a double, then use it above to create output*/
-	
+
 	for (int i = 0; i < bufferSize; i++){
-		
+
 		/* you can also grab the data out of the arrays*/
-		
-		
+
+
 	}
-	
+
 }
 
 //--------------------------------------------------------------
@@ -117,7 +117,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-	
+
 	if(name == "RED")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
@@ -177,30 +177,30 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 		alpha = slider->getScaledValue();
         rgbHsb.at(0) -> a = alpha;
 	}
-	else if(name == "RADIUS")
-	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		channels.at(0)->setRadius(slider->getScaledValue());
-	}
-//	else if(name == "RESOLUTION")
-//	{
-//		ofxUISlider *slider = (ofxUISlider *) e.widget;
-//		resolution = slider->getScaledValue();          //gets the value from the specified range, otherwise you can get a normalized value (0.0 -> 1.0);
-//        ofSetCircleResolution(resolution);
-//        slider->setValue(resolution);                   //shows the int value on the slider
-//	}
+    //	else if(name == "RADIUS")
+    //	{
+    //		ofxUISlider *slider = (ofxUISlider *) e.widget;
+    //		soundBank.activeSlots.at(0)->setRadius(slider->getScaledValue());
+    //	}
+    //	else if(name == "RESOLUTION")
+    //	{
+    //		ofxUISlider *slider = (ofxUISlider *) e.widget;
+    //		resolution = slider->getScaledValue();          //gets the value from the specified range, otherwise you can get a normalized value (0.0 -> 1.0);
+    //        ofSetCircleResolution(resolution);
+    //        slider->setValue(resolution);                   //shows the int value on the slider
+    //	}
     else if(name == "POSITION_CH1")
 	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-		channels.at(0) -> setX(pad->getPercentValue().x*ofGetWidth());
-		channels.at(0) -> setY(pad->getPercentValue().y*ofGetHeight());
+		soundBank.activeSlots.at(0) -> setX(pad->getPercentValue().x*ofGetWidth());
+		soundBank.activeSlots.at(0) -> setY(pad->getPercentValue().y*ofGetHeight());
 	}
     else if(name == "POSITION_CH2")
 	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-		channels.at(1) -> setX(pad->getPercentValue().x*ofGetWidth());
-		channels.at(1) -> setY(pad->getPercentValue().y*ofGetHeight());
-	}    
+		soundBank.activeSlots.at(1) -> setX(pad->getPercentValue().x*ofGetWidth());
+		soundBank.activeSlots.at(1) -> setY(pad->getPercentValue().y*ofGetHeight());
+	}
     else if(name == "DRAW FILL")
     {
         ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
@@ -213,129 +213,61 @@ void testApp::exit()
 {
     gui->saveSettings("GUI/guiSettings.xml");
     delete gui;
-    
+
 	midiIn.closePort();
 
-    for(int i=0; i<channels.size(); i++){
-        midiIn.removeListener(channels.at(i));
-        channels.at(i)->saveXMLSettings();
+    for(int i=0; i<soundBank.activeSlots.size(); i++){
+        midiIn.removeListener(soundBank.activeSlots.at(i));
+        soundBank.activeSlots.at(i)->saveXMLSettings();
     }
 }
 
 //--------------------------------------------------------------
 void testApp::setupAVUgens(){
-    /*************************************/
-    channels.push_back(new msp::avUgen("msp0"));
 
-    channels.at(0)->setMIDIMapping(14,100);
-    channels.at(0)->setMIDIMapping(14,80);
-    channels.at(0)->setMIDIMapping(14,60);
-    channels.at(0)->setMIDIMapping(14,40);
+    std::vector<string> avUgenNames;
+    avUgenNames.push_back("msp0");
+    avUgenNames.push_back("msp1");
+    avUgenNames.push_back("msp2");
+    avUgenNames.push_back("msp3");
 
-    /*************************************/
-    channels.push_back(new msp::avUgen("msp1"));
+    soundBank = *new msp::soundBank(avUgenNames);
 
-    channels.at(1)->setMIDIMapping(14,101);
-    channels.at(1)->setMIDIMapping(14,81);
-    channels.at(1)->setMIDIMapping(14,61);
-    channels.at(1)->setMIDIMapping(14,41);
+    ofLogVerbose() << "soundBank.activeSlots: " << soundBank.activeSlots.size() << endl;
 
     /*************************************/
-    channels.push_back(new msp::avUgen("msp2"));
-
-    channels.at(2)->setMIDIMapping(14,102);
-    channels.at(2)->setMIDIMapping(14,82);
-    channels.at(2)->setMIDIMapping(14,62);
-    channels.at(2)->setMIDIMapping(14,42);
+    soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
+    soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
+    soundBank.activeSlots.at(0)->setMIDIMapping(14,60);
+    soundBank.activeSlots.at(0)->setMIDIMapping(14,40);
 
     /*************************************/
-    channels.push_back(new msp::avUgen("msp3"));
+    soundBank.activeSlots.at(1)->setMIDIMapping(14,101);
+    soundBank.activeSlots.at(1)->setMIDIMapping(14,81);
+    soundBank.activeSlots.at(1)->setMIDIMapping(14,61);
+    soundBank.activeSlots.at(1)->setMIDIMapping(14,41);
 
-    channels.at(3)->setMIDIMapping(14,103);
-    channels.at(3)->setMIDIMapping(14,83);
-    channels.at(3)->setMIDIMapping(14,63);
-    channels.at(3)->setMIDIMapping(14,43);
+    /*************************************/
+    soundBank.activeSlots.at(2)->setMIDIMapping(14,102);
+    soundBank.activeSlots.at(2)->setMIDIMapping(14,82);
+    soundBank.activeSlots.at(2)->setMIDIMapping(14,62);
+    soundBank.activeSlots.at(2)->setMIDIMapping(14,42);
+
+    /*************************************/
+    soundBank.activeSlots.at(3)->setMIDIMapping(14,103);
+    soundBank.activeSlots.at(3)->setMIDIMapping(14,83);
+    soundBank.activeSlots.at(3)->setMIDIMapping(14,63);
+    soundBank.activeSlots.at(3)->setMIDIMapping(14,43);
+
+    /*************************************/
+    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,104);
+    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,84);
+    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,64);
+    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,44);
 
     /*************************************/
 
-    if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen("msp4"));
-
-        channels.at(4)->setRadius(0);
-
-        channels.at(4)->setAudioEngine(msp::avUgen::MONO);
-        channels.at(4)->setVolume(0.0);
-        channels.at(4)->setRandomResolution(true);
-
-        channels.at(4)->setFrequency(803);
-
-        channels.at(4)->setMIDIMapping(14,104);
-        channels.at(4)->setMIDIMapping(14,84);
-        channels.at(4)->setMIDIMapping(14,64);
-        channels.at(4)->setMIDIMapping(14,44);
-    }
-    /*************************************/
-    if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen("msp5"));
-
-        channels.at(5)->setRadius(0);
-
-        channels.at(5)->setAudioEngine(msp::avUgen::MONO);
-        channels.at(5)->setVolume(0.0);
-        channels.at(5)->setRandomResolution(true);
-
-        channels.at(5)->setFrequency(803);
-
-        channels.at(5)->setMIDIMapping(14,105);
-        channels.at(5)->setMIDIMapping(14,85);
-        channels.at(5)->setMIDIMapping(14,65);
-        channels.at(5)->setMIDIMapping(14,45);
-    }
-    /*************************************/
-    if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen("msp6"));
-
-        channels.at(6)->setRadius(0);
-
-        channels.at(6)->setAudioEngine(msp::avUgen::MONO);
-        channels.at(6)->setVolume(0.0);
-        channels.at(6)->setRandomResolution(true);
-
-        channels.at(6)->setFrequency(803);
-
-        channels.at(6)->setMIDIMapping(14,106);
-        channels.at(6)->setMIDIMapping(14,86);
-        channels.at(6)->setMIDIMapping(14,66);
-        channels.at(6)->setMIDIMapping(14,46);
-    }
-    /*************************************/
-    if (NUM_CHANNELS > 4){
-        channels.push_back(new msp::avUgen("msp7"));
-
-        channels.at(7)->setRadius(0);
-
-        channels.at(7)->setAudioEngine(msp::avUgen::MONO);
-        channels.at(7)->setVolume(0.0);
-        channels.at(7)->setRandomResolution(true);
-
-        channels.at(7)->setFrequency(803);
-
-        channels.at(7)->setMIDIMapping(14,107);
-        channels.at(7)->setMIDIMapping(14,87);
-        channels.at(7)->setMIDIMapping(14,67);
-        channels.at(7)->setMIDIMapping(14,47);
-    }
-
-
-    // a/v state
-//    channels.at(0)->switchOffAudio();
-//    channels.at(0)->switchOffVisual();
-//    channels.at(1)->switchOffAudio();
-//    channels.at(1)->switchOffVisual();
-//    channels.at(2)->switchOffAudio();
-//    channels.at(2)->switchOffVisual();
-//    channels.at(3)->switchOffAudio();
-//    channels.at(3)->switchOffVisual();
+    ofLogVerbose() << "Done setupAVUgens" << endl;
 
 }
 
@@ -346,7 +278,7 @@ void testApp::setupMIDI(){
 	midiIn.listPorts(); // via instance
 	//ofxMidiIn::listPorts(); // via static as well
 
-//	midiIn.openPort("Audio 8 DJ MIDI input port 0");
+    //	midiIn.openPort("Audio 8 DJ MIDI input port 0");
 	midiIn.openPort("USB Uno MIDI Interface");
 
 	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
@@ -358,12 +290,14 @@ void testApp::setupMIDI(){
     // add testApp as a listener
     //	midiIn.addListener(this);
     // add each avUgen as a midi listener
-    for(int i=0; i < channels.size(); i++){
-        midiIn.addListener(channels.at(i));
+    for(int i=0; i < soundBank.activeSlots.size(); i++){
+        midiIn.addListener(soundBank.activeSlots.at(i));
     }
 
 	// print received messages to the console
 	midiIn.setVerbose(true);
+
+    ofLogVerbose() << "Done setupMIDI" << endl;
 }
 
 //--------------------------------------------------------------
@@ -390,7 +324,7 @@ void testApp::setupUI(){
 	gui->addSlider("GREEN", 0.0, 255.0, rgbHsb.at(0)->g, length,dim);
     gui->addSlider("BLUE", 0.0, 255.0, rgbHsb.at(0)->b, length,dim);
     gui->addSlider("ALPHA", 0.0, 255.0, rgbHsb.at(0)->a, length,dim);
-//    gui->addSlider("RADIUS", 0.0, 600.0, channels.at(0)->getRadius(), length,dim);
+    //    gui->addSlider("RADIUS", 0.0, 600.0, soundBank.activeSlots.at(0)->getRadius(), length,dim);
     //	gui->addSlider("RESOLUTION", 3, 60, resolution, length,dim);
 
     gui->addSpacer(length, 2);
@@ -410,11 +344,13 @@ void testApp::setupUI(){
     gui->addWidgetDown(new ofxUILabel("MOUSE OVER A SLIDER AND", OFX_UI_FONT_MEDIUM));
     gui->addWidgetDown(new ofxUILabel("PRESS UP, DOWN, LEFT, RIGHT", OFX_UI_FONT_MEDIUM));
 
-//    switch off until we need the UI, it interferes with our serialized state
-//    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
+    //    switch off until we need the UI, it interferes with our serialized state
+    //    ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
     gui->loadSettings("GUI/guiSettings.xml");
     gui->toggleVisible();
+
+    ofLogVerbose() << "Done setupUI" << endl;
 
 }
 
@@ -426,47 +362,48 @@ void testApp::setupSound() {
 
     soundStream.listDevices();
     // soundStream.setDeviceID(5);
-    soundStream.setup(this, NUM_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
+    soundStream.setup(this, NUM_SOUNDCARD_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
+    ofLogVerbose() << "Done setupSound" << endl;
 }
 
 void testApp::drawMIDI() {
 
-    for(int i=0; i<channels.size(); i++){
+    for(int i=0; i<soundBank.activeSlots.size(); i++){
         // draw the last recieved message contents to the screen
-        text << "Received: " << ofxMidiMessage::getStatusString(channels.at(i) -> midiMessage.status);
+        text << "Received: " << ofxMidiMessage::getStatusString(soundBank.activeSlots.at(i) -> midiMessage.status);
         ofDrawBitmapString(text.str(), 20, 20);
         text.str(""); // clear
 
-        text << "channel: " << channels.at(i) -> midiMessage.channel;
+        text << "channel: " << soundBank.activeSlots.at(i) -> midiMessage.channel;
         ofDrawBitmapString(text.str(), 20, 34);
         text.str(""); // clear
 
-        text << "pitch: " << channels.at(i) -> midiMessage.pitch;
+        text << "pitch: " << soundBank.activeSlots.at(i) -> midiMessage.pitch;
         ofDrawBitmapString(text.str(), 20, 48);
         text.str(""); // clear
-        ofRect(20, 58, ofMap(channels.at(i) -> midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
+        ofRect(20, 58, ofMap(soundBank.activeSlots.at(i) -> midiMessage.pitch, 0, 127, 0, ofGetWidth()-40), 20);
 
-        text << "velocity: " << channels.at(i) -> midiMessage.velocity;
+        text << "velocity: " << soundBank.activeSlots.at(i) -> midiMessage.velocity;
         ofDrawBitmapString(text.str(), 20, 96);
         text.str(""); // clear
-        ofRect(20, 105, ofMap(channels.at(i) -> midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
+        ofRect(20, 105, ofMap(soundBank.activeSlots.at(i) -> midiMessage.velocity, 0, 127, 0, ofGetWidth()-40), 20);
 
-        text << "control: " << channels.at(i) -> midiMessage.control;
+        text << "control: " << soundBank.activeSlots.at(i) -> midiMessage.control;
         ofDrawBitmapString(text.str(), 20, 144);
         text.str(""); // clear
-        ofRect(20, 154, ofMap(channels.at(i) -> midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
+        ofRect(20, 154, ofMap(soundBank.activeSlots.at(i) -> midiMessage.control, 0, 127, 0, ofGetWidth()-40), 20);
 
-        text << "value: " << channels.at(i) -> midiMessage.value;
+        text << "value: " << soundBank.activeSlots.at(i) -> midiMessage.value;
         ofDrawBitmapString(text.str(), 20, 192);
         text.str(""); // clear
-        if(channels.at(i) -> midiMessage.status == MIDI_PITCH_BEND) {
-            ofRect(20, 202, ofMap(channels.at(i) -> midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
+        if(soundBank.activeSlots.at(i) -> midiMessage.status == MIDI_PITCH_BEND) {
+            ofRect(20, 202, ofMap(soundBank.activeSlots.at(i) -> midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
         }
         else {
-            ofRect(20, 202, ofMap(channels.at(i) -> midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
+            ofRect(20, 202, ofMap(soundBank.activeSlots.at(i) -> midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
         }
-        
-        text << "delta: " << channels.at(i) -> midiMessage.deltatime;
+
+        text << "delta: " << soundBank.activeSlots.at(i) -> midiMessage.deltatime;
         ofDrawBitmapString(text.str(), 20, 240);
         text.str(""); // clear
     }
@@ -512,20 +449,20 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-
+    
 }
 
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
-
+    
 }
 
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
-
+    
 }

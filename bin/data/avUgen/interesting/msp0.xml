@@ -1,0 +1,18 @@
+<avUgen>
+    <name>msp0</name>
+    <x>88</x>
+    <y>300</y>
+    <radius>56</radius>
+    <audioEngine>998</audioEngine>
+    <volume>7.483314991</volume>
+    <pan>0.109999999</pan>
+    <frequency>60</frequency>
+    <visualOutputSwitch>1</visualOutputSwitch>
+    <audioOutputSwitch>1</audioOutputSwitch>
+    <randomResolutionSwitch>0</randomResolutionSwitch>
+    <animateRadiusSwitch>0</animateRadiusSwitch>
+    <throttle>10</throttle>
+    <hue>0.000000000</hue>
+    <saturation>255.000000000</saturation>
+    <brightness>200.000000000</brightness>
+</avUgen>
