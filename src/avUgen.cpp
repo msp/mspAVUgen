@@ -45,7 +45,6 @@ namespace msp {
 
         if (debug) logger.open("development.log");
         ofSetCircleResolution(100);
-        loadXMLSettings();
     }
 
     string avUgen::pseudoRandomName() {
@@ -92,25 +91,33 @@ namespace msp {
         return name;
     }
 
-    // return absolute x pos on screen
     int avUgen::getX(){
         return x;
     }
 
-    // expect a midi value 1 - 127
     void avUgen::setX(int _x) {
+        x = _x;
+    }
+
+    // expect a midi value 1 - 127
+    void avUgen::setXMIDI(int _x) {
         _x = _x > 127 ? 127 : _x;
         _x = _x < 1 ? 1 : _x;
+
+        setPanMIDI(_x);
         x = (ofGetWindowWidth() / 127) * _x;
     }
 
-    // return a pan between 0 & 1
     double avUgen::getPan(){
         return pan;
     }
 
-    // expect a midi value 1 - 127
     void avUgen::setPan(double _pan) {
+        pan = _pan;
+    }
+
+    // expect a midi value 1 - 127
+    void avUgen::setPanMIDI(int _pan) {
         pan = _pan / 100;
     }
 
@@ -130,11 +137,23 @@ namespace msp {
         radius = _radius;
     }
 
+    // expect a midi value 1 - 127
+    void avUgen::setRadiusMIDI(int _radius){
+        lastMIDIRadius = _radius;
+        setVolumeMIDI(_radius);
+        radius = _radius;
+    }
+
     int avUgen::getThrottle(){
         return throttle;
     }
 
     void avUgen::setThrottle(int _throttle){
+        throttle = _throttle;
+    }
+
+    // expect a midi value 1 - 127
+    void avUgen::setThrottleMIDI(int _throttle){
         throttle = _throttle;
     }
 
@@ -157,7 +176,13 @@ namespace msp {
     void avUgen::setFrequency(int _frequency){
         frequency = _frequency;
     }
-    
+
+    // expect a midi value 1 - 127
+    void avUgen::setFrequencyMIDI(int _frequency){
+        frequency = sqrt(_frequency) * (sqrt(_frequency) * 12);
+        ofLogVerbose() << "setting frequency " << frequency << endl;
+    }
+
     int avUgen::getAudioEngine() {
         return audioEngine;
     }
@@ -219,12 +244,22 @@ namespace msp {
     }
 
     void avUgen::setVolume(double _volume){
-        lastMIDIVolume = _volume;
+        volume = _volume;
+    }
 
+    // expect a midi value 1 - 127
+    void avUgen::setVolumeMIDI(int _volume){
         // get a non linear curve
         volume = sqrt(_volume);
     }
 
+    // expect a midi value 1 - 127
+    void avUgen::setHueMIDI(int _hue){
+        ofLogVerbose() << "setting hue " << _hue << endl;
+        color.setHue(_hue);
+        setFrequencyMIDI(_hue);
+    }
+    
     void avUgen::setMIDIMapping(int _channel, int _control){
         midiChannel.push_back(_channel);
         midiControlNumber.push_back(_control);
@@ -275,21 +310,17 @@ namespace msp {
             ofLogVerbose() << "value: " << msg.value << endl;
 
             if (msg.control == midiControlNumber.at(0)){
-                double thisVolume = lastMIDIVolume == 63.0 ? 0 : msg.value;
-                ofLogVerbose() << "setting radius/volume: " << thisVolume  << endl;
-                radius = thisVolume;
-                setVolume(thisVolume);
+                double thisRadius = lastMIDIRadius == 63.0 ? 0 : msg.value;
+                ofLogVerbose() << "setting radius/volume: " << thisRadius  << endl;
+                setRadiusMIDI(thisRadius);
             } else if (msg.control == midiControlNumber.at(1)){
-                color.setHue(msg.value);
-                frequency = sqrt(msg.value) * (sqrt(msg.value) * 12);
-                ofLogVerbose() << "setting hue/pitch: " << frequency << endl;
+                setHueMIDI(msg.value);
             } else if (msg.control == midiControlNumber.at(2)){
                 ofLogVerbose() << "setting throttle: " << msg.value << endl;
-                throttle = msg.value;
+                setThrottleMIDI(msg.value);
             } else if (msg.control == midiControlNumber.at(3)){
                 ofLogVerbose() << "setting pan: " << msg.value << endl;
-                setPan(msg.value);
-                setX(msg.value);
+                setXMIDI(msg.value);
             }
 
         }
@@ -307,67 +338,6 @@ namespace msp {
         }
 
         return ret;
-    }
-
-    void avUgen::saveXMLSettings(){
-
-        if (saveToXML) {
-
-            ofLogVerbose() << "saving XML settings:" << endl;
-            inspect();
-            
-            ofxXmlSettings settings;
-            settings.setValue("avUgen:name", name);
-            settings.setValue("avUgen:x", x);
-            settings.setValue("avUgen:y", y);
-            settings.setValue("avUgen:radius", radius);
-            settings.setValue("avUgen:audioEngine", audioEngine);
-            settings.setValue("avUgen:volume", volume);
-            settings.setValue("avUgen:pan", pan);
-            settings.setValue("avUgen:frequency", frequency);
-            settings.setValue("avUgen:visualOutputSwitch", visualOutputSwitch);
-            settings.setValue("avUgen:audioOutputSwitch", audioOutputSwitch);
-            settings.setValue("avUgen:audioEngine", audioEngine);
-            settings.setValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
-            settings.setValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
-            settings.setValue("avUgen:throttle", throttle);
-
-            settings.setValue("avUgen:hue", color.getHue());
-            settings.setValue("avUgen:saturation", color.getSaturation());
-            settings.setValue("avUgen:brightness", color.getBrightness());
-
-            settings.saveFile("avUgen/" + name + ".xml");
-        }
-    }
-
-    void avUgen::loadXMLSettings(){
-
-        if (loadFromXML) {
-            ofLogVerbose() << "loading XML settings:" << endl;
-
-            ofxXmlSettings settings;
-            settings.loadFile("avUgen/" + name + ".xml");
-
-            x = settings.getValue("avUgen:x", x);
-            y = settings.getValue("avUgen:y", y);
-            audioEngine = settings.getValue("avUgen:audioEngine", audioEngine);
-            radius = settings.getValue("avUgen:radius", radius);
-            volume = settings.getValue("avUgen:volume", volume);
-            pan = settings.getValue("avUgen:pan", pan);
-            frequency =  settings.getValue("avUgen:frequency", frequency);
-            visualOutputSwitch = settings.getValue("avUgen:visualOutputSwitch", visualOutputSwitch);
-            audioOutputSwitch = settings.getValue("avUgen:audioOutputSwitch", audioOutputSwitch);
-            audioEngine = settings.getValue("avUgen::audioEngine", msp::avUgen::MONO);
-            randomResolutionSwitch = settings.getValue("avUgen:randomResolutionSwitch", randomResolutionSwitch);
-            animateRadiusSwitch = settings.getValue("avUgen:animateRadiusSwitch", animateRadiusSwitch);
-            throttle =  settings.getValue("avUgen:throttle", throttle);
-
-            color.setHue(settings.getValue("avUgen:hue", ofRandom(255)));
-            color.setSaturation(settings.getValue("avUgen:saturation", ofRandom(255)));
-            color.setBrightness(settings.getValue("avUgen:brightness", ofRandom(255)));
-
-            inspect();
-        }
     }
 
     void avUgen::inspect() {

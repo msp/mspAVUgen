@@ -33,7 +33,7 @@ namespace msp {
         bool audioOutputSwitch;
         int audioEngine;
         int frequency;
-        double volume, lastMIDIVolume, pan;
+        double volume, lastMIDIRadius, pan;
         int currentCount, lastCount;
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};
@@ -89,7 +89,16 @@ namespace msp {
         void setAudioOutputSwitch(bool _audioOutputSwitch);
 
         void setMIDIMapping(int _channel, int _control);
-        
+
+        // MIDI Mutators
+        void setXMIDI(int _x);
+        void setPanMIDI(int _pan);
+        void setRadiusMIDI(int _radius);
+        void setThrottleMIDI(int _throttle);
+        void setFrequencyMIDI(int _frequency);
+        void setVolumeMIDI(int _volume);
+        void setHueMIDI(int _hue);
+
         // Accessors
         string getName();
         int getX();
@@ -120,9 +129,6 @@ namespace msp {
         std::vector<int> midiControlNumber;
         std::vector<int> midiValue;
 
-        // serialisation
-        void loadXMLSettings();
-        void saveXMLSettings();
         void inspect();
 
     };

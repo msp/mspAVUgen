@@ -101,9 +101,7 @@ namespace msp {
             preset->setY(settings.getValue("avUgen:y", preset->getY(), i));
             preset->setAudioEngine(settings.getValue("avUgen:audioEngine", preset->getAudioEngine(), i));
             preset->setRadius(settings.getValue("avUgen:radius", preset->getRadius(), i));
-            //TODO raw set volume without sqrt
             preset->setVolume(settings.getValue("avUgen:volume", preset->getVolume(), i));
-            //TODO raw set pan without /100
             preset->setPan(settings.getValue("avUgen:pan", preset->getPan(), i));
             preset->setFrequency(settings.getValue("avUgen:frequency", preset->getFrequency(), i));
             preset->setVisualOutputSwitch(settings.getValue("avUgen:visualOutputSwitch", preset->getVisualOutputSwitch(), i));
@@ -114,9 +112,10 @@ namespace msp {
             preset->setThrottle(settings.getValue("avUgen:throttle", preset->getThrottle(), i));
 
             ofColor _color = *new ofColor();
-            _color.setHue(settings.getValue("avUgen:hue", ofRandom(255), i));
-            _color.setSaturation(settings.getValue("avUgen:saturation", ofRandom(255), i));
-            _color.setBrightness(settings.getValue("avUgen:brightness", ofRandom(255), i));
+            float hue = settings.getValue("avUgen:hue", ofRandom(255), i);
+            float saturation = settings.getValue("avUgen:saturation", ofRandom(255), i);
+            float brightness = settings.getValue("avUgen:brightness", ofRandom(255), i);
+            _color.setHsb(hue, saturation, brightness);
             preset->setColor(_color);
         }
 
@@ -127,7 +126,7 @@ namespace msp {
     void soundBank::saveActivePresetToXML(){
         if (saveToXML) {
 
-            ofLogVerbose() << "saveActivePresetToXML" << endl;
+            ofLogVerbose() << "saveActivePresetToXML()" << endl;
 
             string filename = "";
             int tagId = 0;
@@ -154,14 +153,12 @@ namespace msp {
                     settings.setValue("y", preset->getY(), i);
                     settings.setValue("audioEngine", preset->getAudioEngine(), i);
                     settings.setValue("radius", preset->getRadius(), i);
-                    //TODO raw set volume without sqrt
-                    settings.getValue("volume", preset->getVolume(), i);
-                    //TODO raw set pan without /100
+                    settings.setValue("volume", preset->getVolume(), i);
                     settings.setValue("pan", preset->getPan(), i);
                     settings.setValue("frequency", preset->getFrequency(), i);
                     settings.setValue("visualOutputSwitch", preset->getVisualOutputSwitch(), i);
                     settings.setValue("audioOutputSwitch", preset->getAudioOutputSwitch(), i);
-                    settings.setValue(":audioEngine", msp::avUgen::MONO, i);
+                    settings.setValue("audioEngine", msp::avUgen::MONO, i);
                     settings.setValue("randomResolutionSwitch", preset->getRandomResolutionSwitch(), i);
                     settings.setValue("animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i);
                     settings.setValue("throttle", preset->getThrottle(), i);

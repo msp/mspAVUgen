@@ -222,7 +222,7 @@ void testApp::exit()
 
     for(int i=0; i<soundBank.activeSlots.size(); i++){
         midiIn.removeListener(soundBank.activeSlots.at(i));
-        soundBank.activeSlots.at(i)->saveXMLSettings();
+//        soundBank.saveActivePresetToXML();
     }
 }
 
