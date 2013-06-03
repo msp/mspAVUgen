@@ -423,6 +423,9 @@ void testApp::keyPressed(int key){
 		case 'l':
 			midiIn.listPorts();
 			break;
+		case 's':
+			soundBank.saveActivePresetToXML();
+			break;
 		case 'p':
 
             for(int i = 0; i<soundBank.activeSlots.size(); i++) {

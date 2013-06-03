@@ -97,6 +97,7 @@ namespace msp {
         double getPan();
         int getRadius();
         int getThrottle();
+        ofColor getColor();
         int getFrequency();
         int getAudioEngine();
         double getVolume();

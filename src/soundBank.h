@@ -16,17 +16,19 @@ namespace msp {
     class soundBank{
 
         bool loadFromXML = true;
+        bool saveToXML = true;
         
         int currentPreset = 0;
         std::vector<string> avUgenNames;
 
+        void loadPreset(ofxXmlSettings settings, int i, string name, int slot);
 
     public:
         bool audioReady = true;
         ~soundBank();
 
         // Constants
-        static const int TOTAL_PRESETS = 2 - 1;
+        static const int TOTAL_PRESETS = 3 - 1;
         static const int TOTAL_SLOTS = 4 - 1;
 
         // Constructors
@@ -39,8 +41,8 @@ namespace msp {
         void cyclePreset();
 
         // Serialisation
-        void loadXMLPresetOrInitialise(string name, int slot);
-        void saveXMLSettings();
+        void loadPresetsOrInitialise();
+        void saveActivePresetToXML();
     };
 }
 

@@ -11,11 +11,6 @@
 namespace msp {
     avUgen::avUgen(){
         name = pseudoRandomName();
-        x = ofRandom(ofGetWindowWidth());
-        y = ofRandom(ofGetWindowHeight());
-        radius = DEFAULT_RADIUS;
-        color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
-
         initialize();
     }
 
@@ -30,7 +25,10 @@ namespace msp {
 
     void avUgen::initialize(){
 
-        setAudioEngine(SINE);
+        setX(ofRandom(ofGetWindowWidth()));
+        setY(ofRandom(ofGetWindowHeight()));
+        setAudioEngine(MONO);
+        setRadius(DEFAULT_RADIUS);
         setVolume(DEFAULT_VOLUME);
         setPan(0.5);
         setFrequency(300);
@@ -42,6 +40,8 @@ namespace msp {
         frame = 0;
         lastCount = 0;
         currentCount = 0;
+
+        color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
 
         if (debug) logger.open("development.log");
         ofSetCircleResolution(100);
@@ -138,10 +138,14 @@ namespace msp {
         throttle = _throttle;
     }
 
+    ofColor avUgen::getColor(){
+        return color;
+    }
+
     void avUgen::setColor(ofColor _color){
         color = _color;
     }
-    
+
     void avUgen::setOscillator(ofxMaxiOsc _osc){
         osc = _osc;
     }
