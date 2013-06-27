@@ -69,8 +69,6 @@ namespace msp {
                 ofLogNotice() << filename + " loaded! +++++++++++++++++";
 
                 settings.pushTag("avUgens", 0);
-
-                ofLogVerbose() << "Found tags: " << settings.getNumTags("avUgen") ;
                 ofLogVerbose() << "Found presets in file: " << settings.getNumTags("avUgen") << endl;
 
                 for (int j = 0; j <= TOTAL_PRESETS; j++){
@@ -85,7 +83,18 @@ namespace msp {
                 settings.popTag(); //avUgens
 
             } else {
-                ofLogWarning() << "unable to load "+ filename +" check data/ folder.";
+                ofLogWarning() << "unable to load "+ filename +" check data/ folder. Initialising defaults instead..";
+
+                for (int j = 0; j <= TOTAL_PRESETS; j++){
+
+                    char buffer[100];
+                    std::ostringstream buf;
+                    buf << avUgenNames.at(i) << "-" << j;
+
+                    avUgen *preset = new msp::avUgen(settings.getValue("avUgen:name", buf.str(), i));
+                    presetSlots[i].push_back(preset);
+                }
+
             }
             
         }
@@ -106,16 +115,17 @@ namespace msp {
             preset->setFrequency(settings.getValue("avUgen:frequency", preset->getFrequency(), i));
             preset->setVisualOutputSwitch(settings.getValue("avUgen:visualOutputSwitch", preset->getVisualOutputSwitch(), i));
             preset->setAudioOutputSwitch(settings.getValue("avUgen:audioOutputSwitch", preset->getAudioOutputSwitch(), i));
-            preset->setAudioEngine(settings.getValue("avUgen::audioEngine", msp::avUgen::MONO, i));
+            preset->setAudioEngine(settings.getValue("avUgen::audioEngine", preset->getAudioEngine(), i));
             preset->setRandomResolutionSwitch(settings.getValue("avUgen:randomResolutionSwitch", preset->getRandomResolutionSwitch(), i));
             preset->setAnimateRadiusSwitch(settings.getValue("avUgen:animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i));
             preset->setThrottle(settings.getValue("avUgen:throttle", preset->getThrottle(), i));
 
             ofColor _color = *new ofColor();
-            float hue = settings.getValue("avUgen:hue", ofRandom(255), i);
-            float saturation = settings.getValue("avUgen:saturation", ofRandom(255), i);
-            float brightness = settings.getValue("avUgen:brightness", ofRandom(255), i);
-            _color.setHsb(hue, saturation, brightness);
+            float hue = settings.getValue("avUgen:hue", preset->getColor().getHue(), i);
+            float saturation = settings.getValue("avUgen:saturation", preset->getColor().getSaturation(), i);
+            float brightness = settings.getValue("avUgen:brightness", preset->getColor().getBrightness(), i);
+            float alpha = settings.getValue("avUgen:alpha", preset->getColor().a, i);
+            _color.setHsb(hue, saturation, brightness, alpha);
             preset->setColor(_color);
         }
 
@@ -123,10 +133,10 @@ namespace msp {
         presetSlots[slot].push_back(preset);
     }
 
-    void soundBank::saveActivePresetToXML(){
+    void soundBank::savePresetsToXML(){
         if (saveToXML) {
 
-            ofLogVerbose() << "saveActivePresetToXML()" << endl;
+            ofLogVerbose() << "savePresetsToXML()" << endl;
 
             string filename = "";
             int tagId = 0;
@@ -166,6 +176,7 @@ namespace msp {
                     settings.setValue("hue", preset->getColor().getHue());
                     settings.setValue("saturation", preset->getColor().getSaturation());
                     settings.setValue("brightness", preset->getColor().getBrightness());
+                    settings.setValue("alpha", preset->getColor().a);
 
                     filename = "avUgen/" + avUgenNames.at(i) + ".xml";
 

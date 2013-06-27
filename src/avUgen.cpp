@@ -27,21 +27,30 @@ namespace msp {
 
         setX(ofRandom(ofGetWindowWidth()));
         setY(ofRandom(ofGetWindowHeight()));
+
+        //color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
+        color.set(255,0,0, LIGHT_ALPHA); //default red
+
         setAudioEngine(MONO);
-        setRadius(DEFAULT_RADIUS);
-        setVolume(DEFAULT_VOLUME);
+
+        setRadiusMIDI(ofRandom(127));
+//        setRadius(DEFAULT_RADIUS);
+//        setVolume(DEFAULT_VOLUME);
         setPan(0.5);
-        setFrequency(300);
+
+        setHueMIDI(ofRandom(127));
+//        setFrequency(300);
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         randomResolutionSwitch = false;
         animateRadiusSwitch = false;
-        throttle = 10;
+
+        setThrottleMIDI(ofRandom(127));
+//        throttle = ofRandom(50);
         frame = 0;
         lastCount = 0;
         currentCount = 0;
 
-        color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
 
         if (debug) logger.open("development.log");
         ofSetCircleResolution(100);
@@ -179,7 +188,13 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setFrequencyMIDI(int _frequency){
-        frequency = sqrt(_frequency) * (sqrt(_frequency) * 12);
+
+        int minFreq = 20;
+        int maxFreq = 20000;
+
+        float p1 = (float) _frequency / 127; // we now have p1 = [0..1]
+        frequency = minFreq + (p1*p1) * (maxFreq-minFreq);
+
         ofLogVerbose() << "setting frequency " << frequency << endl;
     }
 
@@ -255,8 +270,8 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setHueMIDI(int _hue){
-        ofLogVerbose() << "setting hue " << _hue << endl;
-        color.setHue(_hue);
+        color.setHue((_hue * 2) - 10);
+        ofLogVerbose() << "setting hue " << color.getHue() << endl;
         setFrequencyMIDI(_hue);
     }
     

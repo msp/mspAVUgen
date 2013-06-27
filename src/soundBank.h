@@ -28,7 +28,7 @@ namespace msp {
         ~soundBank();
 
         // Constants
-        static const int TOTAL_PRESETS = 3 - 1;
+        static const int TOTAL_PRESETS = 5 - 1;
         static const int TOTAL_SLOTS = 4 - 1;
 
         // Constructors
@@ -42,7 +42,7 @@ namespace msp {
 
         // Serialisation
         void loadPresetsOrInitialise();
-        void saveActivePresetToXML();
+        void savePresetsToXML();
     };
 }
 

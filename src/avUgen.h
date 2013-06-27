@@ -54,7 +54,7 @@ namespace msp {
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
         enum { SINE = 999, MONO = 998 };
 
-        static const int DEFAULT_RADIUS = 300;
+        static const int DEFAULT_RADIUS = 30;
         static const int DEFAULT_RADIUS_MULTPLIER = 10;
         static const int DEFAULT_VOLUME = 3;
         
