@@ -28,8 +28,8 @@ namespace msp {
         ~soundBank();
 
         // Constants
-        static const int TOTAL_PRESETS = 5 - 1;
-        static const int TOTAL_SLOTS = 4 - 1;
+        static const int TOTAL_PRESETS = 8 -1;
+        static const int TOTAL_SLOTS = 4 -1;
 
         // Constructors
         soundBank();
