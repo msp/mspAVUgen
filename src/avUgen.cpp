@@ -25,6 +25,16 @@ namespace msp {
 
     void avUgen::initialize(){
 
+        frame = 0;
+        lastCount = 0;
+        currentCount = 0;
+
+        visualOutputSwitch = true;
+        audioOutputSwitch = true;
+        // these may be overriden, depending on the audio engine
+        randomResolutionSwitch = false;
+        animateRadiusSwitch = false;
+
         setX(ofRandom(ofGetWindowWidth()));
         setY(ofRandom(ofGetWindowHeight()));
 
@@ -37,16 +47,6 @@ namespace msp {
 
         setHueMIDI(ofRandom(127));
         setThrottleMIDI(ofRandom(127));
-
-        visualOutputSwitch = true;
-        audioOutputSwitch = true;
-        randomResolutionSwitch = false;
-        animateRadiusSwitch = false;
-
-        frame = 0;
-        lastCount = 0;
-        currentCount = 0;
-
 
         if (debug) logger.open("development.log");
         ofSetCircleResolution(100);
@@ -263,7 +263,11 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setHueMIDI(int _hue){
-        color.setHue((_hue * 2) - 10);
+        if (audioEngine == NOISE) {
+            color.setBrightness((_hue * 2) - 10);
+        } else {
+            color.setHue((_hue * 2) - 10);
+        }
         ofLogVerbose() << "setting hue " << color.getHue() << endl;
         setFrequencyMIDI(_hue);
     }
@@ -277,6 +281,7 @@ namespace msp {
         audio = 1;
         if (isAudioOn()) {
             if (audioEngine == SINE) {
+                randomResolutionSwitch = true;
                 audio = osc.sinewave(frequency);
             } else if (audioEngine == MONO) {
                 
@@ -293,6 +298,10 @@ namespace msp {
 
                 ADSRout=ADSR.line(8,adsrEnv);//our ADSR env has 8 value/time pairs.
                 audio = audio * ADSRout;
+
+            } else if (audioEngine == NOISE) {
+                animateRadiusSwitch = true;
+                audio = VCF.lores(osc.noise(),frequency, 10);
             }
         }
         return audio;
