@@ -45,7 +45,9 @@ class testApp : public ofBaseApp{
         float red, green, blue, alpha, width, height;
 
         int	initialBufferSize, sampleRate, solo;
-        double wave[NUM_SOUNDCARD_CHANNELS], sample, outputs[NUM_SOUNDCARD_CHANNELS];
+        double wave[NUM_SOUNDCARD_CHANNELS], sample;
+        double slot1Wave[512], slot2Wave[512], slot3Wave[512], slot4Wave[512];
+        double slot1Out[2], slot2Out[2], slot3Out[2], slot4Out[2];
 
         ofxMaxiMix mix;
         ofxMaxiOsc mySine;    

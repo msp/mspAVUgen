@@ -57,7 +57,8 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
-void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
+
+void testApp::audioRequested(float * output, int bufferSize, int nChannels){
 
     float panLeft = 0.0;
     float panRight = 1.0;
@@ -72,23 +73,18 @@ void testApp::audioRequested 	(float * output, int bufferSize, int nChannels){
                 }
             }
 
-            if (soundBank.audioReady && soundBank.activeSlots.at(0)-> isAudioOn()) {
-                mix.stereo(wave[0] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
-                output[i*nChannels    ] = outputs[0];
+            if (soundBank.audioReady) {
+                mix.stereo(wave[0] / NUM_SOUNDCARD_CHANNELS, slot1Out, soundBank.activeSlots.at(0)->getPan());
+                mix.stereo(wave[1] / NUM_SOUNDCARD_CHANNELS, slot2Out, soundBank.activeSlots.at(1)->getPan());
+                output[i*nChannels    ] = (slot1Out[0] + slot2Out[0]) / 2.0;
+                output[i*nChannels  +1] = (slot1Out[1] + slot2Out[1]) / 2.0;
             }
 
-            if (soundBank.audioReady && soundBank.activeSlots.at(1)-> isAudioOn()) {
-                mix.stereo(wave[1] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
-                output[i*nChannels + 1] = outputs[1];
-            }
-
-            if (soundBank.audioReady && soundBank.activeSlots.at(2)-> isAudioOn()) {
-                mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, outputs, panLeft);
-                output[i*nChannels + 2] = outputs[0];
-            }
-            if (soundBank.audioReady && soundBank.activeSlots.at(3)-> isAudioOn()) {
-                mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, outputs, panRight);
-                output[i*nChannels + 3] = outputs[1];
+            if (soundBank.audioReady) {
+                mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, slot3Out, soundBank.activeSlots.at(2)->getPan());
+                mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, slot4Out, soundBank.activeSlots.at(3)->getPan());
+                output[i*nChannels  +2] = (slot3Out[0] + slot4Out[0]) / 2.0;
+                output[i*nChannels  +3] = (slot3Out[1] + slot4Out[1]) / 2.0;
             }
 
         }

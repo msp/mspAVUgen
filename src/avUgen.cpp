@@ -28,25 +28,21 @@ namespace msp {
         setX(ofRandom(ofGetWindowWidth()));
         setY(ofRandom(ofGetWindowHeight()));
 
-        //color.set(ofRandom(255), ofRandom(255), ofRandom(255), LIGHT_ALPHA);
         color.set(255,0,0, LIGHT_ALPHA); //default red
 
         setAudioEngine(MONO);
 
         setRadiusMIDI(ofRandom(127));
-//        setRadius(DEFAULT_RADIUS);
-//        setVolume(DEFAULT_VOLUME);
         setPan(0.5);
 
         setHueMIDI(ofRandom(127));
-//        setFrequency(300);
+        setThrottleMIDI(ofRandom(127));
+
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         randomResolutionSwitch = false;
         animateRadiusSwitch = false;
 
-        setThrottleMIDI(ofRandom(127));
-//        throttle = ofRandom(50);
         frame = 0;
         lastCount = 0;
         currentCount = 0;
@@ -68,8 +64,6 @@ namespace msp {
     }
     
     void avUgen::draw(){
-
-        // TODO this isn't quite right. Not convinced correct values are computed. Test if exact values restored from settings.
         double radius_wave_mulitplier = isAudioOn() ? getAudio() : 1;
         double radius_base = radius * DEFAULT_RADIUS_MULTPLIER;
         double circle_radius = animateRadiusSwitch ? radius_base * radius_wave_mulitplier : radius_base;
@@ -78,7 +72,6 @@ namespace msp {
         ofFill();
                 
         if (frame == throttle) {
-//            if (name == "msp1") ofLogVerbose() << "DRAW frame: "<< frame << " throttle: "<< throttle << endl;
             if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
             if (isVisualOn()) ofCircle(x, y, circle_radius);
             frame = 0;
@@ -93,7 +86,6 @@ namespace msp {
     }
     
     void avUgen::update(){
-//        color.setHue(ofRandom(255));
     }
 
     string avUgen::getName(){
@@ -127,7 +119,8 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setPanMIDI(int _pan) {
-        pan = _pan / 100;
+        pan = (double) _pan / 127;
+        ofLogVerbose() << "pan : " << pan << endl;
     }
 
     int avUgen::getY(){
@@ -295,19 +288,11 @@ namespace msp {
 
                 // env stuff
                 if (frame == throttle) {
-//                    if (currentCount==1){
-//                      if (name == "msp1"){
-//                        ofLogVerbose() << "AUDIO frame: " << frame << " currentCount: " << currentCount << endl;
-//                        ADSR.trigger(0, adsrEnv[0]);
-//                      }
-//                    }
-
                     ADSR.trigger(0, adsrEnv[0]);
                 }
 
                 ADSRout=ADSR.line(8,adsrEnv);//our ADSR env has 8 value/time pairs.
                 audio = audio * ADSRout;
-                // end env stuff
             }
         }
         return audio;
