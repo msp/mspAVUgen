@@ -231,6 +231,16 @@ void testApp::setupAVUgens(){
     ofLogVerbose() << "soundBank.activeSlots: " << soundBank.activeSlots.size() << endl;
 
     /*************************************/
+    soundBank.setMIDIMapping(14,104);
+    soundBank.setMIDIMapping(14,105);
+    soundBank.setMIDIMapping(14,106);
+    soundBank.setMIDIMapping(14,107);
+    soundBank.setMIDIMapping(14,84);
+    soundBank.setMIDIMapping(14,85);
+    soundBank.setMIDIMapping(14,86);
+    soundBank.setMIDIMapping(14,87);
+
+    /*************************************/
     soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
     soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
     soundBank.activeSlots.at(0)->setMIDIMapping(14,60);
@@ -276,11 +286,14 @@ void testApp::setupMIDI(){
 	midiIn.ignoreTypes(false, false, false);
 
     // add testApp as a listener
-    //	midiIn.addListener(this);
+    // midiIn.addListener(this);
     // add each avUgen as a midi listener
     for(int i=0; i < soundBank.activeSlots.size(); i++){
         midiIn.addListener(soundBank.activeSlots.at(i));
     }
+
+    // add the testApp as a listener to allow preset selection on the soundbank
+    midiIn.addListener(this);
 
 	// print received messages to the console
 	midiIn.setVerbose(true);
@@ -417,6 +430,8 @@ void testApp::keyPressed(int key){
 
 			soundBank.cyclePreset();
 
+            // TODO tidy this somewhere common
+
             /*************************************/
             soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
             soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
@@ -459,6 +474,79 @@ void testApp::keyPressed(int key){
             break;
 
     }
+}
+
+void testApp::newMidiMessage(ofxMidiMessage& msg) {
+    if (isFireMIDI(msg)) {
+        midiMessage = msg;
+        ofLogVerbose() << "TEST APP midi ch: " << msg.channel << " control: " << msg.control << endl;
+        ofLogVerbose() << "value: " << msg.value << endl;
+
+        // pushing a pot on the faderfox sends 63
+        if (msg.value == 63) {
+
+            for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+                midiIn.removeListener(soundBank.activeSlots.at(i));
+            }
+
+			soundBank.cyclePreset();
+
+            // TODO tidy this somewhere common
+
+            /*************************************/
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,60);
+            soundBank.activeSlots.at(0)->setMIDIMapping(14,40);
+
+            /*************************************/
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,101);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,81);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,61);
+            soundBank.activeSlots.at(1)->setMIDIMapping(14,41);
+
+            /*************************************/
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,102);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,82);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,62);
+            soundBank.activeSlots.at(2)->setMIDIMapping(14,42);
+
+            /*************************************/
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,103);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,83);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,63);
+            soundBank.activeSlots.at(3)->setMIDIMapping(14,43);
+
+            /*************************************/
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,104);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,84);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,64);
+            //    soundBank.activeSlots.at(4)->setMIDIMapping(14,44);
+
+            /*************************************/
+
+            for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+                midiIn.addListener(soundBank.activeSlots.at(i));
+            }
+        }
+    }
+}
+
+bool testApp::isFireMIDI(ofxMidiMessage& msg){
+    bool ret = false;
+
+    for(int i=0; i<soundBank.midiChannel.size(); i++){
+        if (soundBank.midiChannel.at(i) == msg.channel){
+            for(int j=0; j<soundBank.midiControlNumber.size(); j++){
+                if (soundBank.midiControlNumber.at(j) == msg.control) {
+                    soundBank.currentPreset = j;
+                    ret = true;
+                }
+            }
+        }
+    }
+
+    return ret;
 }
 
 //--------------------------------------------------------------

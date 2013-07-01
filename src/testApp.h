@@ -4,8 +4,9 @@
 #include "avUgen.h"
 #include "ofMain.h"
 #include "ofxUI.h"
+#include "ofxMidi.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public ofxMidiListener{
 
     void setupUI();
     void setupMIDI();
@@ -61,5 +62,11 @@ class testApp : public ofBaseApp{
 
         ofxMidiIn midiIn;
         stringstream text;
+
+        // ofxmidi
+        void newMidiMessage(ofxMidiMessage& eventArgs);
+        ofxMidiMessage midiMessage;
+        bool isFireMIDI(ofxMidiMessage& msg);
+
 
 };

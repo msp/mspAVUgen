@@ -29,6 +29,11 @@ namespace msp {
     soundBank::~soundBank(){
     }
 
+    void soundBank::setMIDIMapping(int _channel, int _control){
+        midiChannel.push_back(_channel);
+        midiControlNumber.push_back(_control);
+    }
+
     void soundBank::cyclePreset(){
 
         ofLogVerbose() << "currentPresent: " << currentPreset << endl;

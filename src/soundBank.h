@@ -17,14 +17,18 @@ namespace msp {
 
         bool loadFromXML = true;
         bool saveToXML = true;
-        
-        int currentPreset = 0;
+
         std::vector<string> avUgenNames;
 
         void loadPreset(ofxXmlSettings settings, int i, string name, int slot);
 
     public:
+        int currentPreset = 0;
         bool audioReady = true;
+        std::vector<int> midiChannel;
+        std::vector<int> midiControlNumber;
+        std::vector<int> midiValue;
+
         ~soundBank();
 
         // Constants
@@ -43,6 +47,10 @@ namespace msp {
         // Serialisation
         void loadPresetsOrInitialise();
         void savePresetsToXML();
+
+        // midi
+        void setMIDIMapping(int _channel, int _control);
+
     };
 }
 
