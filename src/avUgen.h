@@ -52,7 +52,7 @@ namespace msp {
         
         // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
-        enum { FM = 999, MONO = 998, NOISE = 997 };
+        enum { FM = 999, MONO = 998, NOISE = 997, AM = 996 };
 
         static const int DEFAULT_RADIUS = 30;
         static const int DEFAULT_RADIUS_MULTPLIER = 10;

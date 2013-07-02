@@ -257,14 +257,21 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setVolumeMIDI(int _volume){
-        // get a non linear curve
-        volume = sqrt(_volume);
+        if (audioEngine == AM) {
+            volume = sqrt(_volume) / 2;
+        } else {
+            // get a non linear curve
+            volume = sqrt(_volume);
+        }
     }
 
     // expect a midi value 1 - 127
     void avUgen::setHueMIDI(int _hue){
         if (audioEngine == NOISE) {
             color.setBrightness((_hue * 2) - 10);
+        } else if (audioEngine == AM) {
+            color.setSaturation(30);
+            color.setBrightness((_hue * 4) + 50);
         } else {
             color.setHue((_hue * 2) - 10);
         }
@@ -302,7 +309,11 @@ namespace msp {
             } else if (audioEngine == NOISE) {
                 animateRadiusSwitch = true;
                 audio = VCF.lores(osc.noise(),frequency, 10);
+            } else if (audioEngine == AM) {
+                animateRadiusSwitch = true;
+                audio = osc.sinewave(frequency)*osc2.sinewave(timer.phasor(frequency,0,440));
             }
+
         }
         return audio;
     }

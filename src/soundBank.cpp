@@ -173,7 +173,7 @@ namespace msp {
                     settings.setValue("frequency", preset->getFrequency(), i);
                     settings.setValue("visualOutputSwitch", preset->getVisualOutputSwitch(), i);
                     settings.setValue("audioOutputSwitch", preset->getAudioOutputSwitch(), i);
-                    settings.setValue("audioEngine", msp::avUgen::MONO, i);
+                    settings.setValue("audioEngine", preset->getAudioEngine(), i);
                     settings.setValue("randomResolutionSwitch", preset->getRandomResolutionSwitch(), i);
                     settings.setValue("animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i);
                     settings.setValue("throttle", preset->getThrottle(), i);

@@ -7,14 +7,14 @@
         <radius>0</radius>
         <volume>0.000000000</volume>
         <pan>0.559055090</pan>
-        <frequency>298</frequency>
+        <frequency>4936</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
         <audioEngine>998</audioEngine>
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>0</throttle>
-        <hue>19.833333969</hue>
+        <hue>116.000000000</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -45,8 +45,8 @@
         <y>380</y>
         <audioEngine>998</audioEngine>
         <radius>12</radius>
-        <volume>3.464101615</volume>
-        <pan>0.433070866</pan>
+        <volume>3.464101553</volume>
+        <pan>0.433070868</pan>
         <frequency>13162</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
@@ -70,7 +70,7 @@
         <frequency>619</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
-        <audioEngine>998</audioEngine>
+        <audioEngine>997</audioEngine>
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>1</animateRadiusSwitch>
         <throttle>1</throttle>
@@ -101,22 +101,22 @@
     </avUgen>
     <avUgen>
         <name>msp2-5</name>
-        <x>554</x>
-        <y>623</y>
-        <audioEngine>998</audioEngine>
-        <radius>63</radius>
-        <volume>7.937253952</volume>
-        <pan>0.500000000</pan>
-        <frequency>24</frequency>
+        <x>504</x>
+        <y>350</y>
+        <audioEngine>996</audioEngine>
+        <radius>6</radius>
+        <volume>1.224744871</volume>
+        <pan>0.496062994</pan>
+        <frequency>1134</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
-        <audioEngine>998</audioEngine>
+        <audioEngine>996</audioEngine>
         <randomResolutionSwitch>0</randomResolutionSwitch>
-        <animateRadiusSwitch>0</animateRadiusSwitch>
-        <throttle>41</throttle>
+        <animateRadiusSwitch>1</animateRadiusSwitch>
+        <throttle>0</throttle>
         <hue>0.000000000</hue>
-        <saturation>255.000000000</saturation>
-        <brightness>255.000000000</brightness>
+        <saturation>31.500000000</saturation>
+        <brightness>170.000000000</brightness>
         <alpha>220</alpha>
     </avUgen>
     <avUgen>
