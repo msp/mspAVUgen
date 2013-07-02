@@ -32,26 +32,26 @@
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>0</throttle>
-        <hue>2.666666746</hue>
+        <hue>1.500000000</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
     </avUgen>
     <avUgen>
         <name>msp0-2</name>
-        <x>667</x>
-        <y>467</y>
-        <audioEngine>998</audioEngine>
-        <radius>118</radius>
-        <volume>10.862780571</volume>
-        <pan>0.500000000</pan>
-        <frequency>5416</frequency>
+        <x>154</x>
+        <y>380</y>
+        <audioEngine>999</audioEngine>
+        <radius>47</radius>
+        <volume>6.855654716</volume>
+        <pan>0.110236220</pan>
+        <frequency>64</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
-        <randomResolutionSwitch>0</randomResolutionSwitch>
+        <randomResolutionSwitch>1</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
-        <throttle>68</throttle>
-        <hue>122.000000000</hue>
+        <throttle>0</throttle>
+        <hue>1.500000000</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -70,7 +70,7 @@
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>1</throttle>
-        <hue>3.666666746</hue>
+        <hue>2.500000000</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -138,7 +138,7 @@
         <y>420</y>
         <audioEngine>998</audioEngine>
         <radius>28</radius>
-        <volume>5.291502622</volume>
+        <volume>5.291502476</volume>
         <pan>0.500000000</pan>
         <frequency>8147</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>

@@ -14,7 +14,7 @@
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>0</throttle>
-        <hue>9.000000000</hue>
+        <hue>7.833333492</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -41,20 +41,20 @@
     </avUgen>
     <avUgen>
         <name>msp1-2</name>
-        <x>155</x>
-        <y>479</y>
+        <x>432</x>
+        <y>380</y>
         <audioEngine>998</audioEngine>
-        <radius>116</radius>
-        <volume>10.770329475</volume>
-        <pan>0.500000000</pan>
-        <frequency>15282</frequency>
+        <radius>19</radius>
+        <volume>4.358898944</volume>
+        <pan>0.425196850</pan>
+        <frequency>20</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
         <audioEngine>998</audioEngine>
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
-        <throttle>47</throttle>
-        <hue>212.000000000</hue>
+        <throttle>1</throttle>
+        <hue>5.833333492</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -85,7 +85,7 @@
         <y>677</y>
         <audioEngine>998</audioEngine>
         <radius>40</radius>
-        <volume>6.324555320</volume>
+        <volume>6.324555397</volume>
         <pan>0.500000000</pan>
         <frequency>50</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
@@ -114,7 +114,7 @@
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>4</throttle>
-        <hue>7.333333492</hue>
+        <hue>6.166666508</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -134,7 +134,7 @@
         <randomResolutionSwitch>0</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
         <throttle>126</throttle>
-        <hue>7.500000000</hue>
+        <hue>6.333333492</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -145,8 +145,8 @@
         <y>662</y>
         <audioEngine>998</audioEngine>
         <radius>11</radius>
-        <volume>3.316624790</volume>
-        <pan>0.858267717</pan>
+        <volume>3.316624880</volume>
+        <pan>0.858267725</pan>
         <frequency>1452</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>

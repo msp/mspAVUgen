@@ -280,9 +280,9 @@ namespace msp {
     double avUgen::getAudio(){
         audio = 1;
         if (isAudioOn()) {
-            if (audioEngine == SINE) {
+            if (audioEngine == FM) {
                 randomResolutionSwitch = true;
-                audio = osc.sinewave(frequency);
+                audio = osc.sinewave(osc2.sinewave(osc3.sinewave(0.1)*30)*frequency);
             } else if (audioEngine == MONO) {
                 
                 // Metronome

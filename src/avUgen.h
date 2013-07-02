@@ -38,7 +38,7 @@ namespace msp {
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};
 
-        ofxMaxiOsc VCO1,VCO2,LFO1,LFO2, osc, osc2;
+        ofxMaxiOsc VCO1,VCO2,LFO1,LFO2, osc, osc2, osc3;
         ofxMaxiFilter VCF;
         ofxMaxiEnvelope ADSR;
         ofxMaxiOsc timer;
@@ -52,7 +52,7 @@ namespace msp {
         
         // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
-        enum { SINE = 999, MONO = 998, NOISE = 997 };
+        enum { FM = 999, MONO = 998, NOISE = 997 };
 
         static const int DEFAULT_RADIUS = 30;
         static const int DEFAULT_RADIUS_MULTPLIER = 10;

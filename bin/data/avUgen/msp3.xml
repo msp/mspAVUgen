@@ -41,20 +41,20 @@
     </avUgen>
     <avUgen>
         <name>msp3-2</name>
-        <x>346</x>
-        <y>141</y>
-        <audioEngine>998</audioEngine>
-        <radius>33</radius>
-        <volume>5.744562626</volume>
-        <pan>0.500000000</pan>
-        <frequency>857</frequency>
+        <x>872</x>
+        <y>380</y>
+        <audioEngine>999</audioEngine>
+        <radius>3</radius>
+        <volume>1.732050808</volume>
+        <pan>0.858267725</pan>
+        <frequency>19686</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
         <audioOutputSwitch>1</audioOutputSwitch>
         <audioEngine>998</audioEngine>
-        <randomResolutionSwitch>0</randomResolutionSwitch>
+        <randomResolutionSwitch>1</randomResolutionSwitch>
         <animateRadiusSwitch>0</animateRadiusSwitch>
-        <throttle>121</throttle>
-        <hue>42.000000000</hue>
+        <throttle>0</throttle>
+        <hue>242.000000000</hue>
         <saturation>255.000000000</saturation>
         <brightness>255.000000000</brightness>
         <alpha>220</alpha>
@@ -85,7 +85,7 @@
         <y>62</y>
         <audioEngine>998</audioEngine>
         <radius>47</radius>
-        <volume>6.855654600</volume>
+        <volume>6.855654716</volume>
         <pan>0.500000000</pan>
         <frequency>2310</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
@@ -145,7 +145,7 @@
         <y>463</y>
         <audioEngine>998</audioEngine>
         <radius>50</radius>
-        <volume>7.071067812</volume>
+        <volume>7.071067810</volume>
         <pan>0.500000000</pan>
         <frequency>11675</frequency>
         <visualOutputSwitch>1</visualOutputSwitch>
