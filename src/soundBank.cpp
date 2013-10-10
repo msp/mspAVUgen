@@ -36,14 +36,14 @@ namespace msp {
 
     void soundBank::cyclePreset(){
 
-        ofLogVerbose() << "currentPresent: " << currentPreset << endl;
+        ofLogNotice() << "currentPresent: " << currentPreset << endl;
 
         audioReady = false;
         activeSlots.clear();
         
         for (int i = 0; i <= TOTAL_SLOTS; i++){
             activeSlots.push_back(presetSlots[i][currentPreset]);
-            ofLogVerbose() << "active at slot [" << i << "] : " << activeSlots.at(i) -> getName();
+            ofLogNotice() << "active at slot [" << i << "] : " << activeSlots.at(i) -> getName();
         }
         audioReady = true;
 
@@ -74,7 +74,7 @@ namespace msp {
                 ofLogNotice() << filename + " loaded! +++++++++++++++++";
 
                 settings.pushTag("avUgens", 0);
-                ofLogVerbose() << "Found presets in file: " << settings.getNumTags("avUgen") << endl;
+                ofLogNotice() << "Found presets in file: " << settings.getNumTags("avUgen") << endl;
 
                 for (int j = 0; j <= TOTAL_PRESETS; j++){
 

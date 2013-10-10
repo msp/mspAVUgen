@@ -20,7 +20,6 @@ namespace msp {
     }
 
     avUgen::~avUgen(){
-        if (debug) logger.close();
     }
 
     void avUgen::initialize(){
@@ -48,7 +47,6 @@ namespace msp {
         setHueMIDI(ofRandom(127));
         setThrottleMIDI(ofRandom(127));
 
-        if (debug) logger.open("development.log");
         ofSetCircleResolution(100);
     }
 
@@ -263,6 +261,7 @@ namespace msp {
             // get a non linear curve
             volume = sqrt(_volume);
         }
+        ofLogVerbose() << "current volume " << volume << endl;
     }
 
     // expect a midi value 1 - 127
@@ -326,7 +325,7 @@ namespace msp {
 
         if (isFireMIDI(msg)) {
             midiMessage = msg;
-            ofLogVerbose() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << name << endl;
+            ofLogNotice() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << name << endl;
             ofLogVerbose() << "value: " << msg.value << endl;
 
             if (msg.control == midiControlNumber.at(0)){
@@ -361,7 +360,7 @@ namespace msp {
     }
 
     void avUgen::inspect() {
-        ofLogVerbose() << "avUgen: "<< name
+        ofLogNotice() << "avUgen: "<< name
         << ", x: " << x
         << ", y: " << y
         << ", pan: " << pan

@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
+    ofLogToFile("mspUgen.log", true);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
     red = 0;
@@ -28,7 +29,7 @@ void testApp::setup(){
     setupMIDI();
     setupSound(); /* Call this last ! */
 
-    ofLogVerbose() << "Done setup" << endl;
+    ofLogNotice() << "Done setup" << endl;
 }
 
 //--------------------------------------------------------------
@@ -266,7 +267,7 @@ void testApp::setupAVUgens(){
 
     /*************************************/
 
-    ofLogVerbose() << "Done setupAVUgens" << endl;
+    ofLogNotice() << "Done setupAVUgens" << endl;
 
 }
 
@@ -276,8 +277,8 @@ void testApp::setupMIDI(){
 
 	midiIn.listPorts(); // via instance
 
-    midiIn.openPort("Audio 8 DJ MIDI input port 0");
-	// midiIn.openPort("USB Uno MIDI Interface");
+    // midiIn.openPort("Audio 8 DJ MIDI input port 0");
+	midiIn.openPort("USB Uno MIDI Interface");
 
 	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
 
@@ -298,7 +299,7 @@ void testApp::setupMIDI(){
 	// print received messages to the console
 	midiIn.setVerbose(true);
 
-    ofLogVerbose() << "Done setupMIDI" << endl;
+    ofLogNotice() << "Done setupMIDI" << endl;
 }
 
 //--------------------------------------------------------------
@@ -351,7 +352,7 @@ void testApp::setupUI(){
     gui->loadSettings("GUI/guiSettings.xml");
     gui->toggleVisible();
 
-    ofLogVerbose() << "Done setupUI" << endl;
+    ofLogNotice() << "Done setupUI" << endl;
 
 }
 
@@ -363,7 +364,7 @@ void testApp::setupSound() {
 
     soundStream.listDevices();
     soundStream.setup(this, NUM_SOUNDCARD_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
-    ofLogVerbose() << "Done setupSound" << endl;
+    ofLogNotice() << "Done setupSound" << endl;
 }
 
 void testApp::drawMIDI() {
