@@ -68,7 +68,7 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
 
         if (soundBank.audioReady){
 
-            for (int j = 0; j < NUM_SOUNDCARD_CHANNELS; j++){
+            for (int j = 0; j < NUM_UGENS; j++){
                 if (soundBank.audioReady && soundBank.activeSlots.at(j)->isAudioOn() == true){
                     wave[j] = soundBank.activeSlots.at(j)->getAudioOutput();
                 }
@@ -77,15 +77,23 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
             if (soundBank.audioReady) {
                 mix.stereo(wave[0] / NUM_SOUNDCARD_CHANNELS, slot1Out, soundBank.activeSlots.at(0)->getPan());
                 mix.stereo(wave[1] / NUM_SOUNDCARD_CHANNELS, slot2Out, soundBank.activeSlots.at(1)->getPan());
-                output[i*nChannels    ] = (slot1Out[0] + slot2Out[0]) / 2.0;
-                output[i*nChannels  +1] = (slot1Out[1] + slot2Out[1]) / 2.0;
-            }
-
-            if (soundBank.audioReady) {
                 mix.stereo(wave[2] / NUM_SOUNDCARD_CHANNELS, slot3Out, soundBank.activeSlots.at(2)->getPan());
                 mix.stereo(wave[3] / NUM_SOUNDCARD_CHANNELS, slot4Out, soundBank.activeSlots.at(3)->getPan());
-                output[i*nChannels  +2] = (slot3Out[0] + slot4Out[0]) / 2.0;
-                output[i*nChannels  +3] = (slot3Out[1] + slot4Out[1]) / 2.0;
+            }
+
+            if (NUM_SOUNDCARD_CHANNELS == 4) {
+                if (soundBank.audioReady) {
+                    output[i*nChannels    ] = (slot1Out[0] + slot2Out[0]) / 2.0;
+                    output[i*nChannels  +1] = (slot1Out[1] + slot2Out[1]) / 2.0;
+                    output[i*nChannels  +2] = (slot3Out[0] + slot4Out[0]) / 2.0;
+                    output[i*nChannels  +3] = (slot3Out[1] + slot4Out[1]) / 2.0;
+                }
+            } else if (NUM_SOUNDCARD_CHANNELS == 2) {
+                if (soundBank.audioReady) {
+                    output[i*nChannels    ] = (slot1Out[0] + slot2Out[0] + slot3Out[0] + slot4Out[0]) / 6.0;
+                    output[i*nChannels  +1] = (slot1Out[1] + slot2Out[1] + slot3Out[1] + slot4Out[1]) / 6.0;
+                }
+
             }
 
         }
@@ -363,6 +371,7 @@ void testApp::setupSound() {
     initialBufferSize	= 512;
 
     soundStream.listDevices();
+    // soundStream.setDeviceID(3); //(ma++ ingalls for Cycling '74: Soundflower (2ch))
     soundStream.setup(this, NUM_SOUNDCARD_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
     ofLogNotice() << "Done setupSound" << endl;
 }

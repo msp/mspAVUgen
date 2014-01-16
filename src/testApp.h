@@ -17,6 +17,7 @@ class testApp : public ofBaseApp, public ofxMidiListener{
 	public:
 
         static const int NUM_SOUNDCARD_CHANNELS = 4;
+        static const int NUM_UGENS = 4;
 
         bool debug = false;
 
@@ -46,7 +47,7 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         float red, green, blue, alpha, width, height;
 
         int	initialBufferSize, sampleRate, solo;
-        double wave[NUM_SOUNDCARD_CHANNELS], sample;
+        double wave[NUM_UGENS], sample;
         double slot1Wave[512], slot2Wave[512], slot3Wave[512], slot4Wave[512];
         double slot1Out[2], slot2Out[2], slot3Out[2], slot4Out[2];
 

@@ -333,6 +333,7 @@ namespace msp {
                 ofLogVerbose() << "setting radius/volume: " << thisRadius  << endl;
                 setRadiusMIDI(thisRadius);
             } else if (msg.control == midiControlNumber.at(1)){
+
                 setHueMIDI(msg.value);
             } else if (msg.control == midiControlNumber.at(2)){
                 ofLogVerbose() << "setting throttle: " << msg.value << endl;
