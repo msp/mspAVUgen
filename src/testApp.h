@@ -13,10 +13,12 @@ class testApp : public ofBaseApp, public ofxMidiListener{
     void setupAVUgens();
     void setupSound();
     void drawMIDI();
+    void bindMIDI();
+    void cyclePreset();
     
 	public:
 
-        static const int NUM_SOUNDCARD_CHANNELS = 4;
+        static const int NUM_SOUNDCARD_CHANNELS = 2;
         static const int NUM_UGENS = 4;
 
         bool debug = false;
