@@ -23,7 +23,7 @@ namespace msp {
             }
         }
 
-        cyclePreset();
+        activateCurrentPreset();
     }
 
     soundBank::~soundBank(){
@@ -34,24 +34,36 @@ namespace msp {
         midiControlNumber.push_back(_control);
     }
 
-    void soundBank::cyclePreset(){
-
-        ofLogNotice() << "currentPresent: " << currentPreset << endl;
-
+    void soundBank::activateCurrentPreset() {
         audioReady = false;
         activeSlots.clear();
-        
+
         for (int i = 0; i <= TOTAL_SLOTS; i++){
             activeSlots.push_back(presetSlots[i][currentPreset]);
             ofLogNotice() << "active at slot [" << i << "] : " << activeSlots.at(i) -> getName();
         }
         audioReady = true;
+    }
 
-        if (currentPreset == TOTAL_PRESETS){
+    void soundBank::setPreset(int _preset) {
+
+        if (_preset >= TOTAL_PRESETS || _preset < 0){
             currentPreset = 0;
-        } else {
-            currentPreset++;
         }
+
+        currentPreset = _preset;
+        activateCurrentPreset();
+    }
+
+    void soundBank::cyclePreset(){
+
+        currentPreset++;
+        if (currentPreset >= TOTAL_PRESETS){
+            currentPreset = 0;
+        }
+
+        ofLogNotice() << "currentPresent: " << currentPreset << endl;
+        activateCurrentPreset();
 
         ofLogVerbose() << "cyclePreset: activeSlots: " << activeSlots.size() << endl;
     };

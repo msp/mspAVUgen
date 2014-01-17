@@ -47,10 +47,39 @@ void testApp::draw(){
 
     for (int i=0; i<soundBank.activeSlots.size(); i++) {
         ofPushStyle();
-
         soundBank.activeSlots.at(i) -> draw();
-
         ofPopStyle();
+    }
+
+    // TODO wrap up contorller / ui state in class.
+    // Use Macro concept from Live? Here & setupMIDI()
+    rad0 -> setValue(soundBank.activeSlots.at(0)->getRadius());
+    rad1 -> setValue(soundBank.activeSlots.at(1)->getRadius());
+    rad2 -> setValue(soundBank.activeSlots.at(2)->getRadius());
+    rad3 -> setValue(soundBank.activeSlots.at(3)->getRadius());
+
+    hue0 -> setValue(soundBank.activeSlots.at(0)->getColor().getHue());
+    hue1 -> setValue(soundBank.activeSlots.at(1)->getColor().getHue());
+    hue2 -> setValue(soundBank.activeSlots.at(2)->getColor().getHue());
+    hue3 -> setValue(soundBank.activeSlots.at(3)->getColor().getHue());
+
+    thr0 -> setValue(soundBank.activeSlots.at(0)->getThrottle());
+    thr1 -> setValue(soundBank.activeSlots.at(1)->getThrottle());
+    thr2 -> setValue(soundBank.activeSlots.at(2)->getThrottle());
+    thr3 -> setValue(soundBank.activeSlots.at(3)->getThrottle());
+
+    pos0 -> setValue(soundBank.activeSlots.at(0)->getPan() * 127);
+    pos1 -> setValue(soundBank.activeSlots.at(1)->getPan() * 127);
+    pos2 -> setValue(soundBank.activeSlots.at(2)->getPan() * 127);
+    pos3 -> setValue(soundBank.activeSlots.at(3)->getPan() * 127);
+
+    for (int i=0; i<presetButtons.size(); i++) {
+        if (i == soundBank.currentPreset) {
+            presetButtons.at(i) -> setState(OFX_UI_STATE_DOWN);
+        } else {
+            presetButtons.at(i) -> setState(OFX_UI_STATE_NORMAL);
+        }
+        presetButtons.at(i) -> stateChange();
     }
 
     ofPopStyle();
@@ -205,50 +234,42 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	else if(name == "PRS1")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 0;
-		cyclePreset();
+		setPreset(0);
 	}
 	else if(name == "PRS2")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 1;
-		cyclePreset();
+		setPreset(1);
 	}
 	else if(name == "PRS3")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 2;
-		cyclePreset();
+		setPreset(2);
 	}
 	else if(name == "PRS4")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 3;
-		cyclePreset();
+		setPreset(3);
 	}
 	else if(name == "PRS5")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 4;
-		cyclePreset();
+		setPreset(4);
 	}
 	else if(name == "PRS6")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 5;
-		cyclePreset();
+		setPreset(5);
 	}
 	else if(name == "PRS7")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 6;
-		cyclePreset();
+		setPreset(6);
 	}
 	else if(name == "PRS8")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		soundBank.currentPreset = 7;
-		cyclePreset();
+		setPreset(7);
 	}
 }
 
@@ -262,7 +283,6 @@ void testApp::exit()
 
     for(int i=0; i<soundBank.activeSlots.size(); i++){
         midiIn.removeListener(soundBank.activeSlots.at(i));
-//        soundBank.savePresetsToXML();
     }
 }
 
@@ -331,48 +351,83 @@ void testApp::setupUI(){
     // OF UI
     float dim = 16;
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 400-xInit;
+    float length = 360-xInit;
     float presetButtonSize= 30;
+    float padding = 20;
 
     gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight());
+    gui -> setTheme(OFX_UI_THEME_GRAYDAY);
 	gui->addWidgetDown(new ofxUILabel("SPATIAL - AVUGEN", OFX_UI_FONT_LARGE));
 
     gui->addSpacer(length, 2);
 
-    gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getRadius(), "RAD0"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getRadius(), "RAD1"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getRadius(), "RAD2"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getRadius(), "RAD3"));
 
-    gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getRadius(), "HUE0"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getRadius(), "HUE1"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getRadius(), "HUE2"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getRadius(), "HUE3"));
+    ofColor paddingColor = ofColor(255,0,0,200);
 
-    gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getRadius(), "THR0"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getRadius(), "THR1"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getRadius(), "THR2"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getRadius(), "THR3"));
+    rad0 = (ofxUIRotarySlider *) gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getRadius(), "RAD0"));
+    rad0 -> setPadding(padding);
+    rad1 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getRadius(), "RAD1"));
+    rad1 -> setPadding(padding);
+    rad2 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getRadius(), "RAD2"));
+    rad2 -> setPadding(padding);
+    rad3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getRadius(), "RAD3"));
+    rad3 -> setPadding(padding);
 
-    gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getX(), "POS0"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getX(), "POS1"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getX(), "POS2"));
-    gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getX(), "POS3"));
+    hue0 = (ofxUIRotarySlider *) gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getColor().getHue(), "HUE0"));
+    hue0 -> setPadding(padding);
+    hue1 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getColor().getHue(), "HUE1"));
+    hue1 -> setPadding(padding);
+    hue2 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getColor().getHue(), "HUE2"));
+    hue2 -> setPadding(padding);
+    hue3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getColor().getHue(), "HUE3"));
+    hue3 -> setPadding(padding);
+
+    thr0 = (ofxUIRotarySlider *) gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getThrottle(), "THR0"));
+    thr0 -> setPadding(padding);
+    thr1 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getThrottle(), "THR1"));
+    thr1 -> setPadding(padding);
+    thr2 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getThrottle(), "THR2"));
+    thr2 -> setPadding(padding);
+    thr3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getThrottle(), "THR3"));
+    thr3 -> setPadding(padding);
+
+    pos0 = (ofxUIRotarySlider *) gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getPan() * 127, "POS0"));
+    pos0 -> setPadding(padding);
+    pos1 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getPan() * 127, "POS1"));
+    pos1 -> setPadding(padding);
+    pos2 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getPan() * 127, "POS2"));
+    pos2 -> setPadding(padding);
+    pos3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getPan() * 127, "POS3"));
+    pos3 -> setPadding(padding);
 
     gui->addSpacer(length, 4);
 
     gui->addWidgetDown(new ofxUILabel("SWITCH PRESETS", OFX_UI_FONT_MEDIUM));
 
-    gui->addWidgetDown(new ofxUIButton("PRS1", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS2", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS3", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS4", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetDown(new ofxUIButton("PRS5", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS6", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS7", false, presetButtonSize, presetButtonSize));
-    gui->addWidgetRight(new ofxUIButton("PRS8", false, presetButtonSize, presetButtonSize));
+    padding = padding + 30;
 
-    gui->setWidgetPosition(OFX_UI_WIDGET_POSITION_DOWN);
+    prs1 = (ofxUIButton *) gui->addWidgetDown(new ofxUIButton("PRS1", false, presetButtonSize, presetButtonSize));
+    prs1 -> setPadding(padding);
+    presetButtons.push_back(prs1);
+    prs2 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS2", false, presetButtonSize, presetButtonSize));
+    prs2 -> setPadding(padding);
+    presetButtons.push_back(prs2);
+    prs3 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS3", false, presetButtonSize, presetButtonSize));
+    prs3 -> setPadding(padding);
+    presetButtons.push_back(prs3);
+    prs4 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS4", false, presetButtonSize, presetButtonSize));
+    presetButtons.push_back(prs4);
+    prs5 = (ofxUIButton *) gui->addWidgetDown(new ofxUIButton("PRS5", false, presetButtonSize, presetButtonSize));
+    prs5 -> setPadding(padding);
+    presetButtons.push_back(prs5);
+    prs6 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS6", false, presetButtonSize, presetButtonSize));
+    prs6 -> setPadding(padding);
+    presetButtons.push_back(prs6);
+    prs7 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS7", false, presetButtonSize, presetButtonSize));
+    prs7 -> setPadding(padding);
+    presetButtons.push_back(prs7);
+    prs8 = (ofxUIButton *) gui->addWidgetRight(new ofxUIButton("PRS8", false, presetButtonSize, presetButtonSize));
+    presetButtons.push_back(prs8);
 
     gui->addSpacer(length, 4);
 
@@ -385,7 +440,7 @@ void testApp::setupUI(){
 
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
-    gui->loadSettings("GUI/guiSettings.xml");
+    //  gui->loadSettings("GUI/guiSettings.xml");
     gui->toggleVisible();
 
     ofLogNotice() << "Done setupUI" << endl;
@@ -463,6 +518,30 @@ void testApp::keyPressed(int key){
 		case 'p':
             cyclePreset();
 			break;
+        case '1':
+            setPreset(0);
+            break;
+        case '2':
+            setPreset(1);
+            break;
+        case '3':
+            setPreset(2);
+            break;
+        case '4':
+            setPreset(3);
+            break;
+        case '5':
+            setPreset(4);
+            break;
+        case '6':
+            setPreset(5);
+            break;
+        case '7':
+            setPreset(6);
+            break;
+        case '8':
+            setPreset(7);
+            break;
         default:
             break;
 
@@ -477,7 +556,7 @@ void testApp::newMidiMessage(ofxMidiMessage& msg) {
 
         // pushing a pot on the faderfox sends 63
         if (msg.value == 63) {
-            cyclePreset();
+            setPreset(soundBank.currentPreset);
         }
     }
 }
@@ -540,6 +619,20 @@ void testApp::cyclePreset() {
     }
 
     soundBank.cyclePreset();
+
+    bindMIDI();
+
+    for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+        midiIn.addListener(soundBank.activeSlots.at(i));
+    }
+}
+
+void testApp::setPreset(int _preset) {
+    for(int i = 0; i<soundBank.activeSlots.size(); i++) {
+        midiIn.removeListener(soundBank.activeSlots.at(i));
+    }
+
+    soundBank.setPreset(_preset);
 
     bindMIDI();
 

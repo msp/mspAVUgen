@@ -21,6 +21,7 @@ namespace msp {
         std::vector<string> avUgenNames;
 
         void loadPreset(ofxXmlSettings settings, int i, string name, int slot);
+        void activateCurrentPreset();
 
     public:
         int currentPreset = 0;
@@ -31,8 +32,11 @@ namespace msp {
 
         ~soundBank();
 
+        // mutators
+        void setPreset(int _preset);
+
         // Constants
-        static const int TOTAL_PRESETS = 8 -1;
+        static const int TOTAL_PRESETS = 8;
         static const int TOTAL_SLOTS = 4 -1;
 
         // Constructors

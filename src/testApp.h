@@ -15,6 +15,7 @@ class testApp : public ofBaseApp, public ofxMidiListener{
     void drawMIDI();
     void bindMIDI();
     void cyclePreset();
+    void setPreset(int _preset);
     
 	public:
 
@@ -43,6 +44,12 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         void audioReceived 	(float * input, int bufferSize, int nChannels); /* input method */
     
         ofxUICanvas *gui;
+        ofxUIRotarySlider *rad0, *rad1, *rad2, *rad3;
+        ofxUIRotarySlider *hue0, *hue1, *hue2, *hue3;
+        ofxUIRotarySlider *thr0, *thr1, *thr2, *thr3;
+        ofxUIRotarySlider *pos0, *pos1, *pos2, *pos3;
+        ofxUIButton *prs1, *prs2, *prs3, *prs4, *prs5, *prs6, *prs7, *prs8;
+        std::vector<ofxUIButton*> presetButtons;
         void guiEvent(ofxUIEventArgs &e);
         bool drawFill;
 
