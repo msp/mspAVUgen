@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
+    ofSetDataPathRoot("../Resources/"); // dist only
     ofLogToFile("mspUgen.log", true);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
