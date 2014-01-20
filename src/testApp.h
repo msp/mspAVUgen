@@ -13,7 +13,6 @@ class testApp : public ofBaseApp, public ofxMidiListener{
     void setupAVUgens();
     void setupSound();
     void drawMIDI();
-    void bindMIDI();
     void cyclePreset();
     void setPreset(int _preset);
     

@@ -18,3 +18,4 @@ Release*/
 bin/development.log
 .idea
 bin/data/avUgen/bak/
+mspAVUgen.log

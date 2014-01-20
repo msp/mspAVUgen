@@ -136,6 +136,10 @@ namespace msp {
             preset->setRandomResolutionSwitch(settings.getValue("avUgen:randomResolutionSwitch", preset->getRandomResolutionSwitch(), i));
             preset->setAnimateRadiusSwitch(settings.getValue("avUgen:animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i));
             preset->setThrottle(settings.getValue("avUgen:throttle", preset->getThrottle(), i));
+            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel1", 14, i), settings.getValue("avUgen:midiControl1", 100, i));
+            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel2", 14, i), settings.getValue("avUgen:midiControl2", 80, i));
+            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel3", 14, i), settings.getValue("avUgen:midiControl3", 60, i));
+            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel4", 14, i), settings.getValue("avUgen:midiControl4", 40, i));
 
             ofColor _color = *new ofColor();
             float hue = settings.getValue("avUgen:hue", preset->getColor().getHue(), i);
@@ -194,6 +198,17 @@ namespace msp {
                     settings.setValue("saturation", preset->getColor().getSaturation());
                     settings.setValue("brightness", preset->getColor().getBrightness());
                     settings.setValue("alpha", preset->getColor().a);
+
+                    for (int i = 0; i < preset->midiChannel.size(); i++) {
+                        ostringstream buffer;
+                        buffer << "midiChannel" << i+1;
+                        settings.setValue(buffer.str(), preset->midiChannel.at(i));
+                    }
+                    for (int i = 0; i < preset->midiControlNumber.size(); i++) {
+                        ostringstream buffer;
+                        buffer << "midiControl" << i+1;
+                        settings.setValue(buffer.str(), preset->midiControlNumber.at(i));
+                    }
 
                     filename = "avUgen/" + avUgenNames.at(i) + ".xml";
 

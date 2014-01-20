@@ -1,62 +1,80 @@
 <Widget>
-    <Kind>4</Kind>
-    <Name>BGR</Name>
+    <Kind>21</Kind>
+    <Name>RAD0</Name>
+    <Value>127.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>RAD1</Name>
+    <Value>43.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>RAD2</Name>
+    <Value>34.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>RAD3</Name>
+    <Value>90.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>HUE0</Name>
     <Value>0.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>BGG</Name>
+    <Kind>21</Kind>
+    <Name>HUE1</Name>
+    <Value>116.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>HUE2</Name>
+    <Value>116.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>HUE3</Name>
+    <Value>127.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>21</Kind>
+    <Name>THR0</Name>
     <Value>0.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>BGB</Name>
+    <Kind>21</Kind>
+    <Name>THR1</Name>
     <Value>0.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>HUE</Name>
-    <Value>95.625000000</Value>
+    <Kind>21</Kind>
+    <Name>THR2</Name>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>RED</Name>
-    <Value>22.067308426</Value>
+    <Kind>21</Kind>
+    <Name>THR3</Name>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>GREEN</Name>
-    <Value>187.163452148</Value>
+    <Kind>21</Kind>
+    <Name>POS0</Name>
+    <Value>12.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>BLUE</Name>
-    <Value>121.778846741</Value>
+    <Kind>21</Kind>
+    <Name>POS1</Name>
+    <Value>40.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>ALPHA</Name>
-    <Value>245.192306519</Value>
+    <Kind>21</Kind>
+    <Name>POS2</Name>
+    <Value>71.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>FRAMERATE</Name>
-    <Value>570.942321777</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>DRAW FILL</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>11</Kind>
-    <Name>POSITION_CH1</Name>
-    <XValue>139.000000000</XValue>
-    <YValue>123.000000000</YValue>
-</Widget>
-<Widget>
-    <Kind>11</Kind>
-    <Name>POSITION_CH2</Name>
-    <XValue>200.000000000</XValue>
-    <YValue>111.000000000</YValue>
+    <Kind>21</Kind>
+    <Name>POS3</Name>
+    <Value>63.500000000</Value>
 </Widget>

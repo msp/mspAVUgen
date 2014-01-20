@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
-    ofSetDataPathRoot("../Resources/"); // dist only
+    ofSetDataPathRoot("../Resources/"); // dist only, comment to use local XML config.
     ofLogToFile("mspAVUgen.log", true);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
@@ -310,8 +310,6 @@ void testApp::setupAVUgens(){
     soundBank.setMIDIMapping(14,86);
     soundBank.setMIDIMapping(14,87);
 
-    bindMIDI();
-
     ofLogNotice() << "Done setupAVUgens" << endl;
 
 }
@@ -579,49 +577,12 @@ bool testApp::isFireMIDI(ofxMidiMessage& msg){
     return ret;
 }
 
-void testApp::bindMIDI() {
-
-    /*************************************/
-    soundBank.activeSlots.at(0)->setMIDIMapping(14,100);
-    soundBank.activeSlots.at(0)->setMIDIMapping(14,80);
-    soundBank.activeSlots.at(0)->setMIDIMapping(14,60);
-    soundBank.activeSlots.at(0)->setMIDIMapping(14,40);
-
-    /*************************************/
-    soundBank.activeSlots.at(1)->setMIDIMapping(14,101);
-    soundBank.activeSlots.at(1)->setMIDIMapping(14,81);
-    soundBank.activeSlots.at(1)->setMIDIMapping(14,61);
-    soundBank.activeSlots.at(1)->setMIDIMapping(14,41);
-
-    /*************************************/
-    soundBank.activeSlots.at(2)->setMIDIMapping(14,102);
-    soundBank.activeSlots.at(2)->setMIDIMapping(14,82);
-    soundBank.activeSlots.at(2)->setMIDIMapping(14,62);
-    soundBank.activeSlots.at(2)->setMIDIMapping(14,42);
-
-    /*************************************/
-    soundBank.activeSlots.at(3)->setMIDIMapping(14,103);
-    soundBank.activeSlots.at(3)->setMIDIMapping(14,83);
-    soundBank.activeSlots.at(3)->setMIDIMapping(14,63);
-    soundBank.activeSlots.at(3)->setMIDIMapping(14,43);
-
-    /*************************************/
-    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,104);
-    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,84);
-    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,64);
-    //    soundBank.activeSlots.at(4)->setMIDIMapping(14,44);
-
-    /*************************************/
-}
-
 void testApp::cyclePreset() {
     for(int i = 0; i<soundBank.activeSlots.size(); i++) {
         midiIn.removeListener(soundBank.activeSlots.at(i));
     }
 
     soundBank.cyclePreset();
-
-    bindMIDI();
 
     for(int i = 0; i<soundBank.activeSlots.size(); i++) {
         midiIn.addListener(soundBank.activeSlots.at(i));
@@ -634,8 +595,6 @@ void testApp::setPreset(int _preset) {
     }
 
     soundBank.setPreset(_preset);
-
-    bindMIDI();
 
     for(int i = 0; i<soundBank.activeSlots.size(); i++) {
         midiIn.addListener(soundBank.activeSlots.at(i));
