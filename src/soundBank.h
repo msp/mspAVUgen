@@ -1,13 +1,13 @@
 //
 //  soundBank.h
-//  mspUgen
+//  mspAVUgen
 //
 //  Created by msp on 30/05/2013.
 //
 //
 
-#ifndef mspUgen_soundBank_h
-#define mspUgen_soundBank_h
+#ifndef mspAVUgen_soundBank_h
+#define mspAVUgen_soundBank_h
 
 #include "ofMain.h"
 #include "avUgen.h"

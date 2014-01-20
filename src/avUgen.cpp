@@ -1,6 +1,6 @@
 //
 //  avUgen.cpp
-//  mspUgen
+//  mspAVUgen
 //
 //  Created by msp on 06/02/2013.
 //
@@ -52,7 +52,7 @@ namespace msp {
 
     string avUgen::pseudoRandomName() {
         ostringstream buffer;
-        buffer << "mspUgen_" << ofRandom(10000);
+        buffer << "mspAVUgen_" << ofRandom(10000);
         return buffer.str();
     }
 
@@ -293,7 +293,7 @@ namespace msp {
                 
                 // Metronome
                 // Phasor can take three arguments; frequency, start value and end
-                currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
+                // currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
 
                 audio = osc.sinewave(frequency);
 

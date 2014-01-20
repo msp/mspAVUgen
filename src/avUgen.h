@@ -1,13 +1,13 @@
 //
 //  avUgen.h
-//  mspUgen
+//  mspAVUgen
 //
 //  Created by msp on 06/02/2013.
 //
 //
 
-#ifndef mspUgen_avUgen_h
-#define mspUgen_avUgen_h
+#ifndef mspAVUgen_avUgen_h
+#define mspAVUgen_avUgen_h
 
 #include "ofMain.h"
 #include "math.h"

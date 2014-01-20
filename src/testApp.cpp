@@ -4,7 +4,7 @@
 void testApp::setup(){
 
     ofSetDataPathRoot("../Resources/"); // dist only
-    ofLogToFile("mspUgen.log", true);
+    ofLogToFile("mspAVUgen.log", true);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
     red = 0;
@@ -403,7 +403,7 @@ void testApp::setupUI(){
 
     gui->addSpacer(length, 4);
 
-    gui->addWidgetDown(new ofxUILabel("SWITCH PRESETS", OFX_UI_FONT_MEDIUM));
+    gui->addWidgetDown(new ofxUILabel("SWITCH PRESETS (KEYS 1-8)", OFX_UI_FONT_MEDIUM));
 
     padding = padding + 30;
 
@@ -441,8 +441,8 @@ void testApp::setupUI(){
 
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
-    //  gui->loadSettings("GUI/guiSettings.xml");
-    gui->toggleVisible();
+    // gui->loadSettings("GUI/guiSettings.xml");
+    // gui->toggleVisible();
 
     ofLogNotice() << "Done setupUI" << endl;
 

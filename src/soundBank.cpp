@@ -1,6 +1,6 @@
 //
 //  soundBank.cpp
-//  mspUgen
+//  mspAVUgen
 //
 //  Created by msp on 30/05/2013.
 //
