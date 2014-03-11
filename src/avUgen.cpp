@@ -348,8 +348,10 @@ namespace msp {
             } else if (msg.control == midiControlNumber.at(3)){
                 ofLogVerbose() << "setting pan: " << msg.value << endl;
                 setXMIDI(msg.value);
+            } else if (msg.control == midiControlNumber.at(4)){
+                ofLogVerbose() << "setting ypos: " << msg.value << endl;
+                setYMIDI(msg.value);
             }
-
         }
     }
 

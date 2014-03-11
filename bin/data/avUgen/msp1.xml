@@ -25,7 +25,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-1</name>
@@ -53,7 +55,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-2</name>
@@ -81,7 +85,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-3</name>
@@ -109,7 +115,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-4</name>
@@ -137,7 +145,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-5</name>
@@ -165,7 +175,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-6</name>
@@ -193,7 +205,9 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
     <avUgen>
         <name>msp1-7</name>
@@ -221,6 +235,8 @@
 		<midiChannel3>14</midiChannel3>
 		<midiControl3>61</midiControl3>
 		<midiChannel4>14</midiChannel4>
-		<midiControl4>41</midiControl4>		
+		<midiControl4>41</midiControl4>
+		<midiChannel5>14</midiChannel5>
+		<midiControl5>45</midiControl5>
     </avUgen>
 </avUgens>

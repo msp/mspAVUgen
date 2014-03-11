@@ -140,6 +140,7 @@ namespace msp {
             preset->setMIDIMapping(settings.getValue("avUgen:midiChannel2", 14, i), settings.getValue("avUgen:midiControl2", 80, i));
             preset->setMIDIMapping(settings.getValue("avUgen:midiChannel3", 14, i), settings.getValue("avUgen:midiControl3", 60, i));
             preset->setMIDIMapping(settings.getValue("avUgen:midiChannel4", 14, i), settings.getValue("avUgen:midiControl4", 40, i));
+            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel5", 14, i), settings.getValue("avUgen:midiControl5", 44, i));
 
             ofColor _color = *new ofColor();
             float hue = settings.getValue("avUgen:hue", preset->getColor().getHue(), i);
