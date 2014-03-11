@@ -3,9 +3,19 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
-    ofSetDataPathRoot("../Resources/"); // dist only, comment to use local XML config.
-    ofLogToFile("mspAVUgen.log", true);
     ofSetLogLevel(OF_LOG_VERBOSE);
+    ofLogNotice() << "Enivromment variable STANDALONE is: " << getenv("STANDALONE") << endl;
+
+    string sTrue = "true";
+    char const* tmp = getenv("STANDALONE");
+    string standalone (tmp);
+
+    if (sTrue.compare(standalone) == 0) {
+        ofLogNotice() << "STANDALONE mode is for distribution and resets data path and log file." << endl;
+        ofSetDataPathRoot("../Resources/");
+        ofLogToFile("mspAVUgen.log", true);
+
+    }
 
     red = 0;
     blue = 0;

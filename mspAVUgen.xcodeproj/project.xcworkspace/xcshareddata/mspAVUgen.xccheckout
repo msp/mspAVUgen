@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>FFAE6714-94A9-4319-9428-190308F2BC77</string>
+	<key>IDESourceControlProjectName</key>
+	<string>mspAVUgen</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2D4FE533-BD58-4945-8C29-2A9B354B3CDD</key>
+		<string>git://github.com/danomatika/ofxMidi.git</string>
+		<key>C8A1AEFB-7C3F-440B-A07C-351E85063B4E</key>
+		<string>ssh://github.com/msp/mspAVUgen.git</string>
+		<key>D3F4023B-55FA-4060-B39B-2A6209AC2978</key>
+		<string>https://github.com/rezaali/ofxUI.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>mspAVUgen.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2D4FE533-BD58-4945-8C29-2A9B354B3CDD</key>
+		<string>../../../../../addons/ofxMidi</string>
+		<key>C8A1AEFB-7C3F-440B-A07C-351E85063B4E</key>
+		<string>../..</string>
+		<key>D3F4023B-55FA-4060-B39B-2A6209AC2978</key>
+		<string>../../../../../addons/ofxUI</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/msp/mspAVUgen.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C8A1AEFB-7C3F-440B-A07C-351E85063B4E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C8A1AEFB-7C3F-440B-A07C-351E85063B4E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>mspAVUgen</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2D4FE533-BD58-4945-8C29-2A9B354B3CDD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxMidi</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D3F4023B-55FA-4060-B39B-2A6209AC2978</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxUI</string>
+		</dict>
+	</array>
+</dict>
+</plist>
