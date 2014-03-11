@@ -107,6 +107,13 @@ namespace msp {
         x = (ofGetWindowWidth() / 127) * _x;
     }
 
+    void avUgen::setYMIDI(int _y) {
+        _y = _y > 127 ? 127 : _y;
+        _y = _y < 1 ? 1 : _y;
+
+        y = (ofGetWindowHeight() / 127) * _y;
+    }
+
     double avUgen::getPan(){
         return pan;
     }

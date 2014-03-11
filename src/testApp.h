@@ -15,6 +15,7 @@ class testApp : public ofBaseApp, public ofxMidiListener{
     void drawMIDI();
     void cyclePreset();
     void setPreset(int _preset);
+    bool isRunningStandalone();
     
 	public:
 
@@ -47,6 +48,8 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         ofxUIRotarySlider *hue0, *hue1, *hue2, *hue3;
         ofxUIRotarySlider *thr0, *thr1, *thr2, *thr3;
         ofxUIRotarySlider *pos0, *pos1, *pos2, *pos3;
+        ofxUIRotarySlider *ypos0, *ypos1, *ypos2, *ypos3;
+
         ofxUIButton *prs1, *prs2, *prs3, *prs4, *prs5, *prs6, *prs7, *prs8;
         std::vector<ofxUIButton*> presetButtons;
         void guiEvent(ofxUIEventArgs &e);

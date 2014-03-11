@@ -4,17 +4,11 @@
 void testApp::setup(){
 
     ofSetLogLevel(OF_LOG_VERBOSE);
-    ofLogNotice() << "Enivromment variable STANDALONE is: " << getenv("STANDALONE") << endl;
 
-    string sTrue = "true";
-    char const* tmp = getenv("STANDALONE");
-    string standalone (tmp);
-
-    if (sTrue.compare(standalone) == 0) {
+    if (isRunningStandalone()) {
         ofLogNotice() << "STANDALONE mode is for distribution and resets data path and log file." << endl;
         ofSetDataPathRoot("../Resources/");
         ofLogToFile("mspAVUgen.log", true);
-
     }
 
     red = 0;
@@ -48,6 +42,56 @@ void testApp::update(){
     for (int i=0; i<soundBank.activeSlots.size(); i++) {
         soundBank.activeSlots.at(i) -> update();
     }
+
+    if (soundBank.audioReady == false) {
+        ofLogNotice() << "soundBank.audioReady: " << soundBank.audioReady << endl;
+    }
+
+    if (soundBank.audioReady == true && soundBank.activeSlots.size() == NUM_UGENS) {
+
+        // TODO wrap up controller / ui state in class.
+        // Use Macro concept from Live? Here & setupMIDI()
+
+        // Also, get a wierd crash when switching presets *really* fast with
+        // activeSlots length changing and we fall off the end of the array.
+        // Disable for LIVE performance?
+        if (!isRunningStandalone()) {
+            rad0 -> setValue(soundBank.activeSlots.at(0)->getRadius());
+            rad1 -> setValue(soundBank.activeSlots.at(1)->getRadius());
+            rad2 -> setValue(soundBank.activeSlots.at(2)->getRadius());
+            rad3 -> setValue(soundBank.activeSlots.at(3)->getRadius());
+
+            hue0 -> setValue(soundBank.activeSlots.at(0)->getColor().getHue());
+            hue1 -> setValue(soundBank.activeSlots.at(1)->getColor().getHue());
+            hue2 -> setValue(soundBank.activeSlots.at(2)->getColor().getHue());
+            hue3 -> setValue(soundBank.activeSlots.at(3)->getColor().getHue());
+
+            thr0 -> setValue(soundBank.activeSlots.at(0)->getThrottle());
+            thr1 -> setValue(soundBank.activeSlots.at(1)->getThrottle());
+            thr2 -> setValue(soundBank.activeSlots.at(2)->getThrottle());
+            thr3 -> setValue(soundBank.activeSlots.at(3)->getThrottle());
+
+            pos0 -> setValue(soundBank.activeSlots.at(0)->getPan() * 127);
+            pos1 -> setValue(soundBank.activeSlots.at(1)->getPan() * 127);
+            pos2 -> setValue(soundBank.activeSlots.at(2)->getPan() * 127);
+            pos3 -> setValue(soundBank.activeSlots.at(3)->getPan() * 127);
+
+            ypos0 -> setValue(soundBank.activeSlots.at(0)->getY());
+            ypos1 -> setValue(soundBank.activeSlots.at(1)->getY());
+            ypos2 -> setValue(soundBank.activeSlots.at(2)->getY());
+            ypos3 -> setValue(soundBank.activeSlots.at(3)->getY());
+        }
+    }
+
+
+    for (int i=0; i<presetButtons.size(); i++) {
+        if (i == soundBank.currentPreset) {
+            presetButtons.at(i) -> setState(OFX_UI_STATE_DOWN);
+        } else {
+            presetButtons.at(i) -> setState(OFX_UI_STATE_NORMAL);
+        }
+        presetButtons.at(i) -> stateChange();
+    }
 }
 
 //--------------------------------------------------------------
@@ -62,37 +106,6 @@ void testApp::draw(){
         ofPopStyle();
     }
 
-    // TODO wrap up contorller / ui state in class.
-    // Use Macro concept from Live? Here & setupMIDI()
-    rad0 -> setValue(soundBank.activeSlots.at(0)->getRadius());
-    rad1 -> setValue(soundBank.activeSlots.at(1)->getRadius());
-    rad2 -> setValue(soundBank.activeSlots.at(2)->getRadius());
-    rad3 -> setValue(soundBank.activeSlots.at(3)->getRadius());
-
-    hue0 -> setValue(soundBank.activeSlots.at(0)->getColor().getHue());
-    hue1 -> setValue(soundBank.activeSlots.at(1)->getColor().getHue());
-    hue2 -> setValue(soundBank.activeSlots.at(2)->getColor().getHue());
-    hue3 -> setValue(soundBank.activeSlots.at(3)->getColor().getHue());
-
-    thr0 -> setValue(soundBank.activeSlots.at(0)->getThrottle());
-    thr1 -> setValue(soundBank.activeSlots.at(1)->getThrottle());
-    thr2 -> setValue(soundBank.activeSlots.at(2)->getThrottle());
-    thr3 -> setValue(soundBank.activeSlots.at(3)->getThrottle());
-
-    pos0 -> setValue(soundBank.activeSlots.at(0)->getPan() * 127);
-    pos1 -> setValue(soundBank.activeSlots.at(1)->getPan() * 127);
-    pos2 -> setValue(soundBank.activeSlots.at(2)->getPan() * 127);
-    pos3 -> setValue(soundBank.activeSlots.at(3)->getPan() * 127);
-
-    for (int i=0; i<presetButtons.size(); i++) {
-        if (i == soundBank.currentPreset) {
-            presetButtons.at(i) -> setState(OFX_UI_STATE_DOWN);
-        } else {
-            presetButtons.at(i) -> setState(OFX_UI_STATE_NORMAL);
-        }
-        presetButtons.at(i) -> stateChange();
-    }
-
     ofPopStyle();
     if (debug) drawMIDI();
 }
@@ -105,7 +118,6 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
     float panRight = 1.0;
 
 	for (int i = 0; i < bufferSize; i++){
-
         if (soundBank.audioReady){
 
             for (int j = 0; j < NUM_UGENS; j++){
@@ -242,6 +254,26 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
         soundBank.activeSlots.at(3)->setXMIDI(slider->getScaledValue());
 	}
+	else if(name == "YPOS0")
+	{
+		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
+        soundBank.activeSlots.at(0)->setYMIDI(slider->getScaledValue());
+	}
+	else if(name == "YPOS1")
+	{
+		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
+        soundBank.activeSlots.at(1)->setYMIDI(slider->getScaledValue());
+	}
+	else if(name == "YPOS2")
+	{
+		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
+        soundBank.activeSlots.at(2)->setYMIDI(slider->getScaledValue());
+	}
+	else if(name == "YPOS3")
+	{
+		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
+        soundBank.activeSlots.at(3)->setYMIDI(slider->getScaledValue());
+	}
 	else if(name == "PRS1")
 	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
@@ -287,7 +319,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 //--------------------------------------------------------------
 void testApp::exit()
 {
-    gui->saveSettings("GUI/guiSettings.xml");
+    //gui->saveSettings("GUI/guiSettings.xml");
     delete gui;
 
 	midiIn.closePort();
@@ -360,11 +392,11 @@ void testApp::setupUI(){
     // OF UI
     float dim = 16;
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 360-xInit;
+    float length = 370-xInit;
     float presetButtonSize= 30;
-    float padding = 20;
+    float padding = 22;
 
-    gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight());
+    gui = new ofxUICanvas(0,0,length+xInit*2.0,ofGetHeight() + 50);
     gui -> setTheme(OFX_UI_THEME_GRAYDAY);
 	gui->addWidgetDown(new ofxUILabel("SPATIAL - AVUGEN", OFX_UI_FONT_LARGE));
 
@@ -409,6 +441,15 @@ void testApp::setupUI(){
     pos3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getPan() * 127, "POS3"));
     pos3 -> setPadding(padding);
 
+    ypos0 = (ofxUIRotarySlider *) gui->addWidgetDown(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(0)->getY(), "YPOS0"));
+    ypos0 -> setPadding(padding);
+    ypos1 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(1)->getY(), "YPOS1"));
+    ypos1 -> setPadding(padding);
+    ypos2 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(2)->getY(), "YPOS2"));
+    ypos2 -> setPadding(padding);
+    ypos3 = (ofxUIRotarySlider *) gui->addWidgetRight(new ofxUIRotarySlider(dim*4, 0, 127, soundBank.activeSlots.at(3)->getY(), "YPOS3"));
+    ypos3 -> setPadding(padding);
+
     gui->addSpacer(length, 4);
 
     gui->addWidgetDown(new ofxUILabel("SWITCH PRESETS (KEYS 1-8)", OFX_UI_FONT_MEDIUM));
@@ -450,7 +491,10 @@ void testApp::setupUI(){
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
 
     // gui->loadSettings("GUI/guiSettings.xml");
-    // gui->toggleVisible();
+
+    if (!isRunningStandalone()) {
+        gui->toggleVisible();
+    }
 
     ofLogNotice() << "Done setupUI" << endl;
 
@@ -522,6 +566,7 @@ void testApp::keyPressed(int key){
 			midiIn.listPorts();
 			break;
 		case 's':
+            ofLogNotice() << "About to save presets" << endl;
 			soundBank.savePresetsToXML();
 			break;
 		case 'p':
@@ -609,6 +654,22 @@ void testApp::setPreset(int _preset) {
     for(int i = 0; i<soundBank.activeSlots.size(); i++) {
         midiIn.addListener(soundBank.activeSlots.at(i));
     }
+}
+
+bool testApp::isRunningStandalone(){
+    string sTrue = "true";
+    char const* tmp = getenv("STANDALONE");
+    bool retVal = false;
+
+    if(tmp != NULL) {
+        string standalone (tmp);
+
+        if (sTrue.compare(standalone) == 0) {
+            retVal = true;
+        }
+    }
+
+    return retVal;
 }
 
 //--------------------------------------------------------------

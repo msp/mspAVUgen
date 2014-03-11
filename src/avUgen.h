@@ -92,6 +92,7 @@ namespace msp {
 
         // MIDI Mutators
         void setXMIDI(int _x);
+        void setYMIDI(int _y);
         void setPanMIDI(int _pan);
         void setRadiusMIDI(int _radius);
         void setThrottleMIDI(int _throttle);
