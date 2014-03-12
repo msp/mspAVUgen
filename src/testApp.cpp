@@ -55,7 +55,7 @@ void testApp::update(){
         // Also, get a wierd crash when switching presets *really* fast with
         // activeSlots length changing and we fall off the end of the array.
         // Disable for LIVE performance?
-        if (!isRunningStandalone()) {
+        if (isRunningStandalone()) {
             rad0 -> setValue(soundBank.activeSlots.at(0)->getRadius());
             rad1 -> setValue(soundBank.activeSlots.at(1)->getRadius());
             rad2 -> setValue(soundBank.activeSlots.at(2)->getRadius());
