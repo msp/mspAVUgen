@@ -1,4 +1,5 @@
 #include "testApp.h"
+#include <stdlib.h>
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -177,102 +178,102 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	if(name == "RAD0")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(0)->setRadiusMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(0)->controllerMacros.at(0)->applyAbsolute(*soundBank.activeSlots.at(0), slider->getScaledValue());
 	}
 	else if(name == "RAD1")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(1)->setRadiusMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(1)->controllerMacros.at(0)->applyAbsolute(*soundBank.activeSlots.at(1), slider->getScaledValue());
 	}
 	else if(name == "RAD2")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(2)->setRadiusMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(2)->controllerMacros.at(0)->applyAbsolute(*soundBank.activeSlots.at(2), slider->getScaledValue());
 	}
 	else if(name == "RAD3")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(3)->setRadiusMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(3)->controllerMacros.at(0)->applyAbsolute(*soundBank.activeSlots.at(3), slider->getScaledValue());
 	}
 	else if(name == "HUE0")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(0)->setHueMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(0)->controllerMacros.at(1)->applyAbsolute(*soundBank.activeSlots.at(0), slider->getScaledValue());
 	}
 	else if(name == "HUE1")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(1)->setHueMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(1)->controllerMacros.at(1)->applyAbsolute(*soundBank.activeSlots.at(1), slider->getScaledValue());
 	}
 	else if(name == "HUE2")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(2)->setHueMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(2)->controllerMacros.at(1)->applyAbsolute(*soundBank.activeSlots.at(2), slider->getScaledValue());
 	}
 	else if(name == "HUE3")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(3)->setHueMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(3)->controllerMacros.at(1)->applyAbsolute(*soundBank.activeSlots.at(3), slider->getScaledValue());
 	}
 	else if(name == "THR0")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(0)->setThrottleMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(0)->controllerMacros.at(2)->applyAbsolute(*soundBank.activeSlots.at(0), slider->getScaledValue());
 	}
 	else if(name == "THR1")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(1)->setThrottleMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(1)->controllerMacros.at(2)->applyAbsolute(*soundBank.activeSlots.at(1), slider->getScaledValue());
 	}
 	else if(name == "THR2")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(2)->setThrottleMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(2)->controllerMacros.at(2)->applyAbsolute(*soundBank.activeSlots.at(2), slider->getScaledValue());
 	}
 	else if(name == "THR3")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(3)->setThrottleMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(3)->controllerMacros.at(2)->applyAbsolute(*soundBank.activeSlots.at(3), slider->getScaledValue());
 	}
 	else if(name == "POS0")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(0)->setXMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(0)->controllerMacros.at(3)->applyAbsolute(*soundBank.activeSlots.at(0), slider->getScaledValue());
 	}
 	else if(name == "POS1")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(1)->setXMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(1)->controllerMacros.at(3)->applyAbsolute(*soundBank.activeSlots.at(1), slider->getScaledValue());
 	}
 	else if(name == "POS2")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(2)->setXMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(2)->controllerMacros.at(3)->applyAbsolute(*soundBank.activeSlots.at(2), slider->getScaledValue());
 	}
 	else if(name == "POS3")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(3)->setXMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(3)->controllerMacros.at(3)->applyAbsolute(*soundBank.activeSlots.at(3), slider->getScaledValue());
 	}
 	else if(name == "YPOS0")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(0)->setYMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(0)->controllerMacros.at(4)->applyAbsolute(*soundBank.activeSlots.at(0), slider->getScaledValue());
 	}
 	else if(name == "YPOS1")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(1)->setYMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(1)->controllerMacros.at(4)->applyAbsolute(*soundBank.activeSlots.at(1), slider->getScaledValue());
 	}
 	else if(name == "YPOS2")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(2)->setYMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(2)->controllerMacros.at(4)->applyAbsolute(*soundBank.activeSlots.at(2), slider->getScaledValue());
 	}
 	else if(name == "YPOS3")
 	{
 		ofxUIRotarySlider *slider = (ofxUIRotarySlider *) e.widget;
-        soundBank.activeSlots.at(3)->setYMIDI(slider->getScaledValue());
+        soundBank.activeSlots.at(3)->controllerMacros.at(4)->applyAbsolute(*soundBank.activeSlots.at(3), slider->getScaledValue());
 	}
 	else if(name == "PRS1")
 	{
@@ -343,14 +344,14 @@ void testApp::setupAVUgens(){
     ofLogVerbose() << "soundBank.activeSlots: " << soundBank.activeSlots.size() << endl;
 
     /*************************************/
-    soundBank.setMIDIMapping(14,104);
-    soundBank.setMIDIMapping(14,105);
-    soundBank.setMIDIMapping(14,106);
-    soundBank.setMIDIMapping(14,107);
-    soundBank.setMIDIMapping(14,84);
-    soundBank.setMIDIMapping(14,85);
-    soundBank.setMIDIMapping(14,86);
-    soundBank.setMIDIMapping(14,87);
+    soundBank.setMIDIMapping(15,88);
+    soundBank.setMIDIMapping(15,89);
+    soundBank.setMIDIMapping(15,90);
+    soundBank.setMIDIMapping(15,91);
+    soundBank.setMIDIMapping(15,92);
+    soundBank.setMIDIMapping(15,93);
+    soundBank.setMIDIMapping(15,94);
+    soundBank.setMIDIMapping(15,95);
 
     ofLogNotice() << "Done setupAVUgens" << endl;
 
@@ -608,15 +609,15 @@ void testApp::newMidiMessage(ofxMidiMessage& msg) {
         ofLogVerbose() << "TEST APP midi ch: " << msg.channel << " control: " << msg.control << endl;
         ofLogVerbose() << "value: " << msg.value << endl;
 
-        // pushing a pot on the faderfox sends 63
-        if (msg.value == 63) {
-            setPreset(soundBank.currentPreset);
-        }
+        setPreset(soundBank.currentPreset);
     }
 }
 
 bool testApp::isFireMIDI(ofxMidiMessage& msg){
     bool ret = false;
+
+    ofLogVerbose() << "TEST APP midi ch: " << msg.channel << " control: " << msg.control << endl;
+    ofLogVerbose() << "value: " << msg.value << endl;
 
     for(int i=0; i<soundBank.midiChannel.size(); i++){
         if (soundBank.midiChannel.at(i) == msg.channel){

@@ -36,7 +36,7 @@ namespace msp {
         void setPreset(int _preset);
 
         // Constants
-        static const int TOTAL_PRESETS = 8;
+        static const int TOTAL_PRESETS = 8 -1;
         static const int TOTAL_SLOTS = 4 -1;
 
         // Constructors

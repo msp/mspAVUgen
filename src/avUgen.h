@@ -14,8 +14,15 @@
 #include "ofxMaxim.h"
 #include "ofxMidi.h"
 #include "ofxXmlSettings.h"
+//#include "firstControllerMacro.h"
+//#include "secondControllerMacro.h"
+#include "controllerMacro.h"
 
 namespace msp {
+
+//    class firstControllerMacro; //forward declaration
+//    class secondControllerMacro; //forward declaration
+
     class avUgen : public ofxMidiListener{
 
         bool debug = false;
@@ -33,7 +40,7 @@ namespace msp {
         bool audioOutputSwitch;
         int audioEngine;
         int frequency;
-        double volume, lastMIDIRadius, pan;
+        double volume, lastMIDIRadius, lastMIDIHue, pan = 0.0;
         int currentCount, lastCount;
         double VCO1out,VCO2out,LFO1out,LFO2out,VCFout,ADSRout, audio;
         double adsrEnv[8]={0.5,100,0.5,250,0.125,125,0,500};
@@ -46,6 +53,10 @@ namespace msp {
         ofstream logger;
 
         string pseudoRandomName();
+
+//        firstControllerMacro firstMacro;
+//        secondControllerMacro secondMacro;
+
     public:
         
         ~avUgen();
@@ -132,6 +143,7 @@ namespace msp {
 
         void inspect();
 
+        std::vector<msp::controllerMacro*> controllerMacros;
     };
 }
 

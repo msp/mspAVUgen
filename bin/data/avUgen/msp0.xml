@@ -1,5 +1,17 @@
 <?xml version="1.0"?>
 <avUgens>
+	<midiChannels>
+		<midiChannel1>15</midiChannel1>
+		<midiControl1>24</midiControl1>
+		<midiChannel2>15</midiChannel2>
+		<midiControl2>28</midiControl2>
+		<midiChannel3>15</midiChannel3>
+		<midiControl3>32</midiControl3>
+		<midiChannel4>15</midiChannel4>
+		<midiControl4>42</midiControl4>
+		<midiChannel5>15</midiChannel5>
+		<midiControl5>48</midiControl5>
+	</midiChannels>
 	<avUgen>
 		<name>msp0-0</name>
 		<x>96</x>
@@ -18,16 +30,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-1</name>
@@ -47,16 +49,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-2</name>
@@ -76,16 +68,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-3</name>
@@ -105,16 +87,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-4</name>
@@ -134,16 +106,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-5</name>
@@ -163,16 +125,6 @@
 		<saturation>34.772727966</saturation>
 		<brightness>66.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-6</name>
@@ -192,16 +144,6 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 	<avUgen>
 		<name>msp0-7</name>
@@ -221,15 +163,5 @@
 		<saturation>255.000000000</saturation>
 		<brightness>255.000000000</brightness>
 		<alpha>220</alpha>
-		<midiChannel1>14</midiChannel1>
-		<midiControl1>100</midiControl1>
-		<midiChannel2>14</midiChannel2>
-		<midiControl2>80</midiControl2>
-		<midiChannel3>14</midiChannel3>
-		<midiControl3>60</midiControl3>
-		<midiChannel4>14</midiChannel4>
-		<midiControl4>40</midiControl4>
-		<midiChannel5>14</midiChannel5>
-		<midiControl5>44</midiControl5>
 	</avUgen>
 </avUgens>

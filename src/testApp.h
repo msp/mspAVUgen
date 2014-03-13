@@ -70,7 +70,6 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         std::vector<msp::avUgen*> channels;
 
         msp::soundBank soundBank;
-        msp::avUgen *ch1, *ch2, *ch3, *ch4;
 
         ofxMidiIn midiIn;
         stringstream text;
@@ -79,6 +78,5 @@ class testApp : public ofBaseApp, public ofxMidiListener{
         void newMidiMessage(ofxMidiMessage& eventArgs);
         ofxMidiMessage midiMessage;
         bool isFireMIDI(ofxMidiMessage& msg);
-
 
 };

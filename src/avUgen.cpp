@@ -7,6 +7,11 @@
 //
 
 #include "avUgen.h"
+#include "firstControllerMacro.h"
+#include "secondControllerMacro.h"
+#include "thirdControllerMacro.h"
+#include "fourthControllerMacro.h"
+#include "fifthControllerMacro.h"
 
 namespace msp {
     avUgen::avUgen(){
@@ -48,6 +53,13 @@ namespace msp {
         setThrottleMIDI(ofRandom(127));
 
         ofSetCircleResolution(100);
+
+        controllerMacros.push_back(new firstControllerMacro);
+        controllerMacros.push_back(new secondControllerMacro);
+        controllerMacros.push_back(new thirdControllerMacro);
+        controllerMacros.push_back(new fourthControllerMacro);
+        controllerMacros.push_back(new fifthControllerMacro);
+
     }
 
     string avUgen::pseudoRandomName() {
@@ -273,6 +285,7 @@ namespace msp {
 
     // expect a midi value 1 - 127
     void avUgen::setHueMIDI(int _hue){
+        lastMIDIHue = _hue;
         if (audioEngine == NOISE) {
             color.setBrightness((_hue * 2) - 10);
         } else if (audioEngine == AM) {
@@ -335,22 +348,10 @@ namespace msp {
             ofLogNotice() << "FIRE MIDI midi ch: " << msg.channel << " control: " << msg.control << " for avUgen: " << name << endl;
             ofLogVerbose() << "value: " << msg.value << endl;
 
-            if (msg.control == midiControlNumber.at(0)){
-                double thisRadius = lastMIDIRadius == 63.0 ? 0 : msg.value;
-                ofLogVerbose() << "setting radius/volume: " << thisRadius  << endl;
-                setRadiusMIDI(thisRadius);
-            } else if (msg.control == midiControlNumber.at(1)){
-
-                setHueMIDI(msg.value);
-            } else if (msg.control == midiControlNumber.at(2)){
-                ofLogVerbose() << "setting throttle: " << msg.value << endl;
-                setThrottleMIDI(msg.value);
-            } else if (msg.control == midiControlNumber.at(3)){
-                ofLogVerbose() << "setting pan: " << msg.value << endl;
-                setXMIDI(msg.value);
-            } else if (msg.control == midiControlNumber.at(4)){
-                ofLogVerbose() << "setting ypos: " << msg.value << endl;
-                setYMIDI(msg.value);
+            for (int i = 0; i < midiControlNumber.size(); i++) {
+                if (msg.control == midiControlNumber.at(i)){
+                    controllerMacros[i] -> applyRelative(*this, msg.value);
+                }
             }
         }
     }
@@ -370,6 +371,12 @@ namespace msp {
     }
 
     void avUgen::inspect() {
+
+        ostringstream buffer;
+        for (int i = 0; i < midiChannel.size(); i++) {
+            buffer << ", midi ch: " << midiChannel.at(i) << " cc: " << midiControlNumber.at(i);
+        }
+
         ofLogNotice() << "avUgen: "<< name
         << ", x: " << x
         << ", y: " << y
@@ -380,6 +387,7 @@ namespace msp {
         << ", hue: " << color.getHue()
         << ", saturation: " << color.getSaturation()
         << ", brightness: " << color.getBrightness()
+        << buffer.str()
         << endl;
     }
 

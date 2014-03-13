@@ -64,7 +64,6 @@ namespace msp {
 
         ofLogNotice() << "currentPresent: " << currentPreset << endl;
         activateCurrentPreset();
-
         ofLogVerbose() << "cyclePreset: activeSlots: " << activeSlots.size() << endl;
     };
 
@@ -90,7 +89,6 @@ namespace msp {
 
                 for (int j = 0; j <= TOTAL_PRESETS; j++){
 
-                    char buffer[100];
                     std::ostringstream buf;                    
                     buf << avUgenNames.at(i) << "-" << j;
 
@@ -100,11 +98,12 @@ namespace msp {
                 settings.popTag(); //avUgens
 
             } else {
-                ofLogWarning() << "unable to load "+ filename +" check data/ folder. Initialising defaults instead..";
+                ofLogWarning() << "***********************************************************************************";
+                ofLogWarning() << "* unable to load "+ filename +" check data/ folder. Initialising defaults instead.*";
+                ofLogWarning() << "***********************************************************************************";
 
                 for (int j = 0; j <= TOTAL_PRESETS; j++){
 
-                    char buffer[100];
                     std::ostringstream buf;
                     buf << avUgenNames.at(i) << "-" << j;
 
@@ -136,11 +135,13 @@ namespace msp {
             preset->setRandomResolutionSwitch(settings.getValue("avUgen:randomResolutionSwitch", preset->getRandomResolutionSwitch(), i));
             preset->setAnimateRadiusSwitch(settings.getValue("avUgen:animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i));
             preset->setThrottle(settings.getValue("avUgen:throttle", preset->getThrottle(), i));
-            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel1", 14, i), settings.getValue("avUgen:midiControl1", 100, i));
-            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel2", 14, i), settings.getValue("avUgen:midiControl2", 80, i));
-            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel3", 14, i), settings.getValue("avUgen:midiControl3", 60, i));
-            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel4", 14, i), settings.getValue("avUgen:midiControl4", 40, i));
-            preset->setMIDIMapping(settings.getValue("avUgen:midiChannel5", 14, i), settings.getValue("avUgen:midiControl5", 44, i));
+
+            // hardcode these to the first element. The structure of the XML dictates it.
+            preset->setMIDIMapping(settings.getValue("midiChannels:midiChannel1", 14, 0), settings.getValue("midiChannels:midiControl1", 100, 0));
+            preset->setMIDIMapping(settings.getValue("midiChannels:midiChannel2", 14, 0), settings.getValue("midiChannels:midiControl2", 80, 0));
+            preset->setMIDIMapping(settings.getValue("midiChannels:midiChannel3", 14, 0), settings.getValue("midiChannels:midiControl3", 60, 0));
+            preset->setMIDIMapping(settings.getValue("midiChannels:midiChannel4", 14, 0), settings.getValue("midiChannels:midiControl4", 40, 0));
+            preset->setMIDIMapping(settings.getValue("midiChannels:midiChannel5", 14, 0), settings.getValue("midiChannels:midiControl5", 44, 0));
 
             ofColor _color = *new ofColor();
             float hue = settings.getValue("avUgen:hue", preset->getColor().getHue(), i);
@@ -170,7 +171,22 @@ namespace msp {
 
                 tagId = settings.addTag("avUgens");
                 settings.pushTag("avUgens", tagId);
-                avUgen *preset;
+                avUgen *preset = activeSlots[i];
+
+                tagId = settings.addTag("midiChannels");
+                settings.pushTag("midiChannels", tagId);
+
+                for (int mc = 0; mc < preset->midiChannel.size(); mc++) {
+                    ostringstream buffer;
+                    buffer << "midiChannel" << mc+1;
+                    settings.setValue(buffer.str(), preset->midiChannel.at(mc));
+
+                    ostringstream buffer2;
+                    buffer2 << "midiControl" << mc+1;
+                    settings.setValue(buffer2.str(), preset->midiControlNumber.at(mc));
+                }
+
+                settings.popTag(); //midiChannels
 
                 for (int j = 0; j <= TOTAL_PRESETS; j++){
 
@@ -199,17 +215,6 @@ namespace msp {
                     settings.setValue("saturation", preset->getColor().getSaturation());
                     settings.setValue("brightness", preset->getColor().getBrightness());
                     settings.setValue("alpha", preset->getColor().a);
-
-                    for (int i = 0; i < preset->midiChannel.size(); i++) {
-                        ostringstream buffer;
-                        buffer << "midiChannel" << i+1;
-                        settings.setValue(buffer.str(), preset->midiChannel.at(i));
-                    }
-                    for (int i = 0; i < preset->midiControlNumber.size(); i++) {
-                        ostringstream buffer;
-                        buffer << "midiControl" << i+1;
-                        settings.setValue(buffer.str(), preset->midiControlNumber.at(i));
-                    }
 
                     filename = "avUgen/" + avUgenNames.at(i) + ".xml";
 
