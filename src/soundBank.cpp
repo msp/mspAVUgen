@@ -130,9 +130,13 @@ namespace msp {
             preset->setPan(settings.getValue("avUgen:pan", preset->getPan(), i));
             preset->setFrequency(settings.getValue("avUgen:frequency", preset->getFrequency(), i));
             preset->setVisualOutputSwitch(settings.getValue("avUgen:visualOutputSwitch", preset->getVisualOutputSwitch(), i));
+
             preset->setAudioOutputSwitch(settings.getValue("avUgen:audioOutputSwitch", preset->getAudioOutputSwitch(), i));
-            preset->setAudioEngine(settings.getValue("avUgen::audioEngine", preset->getAudioEngine(), i));
+            preset->setAudioDelaySwitch(settings.getValue("avUgen:audioDelaySwitch", preset->getAudioDelaySwitch(), i));
+
             preset->setRandomResolutionSwitch(settings.getValue("avUgen:randomResolutionSwitch", preset->getRandomResolutionSwitch(), i));
+            preset->setModulateResolutionSwitch(settings.getValue("avUgen:modulateResolutionSwitch", preset->getModulateResolutionSwitch(), i));
+
             preset->setAnimateRadiusSwitch(settings.getValue("avUgen:animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i));
             preset->setThrottle(settings.getValue("avUgen:throttle", preset->getThrottle(), i));
 
@@ -205,9 +209,13 @@ namespace msp {
                     settings.setValue("pan", preset->getPan(), i);
                     settings.setValue("frequency", preset->getFrequency(), i);
                     settings.setValue("visualOutputSwitch", preset->getVisualOutputSwitch(), i);
+
                     settings.setValue("audioOutputSwitch", preset->getAudioOutputSwitch(), i);
-                    settings.setValue("audioEngine", preset->getAudioEngine(), i);
+                    settings.setValue("audioDelaySwitch", preset->getAudioDelaySwitch(), i);
+
                     settings.setValue("randomResolutionSwitch", preset->getRandomResolutionSwitch(), i);
+                    settings.setValue("modulateResolutionSwitch", preset->getModulateResolutionSwitch(), i);
+
                     settings.setValue("animateRadiusSwitch", preset->getAnimateRadiusSwitch(), i);
                     settings.setValue("throttle", preset->getThrottle(), i);
 

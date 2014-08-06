@@ -32,12 +32,12 @@ namespace msp {
         string name;
 
         // visual
-        bool visualOutputSwitch, randomResolutionSwitch, animateRadiusSwitch;
+        bool visualOutputSwitch, randomResolutionSwitch, animateRadiusSwitch, modulateResolutionSwitch;
         int x, y, radius, throttle, frame;
         ofColor color;
 
         // audio
-        bool audioOutputSwitch;
+        bool audioOutputSwitch, audioDelaySwitch;
         int audioEngine;
         int frequency;
         double volume, lastMIDIRadius, lastMIDIHue, pan = 0.0;
@@ -49,6 +49,14 @@ namespace msp {
         ofxMaxiFilter VCF;
         ofxMaxiEnvelope ADSR;
         ofxMaxiOsc timer;
+
+        ofxMaxiOsc myCounter, mySquare;
+        int phasorCount;
+
+        maxiOsc mySwitchableOsc;
+        double myOscOutput;
+
+        maxiDelayline myDelay;
 
         ofstream logger;
 
@@ -63,11 +71,12 @@ namespace msp {
         
         // Constants
         enum { LIGHT_ALPHA = 220, HEAVY_ALPHA = 50 };
-        enum { FM = 999, MONO = 998, NOISE = 997, AM = 996 };
+        enum { FM = 999, MONO = 998, NOISE = 997, AM = 996, COUNT = 995, COUNT2 = 994 };
 
         static const int DEFAULT_RADIUS = 30;
         static const int DEFAULT_RADIUS_MULTPLIER = 10;
         static const int DEFAULT_VOLUME = 3;
+        static const double FM_MULITPLIER = 0.08;
         
         // Constructors
         avUgen();
@@ -95,9 +104,11 @@ namespace msp {
         void switchOffAudio();
         void switchOffVisual();
         void setRandomResolutionSwitch(bool _randomResolutionSwitch);
+        void setModulateResolutionSwitch(bool _modulateResolutionSwitch);
         void setAnimateRadiusSwitch(bool _animateRadiusSwitch);
         void setVisualOutputSwitch(bool _visualOutputSwitch);
         void setAudioOutputSwitch(bool _audioOutputSwitch);
+        void setAudioDelaySwitch(bool _audioDelaySwitch);
 
         void setMIDIMapping(int _channel, int _control);
 
@@ -123,9 +134,11 @@ namespace msp {
         int getAudioEngine();
         double getVolume();
         bool getRandomResolutionSwitch();
+        bool getModulateResolutionSwitch();
         bool getAnimateRadiusSwitch();
         bool getVisualOutputSwitch();
         bool getAudioOutputSwitch();
+        bool getAudioDelaySwitch();
 
         double getAudio();
         double getAudioOutput();
@@ -141,8 +154,10 @@ namespace msp {
         std::vector<int> midiControlNumber;
         std::vector<int> midiValue;
 
+        // util
         void inspect();
-
+        float ofRangemap(float r1min, float r1max, float r2min, float r2max, float r1val);
+        
         std::vector<msp::controllerMacro*> controllerMacros;
     };
 }

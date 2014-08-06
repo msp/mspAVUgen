@@ -32,12 +32,17 @@ namespace msp {
         frame = 0;
         lastCount = 0;
         currentCount = 0;
+        phasorCount = 1;
+
 
         visualOutputSwitch = true;
         audioOutputSwitch = true;
         // these may be overriden, depending on the audio engine
         randomResolutionSwitch = false;
         animateRadiusSwitch = false;
+        modulateResolutionSwitch = false;
+
+        audioDelaySwitch = false;
 
         setX(ofRandom(ofGetWindowWidth()));
         setY(ofRandom(ofGetWindowHeight()));
@@ -80,8 +85,12 @@ namespace msp {
 
         ofSetColor(color.r, color.g, color.b, color.a);
         ofFill();
-                
+
         if (frame == throttle) {
+            if (modulateResolutionSwitch) {
+                // ofSetCircleResolution(fabs(osc3.sinewave(FM_MULITPLIER)* 30));
+                ofSetCircleResolution(phasorCount);
+            }
             if (randomResolutionSwitch) ofSetCircleResolution(ofRandom(10));
             if (isVisualOn()) ofCircle(x, y, circle_radius);
             frame = 0;
@@ -232,6 +241,14 @@ namespace msp {
         randomResolutionSwitch = _randomResolutionSwitch;
     }
 
+    bool avUgen::getModulateResolutionSwitch(){
+        return modulateResolutionSwitch;
+    }
+
+    void avUgen::setModulateResolutionSwitch(bool _modulateResolutionSwitch){
+        modulateResolutionSwitch = _modulateResolutionSwitch;
+    }
+
     bool avUgen::getAnimateRadiusSwitch(){
         return animateRadiusSwitch;
     }
@@ -256,6 +273,15 @@ namespace msp {
         audioOutputSwitch = _audioOutputSwitch;
     }
 
+    bool avUgen::getAudioDelaySwitch() {
+        return audioDelaySwitch;
+    }
+
+    void avUgen::setAudioDelaySwitch(bool _audioDelaySwitch){
+        audioDelaySwitch = _audioDelaySwitch;
+    }
+
+
     bool avUgen::isAudioOn(){
         return audioOutputSwitch;
     }
@@ -276,7 +302,9 @@ namespace msp {
     void avUgen::setVolumeMIDI(int _volume){
         if (audioEngine == AM) {
             volume = sqrt(_volume) / 2;
-        } else {
+        } else if (audioEngine == COUNT) {
+            volume = sqrt(_volume) / 4;
+        }   else {
             // get a non linear curve
             volume = sqrt(_volume);
         }
@@ -307,13 +335,46 @@ namespace msp {
         audio = 1;
         if (isAudioOn()) {
             if (audioEngine == FM) {
-                randomResolutionSwitch = true;
-                audio = osc.sinewave(osc2.sinewave(osc3.sinewave(0.1)*30)*frequency);
+//                randomResolutionSwitch = true;
+                audio = osc.sinewave(osc2.sinewave(osc3.sinewave(FM_MULITPLIER)*30)*frequency);
+            } else if (audioEngine == COUNT) {
+                phasorCount=myCounter.phasor(1, 1, 9);
+                audio=mySquare.square(phasorCount*frequency);
+
+                if (frame == throttle) {
+                    ADSR.trigger(0, adsrEnv[0]);
+                }
+
+                ADSRout=ADSR.line(8,adsrEnv);
+                audio = audio * ADSRout;
+
+            } else if (audioEngine == COUNT2) {
+                audioDelaySwitch = true;
+
+                // phasor can take three arguments; frequency, start value and end
+                phasorCount=myCounter.phasor(ofRangemap(20, 20000, 1, 1000, frequency), 2, 12);
+
+                // ofLogVerbose() << "phasorCount: " << phasorCount << endl;
+
+                if (phasorCount<7) {
+                    myOscOutput=mySwitchableOsc.square(phasorCount*50);
+                } else if (phasorCount>=7) {
+                    myOscOutput=mySwitchableOsc.sinewave(phasorCount*80);
+                }
+                audio=myOscOutput;
+
+                if (frame == throttle) {
+                    ADSR.trigger(0, adsrEnv[0]);
+                }
+
+                ADSRout=ADSR.line(8,adsrEnv);
+                audio = audio * ADSRout;
+
             } else if (audioEngine == MONO) {
                 
                 // Metronome
                 // Phasor can take three arguments; frequency, start value and end
-                // currentCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
+                // phasorCount = timer.phasor((int)ofGetFrameRate()/10, 1, 50);
 
                 audio = osc.sinewave(frequency);
 
@@ -338,7 +399,11 @@ namespace msp {
     }
 
     double avUgen::getAudioOutput(){
-        return getVolume() == 0 ? 0.0 : getAudio() * getVolume();
+        if (audioDelaySwitch) {
+            return getVolume() == 0 ? 0.0 : myDelay.dl(getAudio() * getVolume(), 8000, 0.7) * 1.6;
+        } else {
+            return getVolume() == 0 ? 0.0 : getAudio() * getVolume();
+        }
     }
 
     void avUgen::newMidiMessage(ofxMidiMessage& msg) {
@@ -391,5 +456,18 @@ namespace msp {
         << endl;
     }
 
+    float avUgen::ofRangemap(float r1min, float r1max,
+                     float r2min, float r2max, float r1val) {
+        /**
+         *                     r1val
+         *    |- - - - -|--------x----|
+         *    0       r1min       \  r1max
+         *                         \
+         *    |- - - - - -|---------x-------|
+         *    0         r2min      return  r2max
+         */
+
+        return (r1val - r1min) * ((r2max - r2min)/(r1max - r1min)) + r2min;
+    }
 };
 
