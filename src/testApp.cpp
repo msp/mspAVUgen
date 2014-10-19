@@ -508,7 +508,9 @@ void testApp::setupSound() {
     initialBufferSize	= 512;
 
     soundStream.listDevices();
+    // for Screencasts only
     // soundStream.setDeviceID(3); //(ma++ ingalls for Cycling '74: Soundflower (2ch))
+
     soundStream.setup(this, NUM_SOUNDCARD_CHANNELS, 0, sampleRate, initialBufferSize, 4); /* Call this last ! */
     ofLogNotice() << "Done setupSound" << endl;
 }

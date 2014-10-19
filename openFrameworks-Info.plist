@@ -6,6 +6,8 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFile</key>
+	<string>mspAVUgenIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>net.infrasonics.spatial</string>
 	<key>CFBundleInfoDictionaryVersion</key>

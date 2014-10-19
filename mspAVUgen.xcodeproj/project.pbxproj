@@ -25,6 +25,7 @@
 		728EEF3718D0F5180035E608 /* firstControllerMacro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 728EEF3518D0F5180035E608 /* firstControllerMacro.cpp */; };
 		728EEF3A18D11E460035E608 /* secondControllerMacro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 728EEF3818D11E460035E608 /* secondControllerMacro.cpp */; };
 		729B84E016C3124E0043E414 /* avUgen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 729B84DF16C3124E0043E414 /* avUgen.cpp */; };
+		72AD2C2919F4485600360AEE /* mspAVUgenIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 72AD2C2819F4485600360AEE /* mspAVUgenIcon.icns */; };
 		72B0780116D648C000A62F65 /* ofxRtMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B077D716D648C000A62F65 /* ofxRtMidiIn.cpp */; };
 		72B0780216D648C000A62F65 /* ofxRtMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B077D916D648C000A62F65 /* ofxRtMidiOut.cpp */; };
 		72B0780316D648C000A62F65 /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B077DE16D648C000A62F65 /* RtMidi.cpp */; };
@@ -88,6 +89,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		72AD2C2219F4441600360AEE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4C2427710CC5ABF004149E2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -153,6 +163,8 @@
 		728EEF3818D11E460035E608 /* secondControllerMacro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = secondControllerMacro.cpp; sourceTree = "<group>"; };
 		728EEF3918D11E460035E608 /* secondControllerMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secondControllerMacro.h; sourceTree = "<group>"; };
 		729B84DF16C3124E0043E414 /* avUgen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = avUgen.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		72AD2C2019F4423400360AEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = mspAVUgen/Images.xcassets; sourceTree = "<group>"; };
+		72AD2C2819F4485600360AEE /* mspAVUgenIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = mspAVUgenIcon.icns; sourceTree = "<group>"; };
 		72B077D716D648C000A62F65 /* ofxRtMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRtMidiIn.cpp; sourceTree = "<group>"; };
 		72B077D816D648C000A62F65 /* ofxRtMidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRtMidiIn.h; sourceTree = "<group>"; };
 		72B077D916D648C000A62F65 /* ofxRtMidiOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRtMidiOut.cpp; sourceTree = "<group>"; };
@@ -208,7 +220,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* mspAVUgenDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mspAVUgenDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* mspAVUgen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = mspAVUgen.app; path = "/data/development/c++/of_v0073_osx_release/apps/myApps/mspAVUgen/bin/mspAVUgen.app"; sourceTree = "<absolute>"; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; lineEnding = 0; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -514,6 +526,8 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				72AD2C2819F4485600360AEE /* mspAVUgenIcon.icns */,
+				72AD2C2019F4423400360AEE /* Images.xcassets */,
 				720013E7188D53D0005054DA /* mspAVUgen.iconset */,
 				72B0781116D6491B00A62F65 /* CoreMIDI.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
@@ -522,7 +536,6 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* mspAVUgenDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -688,6 +701,8 @@
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
+				72AD2C2219F4441600360AEE /* CopyFiles */,
+				72AD2C2319F4442600360AEE /* Resources */,
 			);
 			buildRules = (
 			);
@@ -696,7 +711,7 @@
 			);
 			name = mspAVUgen;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* mspAVUgenDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* mspAVUgen.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -741,6 +756,17 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		72AD2C2319F4442600360AEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72AD2C2919F4485600360AEE /* mspAVUgenIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		E4B6FFFD0C3F9AB9008CF71C /* ShellScript */ = {
