@@ -6,11 +6,13 @@ void testApp::setup(){
 
     ofSetLogLevel(OF_LOG_VERBOSE);
 
-    if (isRunningStandalone()) {
-        ofLogNotice() << "STANDALONE mode is for distribution and resets data path and log file." << endl;
-        ofSetDataPathRoot("../Resources/");
-        ofLogToFile("mspAVUgen.log", true);
-    }
+    // this only works when running from Xcode so isn't really much use.
+    // perhaps it needs to overriden with a launch argument?
+//    if (isRunningStandalone()) {
+//    ofLogNotice() << "STANDALONE mode is for distribution and resets data path and log file." << endl;
+//    ofSetDataPathRoot("../Resources/");
+//    ofLogToFile("mspAVUgen.log", true);
+//    }
 
     red = 0;
     blue = 0;
