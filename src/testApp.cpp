@@ -364,7 +364,9 @@ void testApp::setupMIDI(){
 	midiIn.listPorts(); // via instance
 
     // midiIn.openPort("Audio 8 DJ MIDI input port 0");
-	midiIn.openPort("USB Uno MIDI Interface");
+	// midiIn.openPort("USB Uno MIDI Interface");
+    // The first port! Network MSP iPAD
+    midiIn.openPort(0);
 
 	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
 
